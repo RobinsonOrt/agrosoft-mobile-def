@@ -1,4 +1,3 @@
-import { API } from '../config'
 import global from "../global";
 import React from "react";
 import tw from "twrnc";
@@ -11,6 +10,8 @@ import NetInfo from '@react-native-community/netinfo';
 import { useNavigate } from "react-router-native";
 
 export default function Home() {
+
+  
   
   const navigate = useNavigate();
   
@@ -39,14 +40,14 @@ export default function Home() {
           intensity={100}
           style={tw`bg-gray-500 p-7 rounded-2xl w-80`}
         >
-          <Link to="/login" activeOpacity={0.6} underlayColor="#ddddd">
+          <Link to={'/login'}  underlayColor="#ddddd" >
             <Text
-              style={tw`bg-yellow-600 text-lg text-white px-5 py-3 rounded-lg mb-7 text-center`}
+              style={tw`bg-yellow-600 text-lg text-white px-5 py-3 rounded-lg mb-7 text-center `}
             >
               Ingresar
             </Text>
           </Link>
-          <Link to="/register" activeOpacity={0.6} underlayColor="#ddddd">
+          <Link to={'/register'}  underlayColor="#ddddd">
             <Text
               style={tw`bg-yellow-900 text-lg text-white px-5 py-2 rounded-lg text-center`}
             >

@@ -16,19 +16,17 @@ export default function PasswordRecoveryForm() {
       redirectConnection();
     }
   });
+
   const redirectConnection = () => {
     global.urlConnected = "/passwordRecoveryForm";
     navigate("/notConected");
   }
-
 
   const [password1, onChangePassword1] = useState("");
   const [password2, onChangePassword2] = useState("");
   const [errorPass1, setErrorPass1] = useState();
   const [errorPass2, setErrorPass2] = useState();
   const [error, setError] = useState();
-
-  
 
   const onSubmit = async () => {
     console.log(password1);

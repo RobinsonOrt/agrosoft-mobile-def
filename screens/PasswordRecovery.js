@@ -15,7 +15,7 @@ import axios from "axios";
 import AuthContext from "../context/AuthContext";
 import NetInfo from '@react-native-community/netinfo';
 
-export default function PasswordRecovery() {
+export default function PasswordRecovery( {navigation}) {
   let navigate = useNavigate();
 
   const unsubscribe = NetInfo.addEventListener(state => {
@@ -30,7 +30,7 @@ export default function PasswordRecovery() {
 
   const [error, setError] = useState(false);
 
-  const {onSubmit, result} = useContext(AuthContext)
+  const {RecoveryPassword, result} = useContext(AuthContext)
 
   useBackHandler(() => {
     navigate("/login");
@@ -103,7 +103,7 @@ export default function PasswordRecovery() {
             style={tw`bg-slate-50 px-5 py-3 rounded-lg w-70 my-5`}
           /> */}
           <TouchableOpacity
-            onPress={handleSubmit(onSubmit)}
+            onPress={handleSubmit(RecoveryPassword)}
             style={tw`bg-yellow-700 p-5 mt-5 rounded-xl`}
           >
             <Text style={tw`text-white text-center font-bold`}>Recuperar</Text>

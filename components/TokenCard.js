@@ -1,5 +1,5 @@
 import React from "react";
-import { View, Text, TextInput } from "react-native-web";
+import { View, Text, TextInput } from "react-native";
 import { Link } from "react-router-native";
 import tw from "twrnc";
 

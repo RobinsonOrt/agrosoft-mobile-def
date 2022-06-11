@@ -18,6 +18,8 @@ import { useForm, Controller } from "react-hook-form";
 import axios from "axios";
 import NetInfo from '@react-native-community/netinfo';
 
+
+
 export default function Register() {
   let navigate = useNavigate();
 
@@ -41,7 +43,7 @@ export default function Register() {
 
   const loadIdentiiers = async () => {
     const urlIdentifiers = REACT_APP_API_URL + "/api/identifiers";
-    axios.get(urlIdentifiers).then(response => {
+    await axios.get(urlIdentifiers).then(response => {
       setIdentifiers(response.data);
     })
   }
@@ -161,7 +163,6 @@ export default function Register() {
             <Text style={tw`text-red-600 mb-5`}>Campo requerido , debe tener 10 caracteres y solo digitos del 0 al 9</Text>
           )}
           <Picker
-            fieldValue="idIdentifier"
             style={tw`bg-slate-50 px-5 py-3 rounded-lg w-70 mb-5 border-b border-yellow-700`}
             selectedValue={selectedLanguage}
             onValueChange={(itemValue) =>
