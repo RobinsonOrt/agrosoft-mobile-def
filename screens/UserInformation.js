@@ -63,9 +63,9 @@ export default function UserInformation( {navigation} ) {
             placeholder="Apellidos"
             editable= {false}
           />
-        
+        <View style={tw`flex-row w-80 p-0`}>
         <TextInput
-            style={tw`bg-slate-50 px-5 py-3 rounded-lg w-321px mb-5 border-b-2 border-yellow-500`}
+            style={tw`bg-slate-50 text-base px-5 py-3 rounded-lg w-55px mb-5 pl-0 pr-0 border-b border-yellow-700`}
             value={"+" + identifier.identifier + " " + identifier.countryName}
             placeholder="identificador"
             editable={false}
@@ -76,6 +76,7 @@ export default function UserInformation( {navigation} ) {
             value={user.phoneNumber}
             editable={false}
           /> 
+          </View>
         <TextInput
             style={tw`bg-slate-50 px-5 py-3 rounded-lg w-321px mb-5 border-b-2 border-yellow-500`}
             value={user.email}

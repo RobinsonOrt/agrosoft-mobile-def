@@ -10,6 +10,8 @@ import {
   Picker,
   Modal
 } from "react-native";
+import ModalModel from "./ModalModel";
+import ModalButton from "./ModalButton"
 import tw from "twrnc";
 import { useNavigate } from "react-router-native";
 import { useBackHandler } from "@react-native-community/hooks";
@@ -114,41 +116,15 @@ export default function ModalAddFarm({ isModalOpenAddFarm, setIsModalOpenAddFarm
     }
   }, []);
 
-
-  const modalContainerStyle = {
-    flex: 1,
-    justifyContent: 'center',
-    backgroundColor: 'rgba(52, 52, 52, 0.6)',
-  }
-
-  const modalStyle = {
-    backgroundColor: 'white',
-    alignItems: 'center',
-    margin: 20,
-    borderRadius: 16,
-    paddingHorizontal: 30,
-    paddingVertical: 20,
-    shadowColor: '#000',
-    shadowOffset: {
-      width: 0,
-      height: 2,
-    },
-    shadowOpacity: 0.25,
-    shadowRadius: 4,
-    elevation: 5,
-  };
   return (
-    <>
-      <Modal visible={isModalOpenAddFarm} transparent={true} animationType={'fade'} onRequestClose={() => setIsModalOpenAddFarm(false)}>
-        <View style={modalContainerStyle}>
-          <View style={modalStyle}>
-            <View style={tw`h-full flex items-center justify-center`}>
-              <Text style={tw`text-3xl font-bold text-black mt-20 mb-5`}>
+    
+    <ModalModel isModalOpen={isModalOpenAddFarm} setIsModalOpen={setIsModalOpenAddFarm}>
+              <Text style={tw`text-3xl font-bold text-black mt-5 mb-5`}>
                 Agregar nueva finca
               </Text>
-              <ScrollView style={tw`mt-2`}>
-                <View style={tw`px-7 mb-10 flex items-center justify-center`}>
-                  <Text style={tw` text-black mb-10 w-283px  text-center`}>
+              <ScrollView style={tw`mt-2 w-full pb-3`}>
+                <View style={tw`w-full px-7 mb-10 flex items-center justify-center`}>
+                  <Text style={tw` text-black mb-10 w-full  text-center`}>
                     Rellena los campos con la información correspondiente
                   </Text>
                   {localError.status ? (
@@ -200,24 +176,10 @@ export default function ModalAddFarm({ isModalOpenAddFarm, setIsModalOpenAddFarm
                     }
                   </Picker>
 
-                  <TouchableOpacity
-                    style={tw`bg-yellow-500 text-lg text-white px-5 py-3 w-215px rounded-lg mb-7 text-center`}
-                    onPress={handleSubmit(onSubmitAddFarm)}
-                  >
-                    <Text style={tw`text-lg text-white text-center`}>Guardar</Text>
-                  </TouchableOpacity>
-                  <TouchableOpacity
-                    style={tw`bg-red-600 text-lg text-white px-5 py-3 w-215px rounded-lg mb-7 text-center`}
-                    onPress={() => {setIsModalOpenAddFarm(!setIsModalOpenAddFarm), setError(false)}}
-                  >
-                    <Text style={tw`text-lg text-white text-center`}>Cancelar </Text>
-                  </TouchableOpacity>
+                  <ModalButton text={"Confirmar"} onPress={handleSubmit(onSubmitAddFarm)} color={"#22C55E"}/>
+                  <ModalButton text={"Cancelar"} onPress={() => {setIsModalOpenAddFarm(!setIsModalOpenAddFarm), setError(false)}} color={"rgba(220, 38, 38, 0.86)"}/>
                 </View>
               </ScrollView>
-            </View>
-          </View>
-        </View>
-      </Modal>
-    </>
+        </ModalModel>
   )
 } 

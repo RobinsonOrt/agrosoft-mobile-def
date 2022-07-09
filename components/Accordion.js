@@ -17,7 +17,6 @@ export const Accordion = ({ title, children }) => {
     const [isOpen, setIsOpen] = useState(false);
     const toggleOpen = () => {
         setIsOpen(value => !value);
-        LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);
     }
 
     return (

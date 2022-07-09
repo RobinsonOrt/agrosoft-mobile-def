@@ -14,8 +14,9 @@ import {
   ScrollView,
   TouchableOpacity,
 } from "react-native";
+import InputForm from "../components/InputForm";
 
-export default function Login() {
+export default function Login2() {
 
   const {LoginUser, result} = useContext(AuthContext);
 
@@ -44,40 +45,8 @@ export default function Login() {
     handleSubmit,
     formState: { errors },
   } = useForm();
-
-  const Input = ({
-    fieldValue,
-    placeholder,
-    keyboardType,
-    secureTextEntry,
-    pattern,
-    autoCapitalize,
-    minLength,
-  }) => {
-    return (
-      <Controller
-        control={control}
-        rules={{
-          required: true,
-          pattern: pattern,
-          minLength: minLength,
-        }}
-        render={({ field: { onChange, onBlur, value } }) => (
-          <TextInput
-            style={tw`bg-slate-50 px-5 py-3 rounded-lg w-70 mb-5`}
-            onChangeText={onChange}
-            onBlur={onBlur}
-            value={value}
-            placeholder={placeholder}
-            secureTextEntry={secureTextEntry}
-            autoCapitalize={autoCapitalize}
-            keyboardType={keyboardType}
-          />
-        )}
-        name={fieldValue}
-      />
-    );
-  };
+ 
+  console.log(errors)
 
   useEffect(() => {
     console.log(global.idUser)
@@ -97,6 +66,10 @@ export default function Login() {
     }
   }
 
+  const onSubmit = data => console.log(data);
+
+
+
   return (
     <View style={tw`h-full flex items-center justify-center`}>
       <Text style={tw`text-4xl font-bold text-black mb-5 mt-20`}>
@@ -114,10 +87,11 @@ export default function Login() {
           <Text style={tw`text-xl text-black mb-5 font-bold`}>
             Correo electrónico
           </Text>
-          <Input
+          <InputForm
+            control={control}
             style={tw`bg-slate-50 px-5 py-3 rounded-lg w-70`}
-            fieldValue="email"
-            placeholder="Correo"
+            name="email"
+            placeholder="example@gmail.com"
             autoCapitalize="none"
             keyboardType="email-address"
             pattern={
@@ -132,9 +106,10 @@ export default function Login() {
             </Text>
           ) : null}
           <Text style={tw`text-xl text-black my-5 font-bold`}>Contraseña</Text>
-          <Input
+          <InputForm
+            control={control}
             style={tw`bg-slate-50 px-5 py-3 rounded-lg w-70 mb-5`}
-            fieldValue="password"
+            name="password"
             placeholder="Contraseña"
             secureTextEntry={!isChecked}
           />
@@ -150,7 +125,7 @@ export default function Login() {
           </View>
           <TouchableOpacity
             style={tw`bg-yellow-600 p-3 rounded-lg`}
-            onPress={handleSubmit(login)}
+            onPress={handleSubmit(onSubmit)}
           >
             <Text style={tw`text-lg text-white text-center`}>Ingresar</Text>
           </TouchableOpacity >

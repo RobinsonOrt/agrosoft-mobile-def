@@ -152,6 +152,8 @@ import { NavigationContainer } from "@react-navigation/native";
 import EnterFarm from "./screens/EnterFarm";
 import Farms from "./screens/Farms";
 import Requests from "./screens/Requests";
+import Login2 from "./screens/Login2";
+import Loginn from "./components/Loginn";
 import { MyFarmsProvider } from "./context/FarmContext";
 import { CountryProvider} from "./context/CoutryContext";
 
@@ -165,7 +167,7 @@ export default function App() {
       <NativeRouter>
         <Routes>
           <Route exact path="/" element={<Home />} />
-          <Route path="/login" element={<Login />} />
+          <Route path="/login" element={<Loginn />} />
           <Route path="/register" element={<Register />} />
           <Route path="/tokenValidation" element={<TokenValidation />} />
           <Route path="/passwordRecovery" element={<PasswordRecovery />} />

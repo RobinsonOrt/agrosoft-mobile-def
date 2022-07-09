@@ -30,7 +30,6 @@ export default function ModalModifyEmail({ isModalOpenModifyEmail, setIsModalOpe
     const toggleOpen = () => {
         setIsOpen(false)
         setIsOpenn(true)
-        LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);
     }
 
 
@@ -69,7 +68,6 @@ export default function ModalModifyEmail({ isModalOpenModifyEmail, setIsModalOpe
     const cancelEmailChange = () => {
         setIsOpen(true);
         setIsOpenn(false);
-        LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut)
         setIsModalOpenModifyEmail(false);
     }
 

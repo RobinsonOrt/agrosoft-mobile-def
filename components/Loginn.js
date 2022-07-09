@@ -4,18 +4,19 @@ import tw from "twrnc";
 import Checkbox from "expo-checkbox";
 import { useBackHandler } from "@react-native-community/hooks";
 import { Link, useNavigate } from "react-router-native";
-import { useForm, Controller } from "react-hook-form";
+import { useForm } from "react-hook-form";
 import NetInfo from '@react-native-community/netinfo';
 import AuthContext from "../context/AuthContext";
 import {
   View,
   Text,
-  TextInput,
   ScrollView,
-  TouchableOpacity,
+  StyleSheet
 } from "react-native";
+import InputForm from "../components/InputForm";
+import ButtonForm from "./ButtonForm";
 
-export default function Login() {
+export default function Loginn({ toggleOpenHome }) {
 
   const {LoginUser, result} = useContext(AuthContext);
 
@@ -33,51 +34,21 @@ export default function Login() {
   const [isChecked, setChecked] = useState(false);
   const [error, setError] = useState(false);
 
-
   useBackHandler(() => {
-    navigate("/");
+    navigate("/")
+    toggleOpenHome();
+    reset();
     return true;
   });
 
   const {
     control,
     handleSubmit,
+    reset,
     formState: { errors },
   } = useForm();
-
-  const Input = ({
-    fieldValue,
-    placeholder,
-    keyboardType,
-    secureTextEntry,
-    pattern,
-    autoCapitalize,
-    minLength,
-  }) => {
-    return (
-      <Controller
-        control={control}
-        rules={{
-          required: true,
-          pattern: pattern,
-          minLength: minLength,
-        }}
-        render={({ field: { onChange, onBlur, value } }) => (
-          <TextInput
-            style={tw`bg-slate-50 px-5 py-3 rounded-lg w-70 mb-5`}
-            onChangeText={onChange}
-            onBlur={onBlur}
-            value={value}
-            placeholder={placeholder}
-            secureTextEntry={secureTextEntry}
-            autoCapitalize={autoCapitalize}
-            keyboardType={keyboardType}
-          />
-        )}
-        name={fieldValue}
-      />
-    );
-  };
+ 
+  console.log(errors)
 
   useEffect(() => {
     console.log(global.idUser)
@@ -98,11 +69,11 @@ export default function Login() {
   }
 
   return (
-    <View style={tw`h-full flex items-center justify-center`}>
-      <Text style={tw`text-4xl font-bold text-black mb-5 mt-20`}>
-        Iniciar sesión
+    <View style={[tw`w-85 flex items-center justify-center rounded-20px py-30px px-10px`, styles.backgroundContainer]}>
+      <Text style={tw`text-25px font-bold text-white mb-4`}>
+        INICIO DE SESIÓN
       </Text>
-      <ScrollView style={tw`mt-10`}>
+      <ScrollView style={tw`w-full`}>
         {error ? (
           <Text
             style={tw`text-white bg-red-500 p-5 rounded-lg mb-10 font-bold text-center`}
@@ -110,14 +81,14 @@ export default function Login() {
             {result.data.response}
           </Text>
         ) : null}
-        <View style={tw`px-7 py-8 rounded-xl`}>
-          <Text style={tw`text-xl text-black mb-5 font-bold`}>
-            Correo electrónico
+        <View style={tw` py-8 rounded-xl`}>
+          <Text style={tw`text-xl text-white mb-3`}>
+            Correo electrónico:
           </Text>
-          <Input
-            style={tw`bg-slate-50 px-5 py-3 rounded-lg w-70`}
-            fieldValue="email"
-            placeholder="Correo"
+          <InputForm
+            control={control}
+            name="email"
+            placeholder="example@gmail.com"
             autoCapitalize="none"
             keyboardType="email-address"
             pattern={
@@ -125,16 +96,16 @@ export default function Login() {
             }
           />
           {errors.email?.type === "required" ? (
-            <Text style={tw`text-red-600 mb-5 text-center`}>Campo requerido!</Text>
+            <Text style={tw`text-red-600 mb-2 text-center`}>Campo requerido!</Text>
           ) : errors.email?.type === "pattern" ? (
-            <Text style={tw`text-red-600 mb-5 text-center`}>
+            <Text style={tw`text-red-600 mb-2 text-center`}>
               Correo invalido!
             </Text>
           ) : null}
-          <Text style={tw`text-xl text-black my-5 font-bold`}>Contraseña</Text>
-          <Input
-            style={tw`bg-slate-50 px-5 py-3 rounded-lg w-70 mb-5`}
-            fieldValue="password"
+          <Text style={tw`text-xl text-white my-3`}>Contraseña:</Text>
+          <InputForm
+            control={control}
+            name="password"
             placeholder="Contraseña"
             secureTextEntry={!isChecked}
           />
@@ -144,18 +115,15 @@ export default function Login() {
           ) : null}
           <View style={tw`flex flex-row justify-center items-center mb-10`}>
             <Checkbox value={isChecked} onValueChange={setChecked} />
-            <Text style={tw`text-base text-black ml-3`}>
+            <Text style={tw`text-base text-white ml-3`}>
               Mostrar contraseña
             </Text>
           </View>
-          <TouchableOpacity
-            style={tw`bg-yellow-600 p-3 rounded-lg`}
-            onPress={handleSubmit(login)}
-          >
-            <Text style={tw`text-lg text-white text-center`}>Ingresar</Text>
-          </TouchableOpacity >
+          <ButtonForm onPress={handleSubmit(login)} title="Iniciar Sesión" color={"rgba(32, 84, 0, 1)"}/>
+          <ButtonForm onPress={() => {toggleOpenHome(); reset()}} title="Regresar" color={"rgba(88, 155, 47, 1)"}/>
+            
           <Link to={'/passwordRecovery'}>
-            <Text style={tw`text-base text-black mt-7 text-center underline`}>
+            <Text style={tw`text-base text-white mt-7 text-center underline`}>
               Olvidé mi contraseña
             </Text>
           </Link>
@@ -164,3 +132,9 @@ export default function Login() {
     </View>
   );
 }
+
+const styles = StyleSheet.create({
+  backgroundContainer: {     
+    backgroundColor: "rgba(14, 24, 7, 1)"      
+  },
+});

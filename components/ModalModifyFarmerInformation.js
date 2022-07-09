@@ -8,6 +8,8 @@ import {
   Picker,
   Modal
 } from "react-native";
+import ModalModel from "./ModalModel";
+import ModalButton from "./ModalButton";
 
 import tw from "twrnc";
 import { useNavigate } from "react-router-native";
@@ -59,41 +61,15 @@ export default function ModalModifyFarmerInformation({ isModalOpenModifyFarmerIn
     loadCountries();
   }, []);
 
-  const modalContainerStyle = {
-    flex: 1,
-    justifyContent: 'center',
-    backgroundColor: 'rgba(52, 52, 52, 0.6)',
-  }
-
-  const modalStyle = {
-    backgroundColor: 'white',
-    alignItems: 'center',
-    margin: 20,
-    borderRadius: 16,
-    paddingHorizontal: 6,
-    paddingVertical: 0,
-    shadowColor: '#000',
-    shadowOffset: {
-      width: 0,
-      height: 2,
-    },
-    shadowOpacity: 0.25,
-    shadowRadius: 4,
-    elevation: 5,
-  };
 
   return (
-    <>
-      <Modal visible={isModalOpenModifyFarmerInformation} transparent={true} animationType={'fade'} onRequestClose={() => setIsModalOpenModifyFarmerInformation(false)}>
-        <View style={modalContainerStyle}>
-          <View style={modalStyle}>
-            <View style={tw`h-full w-full m-0 p-0 flex items-center justify-center`}>
-              <Text style={tw`text-3xl font-bold text-black mt-20 mb-5`}>
+          <ModalModel isModalOpen={isModalOpenModifyFarmerInformation} setIsModalOpen={setIsModalOpenModifyFarmerInformation}>
+              <Text style={tw`text-3xl font-bold text-black mt-5 mb-5`}>
                 Modificar finca
               </Text>
-              <ScrollView style={tw`mt-2 w-full `}>
+              <ScrollView style={tw` mt-2 w-full `}>
                 <View style={tw`px-7 mb-10 flex w-full items-center justify-center`}>
-                  <Text style={tw` text-black mb-10 w-283px  text-center`}>
+                  <Text style={tw` text-black mb-3 w-full  text-center`}>
                     Rellena los campos con la información correspondiente
                   </Text>
                   {error ? (
@@ -148,25 +124,12 @@ export default function ModalModifyFarmerInformation({ isModalOpenModifyFarmerIn
                     }
                   </Picker>
 
-
-                  <TouchableOpacity
-                    style={tw`bg-yellow-500 text-lg text-white px-5 py-3 w-215px rounded-lg mb-7 text-center`}
-                    onPress={saveFarm}
-                  >
-                    <Text style={tw`text-lg text-white text-center`}>Guardar</Text>
-                  </TouchableOpacity>
-                  <TouchableOpacity
-                    style={tw`bg-red-600 text-lg text-white px-5 py-3 w-215px rounded-lg mb-7 text-center`}
-                    onPress={() => { LoadFarms("name_farm", "asc", "0"); setIsModalOpenModifyFarmerInformation(!setIsModalOpenModifyFarmerInformation) }}
-                  >
-                    <Text style={tw`text-lg text-white text-center`}>Cancelar </Text>
-                  </TouchableOpacity>
+                   <ModalButton text={"Guardar"} onPress={saveFarm} color={"#22C55E"}/>
+                   <ModalButton onPress={() => { LoadFarms("name_farm", "asc", "0"); setIsModalOpenModifyFarmerInformation(!setIsModalOpenModifyFarmerInformation) }}
+                                text="Cancelar"
+                                color="rgba(220, 38, 38, 0.86)"/>
                 </View>
               </ScrollView>
-            </View>
-          </View>
-        </View>
-      </Modal>
-    </>
+        </ModalModel>
   )
 }

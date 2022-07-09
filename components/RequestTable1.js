@@ -24,7 +24,6 @@ export const RequestTable1 = ({ title, children, children1 }) => {
           setIsOpen(true) 
           setIsOpenn(false)
           LoadOtherRequests("1", 0);
-          LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);
       }
     
       //setIsOpen(value => !value);
@@ -36,7 +35,6 @@ export const RequestTable1 = ({ title, children, children1 }) => {
           setIsOpenn(true)
           setIsOpen(false)
           LoadOtherRequests("2", 0);
-          LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);
       }
         
       //setIsOpenn(value => !value);
