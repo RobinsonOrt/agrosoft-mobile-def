@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, TextInput } from 'react-native';
+import { View, TextInput, StyleSheet } from 'react-native';
 import { Controller } from 'react-hook-form';
 import tw  from 'twrnc';
 
@@ -32,3 +32,8 @@ const InputForm = ({control, name, placeholder, secureTextEntry, keyboardType, p
 }
 
 export default InputForm;
+
+const styles = StyleSheet.create({
+  button: {
+    borderColor: '#205400',
+  }})

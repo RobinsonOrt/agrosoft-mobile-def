@@ -23,12 +23,11 @@ const styles = StyleSheet.create({
     },
     title: {
       fontSize: 20,
-      fontFamily: 'Gotham',
 
     },
     description: {
         fontSize: 14,
-        fontFamily: 'Gotham'
+        
       },
     safeArea: {
         backgroundColor: 'rgba(32, 84, 0, 0.1)',

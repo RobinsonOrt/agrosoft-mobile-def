@@ -1,6 +1,6 @@
 import {REACT_APP_API_URL} from '@env'
 import global from "../global";
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import {
   View,
   Text,
@@ -17,10 +17,12 @@ import { useForm, Controller } from "react-hook-form";
 
 import axios from "axios";
 import NetInfo from '@react-native-community/netinfo';
+//import PhoneInput from 'react-native-phone-number-input';
 
 
 
 export default function Register() {
+  //const [phoneNumber, setPhoneNumber] = useState('')
   let navigate = useNavigate();
 
   const unsubscribe = NetInfo.addEventListener(state => {
@@ -34,11 +36,14 @@ export default function Register() {
   }
 
   const [result, setResult] = useState();
-  const [error, setError] = useState(false);
+  const [error, setErrorr] = useState(false);
   const [identifiers, setIdentifiers] = useState([]);
   const [selectedLanguage, setSelectedLanguage] = useState();
+  //const phoneInput = useRef(null);
   // const [value, setValue] = useState();
+  
 
+ 
   
 
   const loadIdentiiers = async () => {
@@ -55,9 +60,11 @@ export default function Register() {
 
   const {
     control,
+    setError,
     handleSubmit,
     formState: { errors },
   } = useForm();
+  console.log(errors)
 
   const Input = ({
     fieldValue,
@@ -95,19 +102,25 @@ export default function Register() {
     );
   };
 
-  const onSubmit = async (data) => {
+
+  /*const onSubmit = async (data) => {
     data.idIdentifier = selectedLanguage
     await axios
       .post(REACT_APP_API_URL + "/api/register", data)
       .then((res) => setResult(res));
+  };*/
+
+  const onSubmit = async (data) => {
+    data.idIdentifier = selectedLanguage
+    console.log(data)
   };
 
   useEffect(() => {
     loadIdentiiers()
     if (result?.data.error === true) {
-      setError(true);
+      setErrorr(true);
       setTimeout(() => {
-        setError(false);
+        setErrorr(false);
       }, 5000);
     }
 
@@ -170,16 +183,23 @@ export default function Register() {
             }>
             {identifiers.map((item, index) => (
               <Picker.Item label={"+" + item.identifier + " - " + item.countryName} value={item.idIdentifier} key={index} />
-              ))
-            }
-            
+              ))        
+            }  
           </Picker>
+
+          
+          
+          
+          
+
+          {/*<PhoneInput ref={phoneInput}  defaultValue = {phoneNumber} onChangeText = {(text) => {setPhoneNumber(text)} } defaultCode='CO' containerStyle={tw`rounded-lg h-50px`} textInputStyle = {tw`bg-yellow-700 rounded-lg rounded-lg`} textContainerStyle = {tw`rounded-lg`} />/*}
           {/* <PhoneInput
             style={tw`bg-slate-50 px-5 py-3 rounded-lg w-70 mb-5 border-b border-yellow-700`}
             placeholder="Número telefonico"
             value={value}
             onChange={setValue}
-          /> */}
+          /> 
+          <TouchableOpacity onPress={() => {const checkValid = phoneInput.current?.isValidNumber(phoneNumber); console.log(checkValid); if(!checkValid){setError('phoneNumber2', { type: 'valid', message: '' })}}}><Text>Prueba</Text></TouchableOpacity>*/}
           <Input
             fieldValue="email"
             placeholder="Correo electrónico"
@@ -204,7 +224,7 @@ export default function Register() {
               /^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!.@$%^&*-]).{8,24}$/
             }
             secureTextEntry={true}
-          />
+          /> 
           {errors.password?.type === "required" ? (
             <Text style={tw`text-red-600 mb-5`}>Campo requerido!</Text>
           ) : errors.password?.type === "pattern" ? (

@@ -7,8 +7,10 @@ import {
   TextInput,
   ScrollView,
   TouchableOpacity,
+  Modal, 
+  StyleSheet, 
   Picker,
-  Modal
+  Image,
 } from "react-native";
 import ModalModel from "./ModalModel";
 import ModalButton from "./ModalButton"
@@ -20,6 +22,10 @@ import axios from "axios";
 import NetInfo from '@react-native-community/netinfo';
 import MyFarmsContext from "../context/FarmContext";
 import CountryProvider from '../context/CoutryContext';
+import RNPickerSelect from "react-native-picker-select";
+import dropDownOpen from '../assets/dropDownOpen.png';
+//import {Picker} from '@react-native-picker/picker';
+
 export default function ModalAddFarm({ isModalOpenAddFarm, setIsModalOpenAddFarm }) {
   let navigate = useNavigate();
 
@@ -48,6 +54,7 @@ export default function ModalAddFarm({ isModalOpenAddFarm, setIsModalOpenAddFarm
 
   const {
     control,
+    reset,
     handleSubmit,
     formState: { errors },
   } = useForm();
@@ -105,6 +112,7 @@ export default function ModalAddFarm({ isModalOpenAddFarm, setIsModalOpenAddFarm
     console.log(response);
     if(!response.error){
       setIsModalOpenAddFarm(false);
+      reset();
     }
   };
 
@@ -115,6 +123,7 @@ export default function ModalAddFarm({ isModalOpenAddFarm, setIsModalOpenAddFarm
       //navigate("/tokenValidation");
     }
   }, []);
+
 
   return (
     
@@ -148,7 +157,6 @@ export default function ModalAddFarm({ isModalOpenAddFarm, setIsModalOpenAddFarm
                     style={tw`bg-slate-50 px-5 py-3 rounded-lg h-83px w-321px mb-5 border-b border-yellow-700`}
                     fieldValue="descriptionFarm"
                     placeholder="Descripción"
-                    autoCapitalize="words"
                     multiline={true}
                   />
 
@@ -157,29 +165,73 @@ export default function ModalAddFarm({ isModalOpenAddFarm, setIsModalOpenAddFarm
                     <Text style={tw`text-red-600 mb-5 w-65`}>Campo requerido , minimo 15 caracteres y maximo 50 caracteres</Text>
                   )}
 
-                  <Picker
-                    style={tw`bg-slate-50 text-base px-5 py-3 rounded-lg w-80 mb-5 pl-0 pr-0 border-b border-yellow-700`}
-                    itemStyle={{ backgroundColor: "yellow", color: "blue", fontFamily: "Ebrima", fontSize: 17 }}
-                    selectedValue={selectedCountry}
-                    onValueChange={(itemValue) =>
-                      setSelectedCountry(itemValue)
-                    }>
-
-                    {
-                      Array.isArray(country)?
-
-                      country.map((item, index) => {
-
-                        return <Picker.Item label={item.nameCountry} value={item.idCountry} key={index} />
-
-                      }) : <Picker.Item label="" value="" key="" />
-                    }
-                  </Picker>
+                  
+                <RNPickerSelect
+                      placeholder={{ label: "País", value: "" }}
+                      onValueChange={(itemValue) =>
+                        setSelectedCountry(itemValue)}
+                      style={customPickerStyles}
+                      useNativeAndroidPickerStyle={false}
+                      Icon={() => {
+                        return (
+                          <Image source={dropDownOpen} style={tw`h-8px w-12px mt-5 mr-3`}/>
+                        );
+                      }}
+                      items={   
+                        Array.isArray(country)?
+                        country.map((item, index) => {
+                          return  {label:item.nameCountry, value:item.idCountry, key:index}
+                        }) : {label:"", value:"", key:""}
+                      }
+                  />
 
                   <ModalButton text={"Confirmar"} onPress={handleSubmit(onSubmitAddFarm)} color={"#22C55E"}/>
-                  <ModalButton text={"Cancelar"} onPress={() => {setIsModalOpenAddFarm(!setIsModalOpenAddFarm), setError(false)}} color={"rgba(220, 38, 38, 0.86)"}/>
+                  <ModalButton text={"Cancelar"} onPress={() => {setIsModalOpenAddFarm(!setIsModalOpenAddFarm), setError(false), reset()}} color={"rgba(220, 38, 38, 0.86)"}/>
                 </View>
               </ScrollView>
         </ModalModel>
+
+
   )
 } 
+
+const customPickerStyles = StyleSheet.create({
+  inputIOS: {
+    fontSize: 14,
+    paddingVertical: 10,
+    paddingHorizontal: 12,
+    borderWidth: 1,
+    borderColor: 'green',
+    borderRadius: 8,
+    color: 'black',
+    paddingRight: 30, 
+    width: 321,// to ensure the text is never behind the icon
+    marginBottom: 20
+  },
+  inputAndroid: {
+    fontSize: 14,
+    paddingHorizontal: 10,
+    paddingVertical: 8,
+    borderWidth: 1,
+    borderColor: '#78D43F',
+    borderRadius: 8,
+    color: 'black',
+    backgroundColor: 'white',
+    paddingRight: 30,
+    width: 321,
+    marginBottom: 20
+   // to ensure the text is never behind the icon
+  },
+  inputWeb:{
+    fontSize: 14,
+    paddingHorizontal: 10,
+    paddingVertical: 8,
+    borderWidth: 1,
+    borderColor: '#78D43F',
+    borderRadius: 8,
+    color: 'black',
+    backgroundColor: 'white',
+    paddingRight: 30,
+    marginBottom: 20
+  }
+});

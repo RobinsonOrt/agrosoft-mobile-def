@@ -15,9 +15,10 @@ import { MyFarmsProvider } from "../context/FarmContext";
 import { MyEmployeesProvider } from "../context/EmployeeContext";
 import { MyLaborsProvider } from "../context/LaborsContext";
 import Farms from "../screens/Farms";
-
-
-// ...
+import Hamburger from "../assets/hamburger.png"
+import Header from "../components/Header";
+import { SimpleLineIcons } from '@expo/vector-icons';
+import { HeaderLeft, HeaderRight, styles } from "../components/Header";
 
 
 
@@ -31,19 +32,12 @@ const HomeStacks = ({ navigation }) => {
         <MyFarmsProvider>
         <MyEmployeesProvider>
         <MyLaborsProvider>
-        <HomeStack.Navigator screenOptions={{headerStyle: {
-            backgroundColor: '#348800',
-            paddingLeft: 10,
-            paddingRight: 10
-        },title: '',
-        headerTintColor: 'white',
-        headerRight:() => ( <View style={tw`items-center flex-row`}>
-            <TouchableOpacity style={tw`mr-1`} onPress={() => navigation.navigate('Administrar perfil')}><Image source={Profile} style={tw`h-35px w-35px`}/></TouchableOpacity><DrawerToggleButton tintColor="white" onPress={() => navigation.toggleDrawer()}/>
-            </View>),
-        headerTitle:() => ( <View style={tw`items-center flex-row`}>
-        <TouchableOpacity style={tw`mr-1`} onPress={() => navigation.navigate('Mis fincas')}><Image source={Agrosoft} style={tw`h-50px w-200px`}/></TouchableOpacity>
-        </View> ),
-        headerTitleAlign: 'center'}}>
+        <HomeStack.Navigator  screenOptions={{
+            title:"",
+            headerStyle:styles.headerStyle,
+            headerLeft:() => ( <HeaderLeft navigation={navigation} />),
+            headerRight:() => ( <HeaderRight navigation={navigation} />),
+            }}>
             
         
             <HomeStack.Screen name="MyFarms" component={MyFarms}/>

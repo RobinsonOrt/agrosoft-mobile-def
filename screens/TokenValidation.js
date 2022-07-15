@@ -6,10 +6,16 @@ import { View, Text, TextInput, TouchableOpacity } from "react-native";
 import { useNavigate } from "react-router-native";
 import tw from 'twrnc'
 import NetInfo from '@react-native-community/netinfo';
+import { useBackHandler } from "@react-native-community/hooks";
 
 export default function TokenValidation() {
 
   let navigate = useNavigate()
+
+  useBackHandler(() => {
+    navigate("/");
+    return true;
+  });
 
   const unsubscribe = NetInfo.addEventListener(state => {
     if(!state.isConnected){

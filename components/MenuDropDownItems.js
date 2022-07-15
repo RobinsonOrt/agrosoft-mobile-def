@@ -1,27 +1,15 @@
 import React, { useState, useEffect } from "react";
-import {
-  View,
-  Text,
-
-  StyleSheet,
-} from "react-native";
-
+import { View, StyleSheet} from "react-native";
 import tw from "twrnc";
-import { TouchableOpacity } from "react-native-gesture-handler";
 import MenuButtonItem from "./MenuButtonItem";
 import { useDrawerStatus } from '@react-navigation/drawer';
-import { CommonActions } from '@react-navigation/native';
 import MenuButtonDropDown from "./MenuButtonDropDown";
 import Profile from "../assets/profileMini.png";
 import Admin from "../assets/Admin.png"
 import Employee from "../assets/Employee.png"
 import Requests from "../assets/requests.png"
-import { set } from "react-native-reanimated";
-import { useNavigationState } from "@react-navigation/native";
 
-
-
-export const MenuDropDownItems = ({ navigation, title, children, statusUser, statusAdmin, statusEmployee, statusRequestsMyFarms, statusRequestsOtherFarms }) => {
+export const MenuDropDownItems = ({ navigation, statusUser, statusAdmin, statusEmployee, statusRequestsMyFarms, statusRequestsOtherFarms }) => {
   
   const [isOpenUser, setIsOpenUser] = useState(statusUser);
   const [isOpenAdmin, setIsOpenAdmin] = useState(statusAdmin);
@@ -40,7 +28,7 @@ export const MenuDropDownItems = ({ navigation, title, children, statusUser, sta
     });
 
   const resetAccountStack = () => {
-    try {
+    
       navigation.reset({
         index: 0,
         routes: [
@@ -49,10 +37,6 @@ export const MenuDropDownItems = ({ navigation, title, children, statusUser, sta
           },
         ],
       })
-    } catch (error) {
-      // ...
-      
-    }
   }  
 
   const resetHomeStack = () => {
@@ -152,24 +136,24 @@ export const MenuDropDownItems = ({ navigation, title, children, statusUser, sta
     <>
       <View style={tw`mb-10`}>
         <MenuButtonDropDown title={"Usuario"} onPress={toggleOpenUser} isOpen={isOpenUser} status={statusUser} image={Profile} styleImage={tw`h-14px w-13px`} activeOpacity={0.6}/>
-        <View style={[styles.list, styleView, styles.container, !statusUser && !isOpenUser ? styles.hidden : undefined]}>
+            <View style={[styles.list, styleView, styles.container, !statusUser && !isOpenUser ? styles.hidden : undefined]}>
         <MenuButtonItem status={statusUser} text = "Perfil" onPress={ () => {navigation.navigate("Administrar perfil"); resetAccountStack()}}/>
         </View>
 
         <MenuButtonDropDown title={"Administrador"} onPress={toggleOpenAdmin} isOpen={isOpenAdmin} status={statusAdmin} image={Admin} styleImage={tw`h-14px w-18px`} activeOpacity={0.6}/>
         <View style={[styles.list, styleView, styles.container, !statusAdmin && !isOpenAdmin ? styles.hidden : undefined]}>
-        <MenuButtonItem status={statusAdmin} text = "Mis Fincas" onPress={ () => {navigation.navigate("Mis fincas"); resetHomeStack()}}/>
+            <MenuButtonItem status={statusAdmin} text = "Mis Fincas" onPress={ () => {navigation.navigate("Mis fincas"); resetHomeStack()}}/>
         </View>
 
         <MenuButtonDropDown title={"Empleado"} onPress={toggleOpenEmployee} isOpen={isOpenEmployee} status={statusEmployee} image={Employee} styleImage={tw`h-15px w-14px`} activeOpacity={0.6}/>
         <View style={[styles.list, styleView, styles.container, !statusEmployee && !isOpenEmployee ? styles.hidden : undefined]}>
-        <MenuButtonItem status={statusEmployee} text = "Fincas" onPress={ () => {navigation.navigate("Fincas"); resetEmployeeStack()}}/>
+            <MenuButtonItem status={statusEmployee} text = "Fincas" onPress={ () => {navigation.navigate("Fincas"); resetEmployeeStack()}}/>
         </View>
 
         <MenuButtonDropDown title={"Solicitudes"} onPress={toggleOpenRequests} isOpen={isOpenRequests} status={statusRequestsMyFarms || statusRequestsOtherFarms} image={Requests} styleImage={tw`h-16px w-23px`} activeOpacity={0.6}/>
         <View style={[styles.list, styleView, styles.container, (!statusRequestsMyFarms && !statusRequestsOtherFarms) && !isOpenRequests ? styles.hidden : undefined]}>
-        <MenuButtonItem status={statusRequestsMyFarms} text = "Mis fincas" onPress={ () => {navigation.navigate("Solicitudes mis fincas"); resetRequestsMyFarmsStack()}}/>
-        <MenuButtonItem status={statusRequestsOtherFarms} text = "Otras fincas" onPress={ () => {navigation.navigate("Solicitudes otras fincas"); resetRequestsOtherFarmStack()}}/>
+            <MenuButtonItem status={statusRequestsMyFarms} text = "Mis fincas" onPress={ () => {navigation.navigate("Solicitudes mis fincas"); resetRequestsMyFarmsStack()}}/>
+            <MenuButtonItem status={statusRequestsOtherFarms} text = "Otras fincas" onPress={ () => {navigation.navigate("Solicitudes otras fincas"); resetRequestsOtherFarmStack()}}/>
         </View>
       </View>   
     </>
