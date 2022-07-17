@@ -46,7 +46,6 @@ const MyCropsProvider = ({ children }) => {
 
     const FindCrops = async (search, idFarm) => {
         const FindCropsResponse = await axios.get(`${REACT_APP_API_URL}/api/findcrops/${idFarm}/${search}/0`);
-        console.log(FindCropsResponse.data.response);
         setMaxPage(0);
 
         setCrops(FindCropsResponse.data.response);

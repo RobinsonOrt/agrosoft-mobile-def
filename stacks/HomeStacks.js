@@ -11,10 +11,14 @@ import EnterFarm from "../screens/EnterFarm";
 import MyFarms from "../screens/MyFarms";
 import Labor from "../screens/Labor";
 import Employee from "../screens/Employee";
+import CoffeeBush from "../screens/CoffeeBush";
 import { MyFarmsProvider } from "../context/FarmContext";
 import { MyEmployeesProvider } from "../context/EmployeeContext";
 import { MyLaborsProvider } from "../context/LaborsContext";
 import { MyCropsProvider } from "../context/CropContext";
+import { MyCoffeeBushProvider } from "../context/CoffeeBushContext";
+import { MyActivitiesProvider } from "../context/ActivityContext";
+import { MyFieldsProvider } from "../context/FieldsContext";
 //import { MyCoffeeBushProvider } from ".../context/CoffeeBushContext";
 import Farms from "../screens/Farms";
 import Hamburger from "../assets/hamburger.png"
@@ -33,7 +37,9 @@ const HomeStacks = ({ navigation }) => {
     return (
         <MyFarmsProvider>
         <MyCropsProvider>
-        {/*<MyCoffeeBushProvider>*/}
+        <MyCoffeeBushProvider>
+        <MyActivitiesProvider>
+        <MyFieldsProvider>
         <MyEmployeesProvider>
         <MyLaborsProvider>
         <HomeStack.Navigator  screenOptions={{
@@ -48,10 +54,13 @@ const HomeStacks = ({ navigation }) => {
             <HomeStack.Screen name="EnterFarm" component={EnterFarm}/>
             <HomeStack.Screen name="Labor" component={Labor} />
             <HomeStack.Screen name="Employee" component={Employee} />
+            <HomeStack.Screen name="CoffeeBush" component={CoffeeBush} />
         </HomeStack.Navigator>
         </MyLaborsProvider>
         </MyEmployeesProvider>
-        {/*</MyCoffeeBushProvider>*/}
+        </MyFieldsProvider>
+        </MyActivitiesProvider>
+        </MyCoffeeBushProvider>
         </MyCropsProvider>
         </MyFarmsProvider>
 

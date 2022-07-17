@@ -12,11 +12,14 @@ const MyFarmsProvider = ({children}) => {
     const [message, setMessage] = useState("");
     const [farm, setFarm]= useState([]);
     const [allFarms, setAllFarms] = useState([]);
+    const [sorters, setSorters] = useState({"sorter": "name_farm", "order": "asc", "page": 0});
+    const [maxPage, setMaxPage] = useState(0);
 
-    const LoadFarms = async (sorter, order, page) => {
-        await axios.get(REACT_APP_API_URL + "/api/userfarms/"+ global.idUser + "/admin/"+ sorter + "/" + order + "/" + page)
+    const LoadFarms = async () => {
+        await axios.get(REACT_APP_API_URL + "/api/userfarms/"+ global.idUser + "/admin/"+ sorters.sorter + "/" + sorters.order + "/" + sorters.page)
           .then(res => {
             setFarms(res.data.response);
+            setMaxPage(res.data.maxPage);
         })
     }
     const AddFarm = async (farmData) => {
@@ -24,10 +27,11 @@ const MyFarmsProvider = ({children}) => {
         farmData.idRole = 1;
         await axios.post(REACT_APP_API_URL + "/api/saveuserfarm", farmData)
           .then(res => {
-            console.log(res.data);
             setError(res.data.error)
             setMessage(res.data.response);
-            LoadFarms("name_farm", "asc", 0);
+            sorters.sorter = "created_date";
+            sorters.order = 'desc';
+            LoadFarms();
             return res.data
         })
     }
@@ -36,14 +40,23 @@ const MyFarmsProvider = ({children}) => {
           .then(res => {
             setError(res.data.error)
             setMessage(res.data.response);
-            LoadFarms("name_farm", "asc", 0);
+            LoadFarms();
         })
     }
-    const DeleteFarm = async () => {
+    const DeleteFarm = async (idFarm) => {
         await axios
-          .put(`${REACT_APP_API_URL}/api/deletefarm`, { idFarm: global.idFarm })
-          LoadFarms("name_farm", "asc", 0);
+          .put(`${REACT_APP_API_URL}/api/deletefarm`, { idFarm: idFarm })
+          LoadFarms();
     };
+
+    const FindFarms = async (search) => {
+        await axios.get(REACT_APP_API_URL + "/api/findfarms/"+ global.idUser + "/admin/"+ search + "/0")
+          .then(res => {
+            setMaxPage(0);
+            setFarms(res.data.response);
+            console.log(res)
+        })
+    }
 
     const LoadEmployeedFarms = async (sorter, order, page) => {
         await axios.get(REACT_APP_API_URL + "/api/userfarms/"+ global.idUser + "/employee/"+ sorter + "/" + order + "/" + page)
@@ -56,6 +69,7 @@ const MyFarmsProvider = ({children}) => {
         await axios.get(REACT_APP_API_URL + "/api/listfarms/"+ global.idUser)
             .then(res => {
                 setAllFarms(res.data.response);
+                
             })
     }
 
@@ -77,7 +91,12 @@ const MyFarmsProvider = ({children}) => {
                 LoadEmployeedFarms,
                 employeedFarms,
                 LoadAllFarms,
-                allFarms
+                allFarms,
+                sorters,
+                setSorters,
+                maxPage,
+                setMaxPage,
+                FindFarms
             }}>
 
             {children}

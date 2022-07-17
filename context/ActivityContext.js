@@ -36,4 +36,31 @@ const MyActivitiesProvider = ({ children }) => {
         GetActivities(global.idActivityType, global.idFarm);
         return response;
     }
+
+    const FindActivities = async (search, idActivityType, idFarm) => {
+        const response = await axios.get(`${REACT_APP_API_URL}/findactivities/${idActivityType}/${idFarm}/${search}/0`);
+        setMaxPage(0);
+        setActivities(response.data.response);
+    }
+
+    return(
+        <MyActivitiesContext.Provider value={{
+            activities,
+            setActivities,
+            activity,
+            setActivity,
+            sorters,
+            setSorters,
+            maxPage,
+            setMaxPage,
+            GetActivities,
+            CreateActivity,
+            UpdateActivity,
+            DeleteActivity,
+            FindActivities
+        }}>{children}
+        </MyActivitiesContext.Provider>
+    )
 }
+export { MyActivitiesProvider }
+export default MyActivitiesContext;
