@@ -11,36 +11,54 @@ const MyCropsProvider = ({ children }) => {
     const [crop, setCrop] = useState({});
     const [sorters, setSorters] = useState({"sorter": "name_crop", "order": "asc", "page": 0});
     const [maxPage, setMaxPage] = useState(0);
+    const [coffeeBushCount, setCoffeeBushCount] = useState(0);
 
     const GetCrops = async (idFarm) => {
-
-        console.log(sorters)
         const res = await axios.get(`${REACT_APP_API_URL}/api/crops/${idFarm}/${sorters.sorter}/${sorters.order}/${sorters.page}`);
         setCrops(res.data.response);
         setMaxPage(res.data.maxPage);
-        console.log(res.data.response);
     }
 
     const CreateCrop = async (data, cantBush) => {
         const res = await axios.post(`${REACT_APP_API_URL}/api/addcrop/${cantBush}`, data);
-        console.log(res.data.response);
+        sorters.sorter = "created_date";
+        sorters.order = 'desc';
         GetCrops(data.idFarm);
         return res;
     }
 
     const UpdateCrop = async (data) => {
         const res = await axios.put(`${REACT_APP_API_URL}/api/updatecrop`, data);
-        console.log(res.data.response);
         GetCrops(data.idFarm);
         return res;
     }
 
     const DeleteCrop = async (idCrop) => {
         const res = await axios.put(`${REACT_APP_API_URL}/api/deletecrop/${idCrop}`);
-        console.log(res.data.response);
         GetCrops(global.idFarm);
         return res;
     }
+
+    const GetBarCodeCrops = async (idCrop) => {
+        const GetBarCodeCropsResponse = await axios.get(`${REACT_APP_API_URL}/api/getallbarcodes/${idCrop}`);
+        return GetBarCodeCropsResponse;
+    }
+
+    const FindCrops = async (search, idFarm) => {
+        const FindCropsResponse = await axios.get(`${REACT_APP_API_URL}/api/findcrops/${idFarm}/${search}/0`);
+        console.log(FindCropsResponse.data.response);
+        setMaxPage(0);
+
+        setCrops(FindCropsResponse.data.response);
+    }
+
+    const GetCrop = async (idCrop) => {
+        const getCropResponse = await axios.get(`${REACT_APP_API_URL}/api/crop/${idCrop}`);
+        setCoffeeBushCount(getCropResponse.data.coffeeBushCount);
+        setCrop(getCropResponse.data.response);
+        return getCropResponse;
+    }
+
     return (
         <MyCropsContext.Provider value={{
             crops,
@@ -52,7 +70,11 @@ const MyCropsProvider = ({ children }) => {
             CreateCrop,
             UpdateCrop,
             DeleteCrop,
-            maxPage
+            maxPage,
+            GetBarCodeCrops,
+            FindCrops,
+            GetCrop,
+            coffeeBushCount,
         }}>{children}
         </MyCropsContext.Provider>
     )
