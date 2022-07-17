@@ -1,6 +1,6 @@
 import { REACT_APP_API_URL } from "@env";
 import global from "../global";
-import React, { useContext, useState } from "react";
+import React, { useContext, useState, useEffect } from "react";
 import {
   View,
   Text,
@@ -19,7 +19,6 @@ import { useForm } from "react-hook-form";
 
 import axios from "axios";
 import NetInfo from "@react-native-community/netinfo";
-import MyFarmsContext from "../context/FarmContext";
 import ModalModel from "./ModalModel";
 import ModalButton from "./ModalButton";
 import InputForm from "./InputForm";
@@ -27,7 +26,7 @@ import InputForm from "./InputForm";
 
 const ModalModifyCrop = ({isModalOpenModifyCrop, setIsModalOpenModifyCrop}) => {
 
-  const { CreateCrop } = useContext(MyCropsContext);
+  const { UpdateCrop, crop } = useContext(MyCropsContext);
   const [localError, setLocalError] = useState({"error": false, "message": ""});
 
     const {
@@ -38,18 +37,27 @@ const ModalModifyCrop = ({isModalOpenModifyCrop, setIsModalOpenModifyCrop}) => {
     } = useForm();
 
     const onSubmitModifyCrop = async (data) =>{
-      console.log(data)
+      console.log(data);
+      data.idCrop = crop.idCrop;
       data.idFarm = global.idFarm
-      const createCropResponse = await CreateCrop(data, data.arbustoCrop);
-      if(createCropResponse.data.error == true){
+      const updateCropResponse = await UpdateCrop(data);
+      if(updateCropResponse.data.error){
         localError.error = true;
-        localError.message = createCropResponse.data.response;
+        localError.message = updateCropResponse.data.response;
         return;
       }
-      //save pdf
-      //end
+      setLocalError({"error": false, "message": ""});
       setIsModalOpenModifyCrop(false);
     }
+    //useEffect to change whit crop
+    useEffect(() => {
+      reset({
+        nameCrop: crop.nameCrop,
+        descriptionCrop: crop.descriptionCrop,
+        coffeeVariety: crop.coffeeVariety,
+        ageCrop: crop.ageCrop,
+      });
+    }, [crop]);
   
     console.log(errors)
     return(
@@ -71,7 +79,6 @@ const ModalModifyCrop = ({isModalOpenModifyCrop, setIsModalOpenModifyCrop}) => {
             autoFocus={true}
             height={40}
             pattern={/^[a-zA-Z ]+$/}
-            oldValue="los castro"
           />
           {errors.nameCrop?.type === "required" ? (
             <Text style={tw`text-red-600 mb-2 text-center`}>Campo requerido!</Text>
@@ -108,28 +115,6 @@ const ModalModifyCrop = ({isModalOpenModifyCrop, setIsModalOpenModifyCrop}) => {
               Minimo 15 caracteres!
             </Text>
           ): null  }
-
-        <Text style={tw`text-16px pb-2 pt-1`}>Cantidad de arbustos</Text>
-        <InputForm
-            control={control}
-            name="arbustoCrop"
-            placeholder="ej: 1000"
-            keyboardType="numeric"
-            height={40}
-            min={1}
-            max={10000}
-            pattern={/^[0-9]+$/}
-            editable={false}
-          />
-          {errors.arbustoCrop?.type === "required" ? (
-            <Text style={tw`text-red-600 mb-2 text-center`}>Campo requerido!</Text>
-          ) : errors.arbustoCrop?.type === "pattern" ? (
-            <Text style={tw`text-red-600 mb-2 text-center`}>Solo numeros!</Text>
-          ) : errors.arbustoCrop?.type === "min" ? (
-            <Text style={tw`text-red-600 mb-2 text-center`}>Minimo 1!</Text>
-          ) : errors.arbustoCrop?.type === "max" ? (
-            <Text style={tw`text-red-600 mb-2 text-center`}>Maximo 10000!</Text>
-          ) : null}
 
         <Text style={tw`text-16px pb-2 pt-1`}>Variedad</Text>
         <InputForm
@@ -168,7 +153,7 @@ const ModalModifyCrop = ({isModalOpenModifyCrop, setIsModalOpenModifyCrop}) => {
             <Text style={tw`text-red-600 mb-2 text-center`}>{localError.message}</Text>
           ) : null}  
           <ModalButton text={"Confirmar"} onPress={handleSubmit(onSubmitModifyCrop)} color={"#22C55E"}/>
-          <ModalButton text={"Cancelar"} onPress={() => {setIsModalOpenModifyCrop(!setIsModalOpenModifyCrop), reset()}} color={"rgba(220, 38, 38, 0.86)"}/>
+          <ModalButton text={"Cancelar"} onPress={() => {setIsModalOpenModifyCrop(!setIsModalOpenModifyCrop), reset(), setLocalError({error: false, "message":""})}} color={"rgba(220, 38, 38, 0.86)"}/>
         </View>
       </ScrollView>
 </ModalModel>

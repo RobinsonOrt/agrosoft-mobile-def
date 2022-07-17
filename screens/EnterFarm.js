@@ -23,7 +23,7 @@ export default function EnterFarm({ navigation }) {
   const [isModalOpenModifyCrop, setIsModalOpenModifyCrop] = useState(false);
 
   const { farm } = useContext(MyFarmsContext);
-  const { crops, GetCrops, FindCrops, maxPage, sorters } = useContext(MyCropsContext);
+  const { crops, GetCrops, FindCrops, maxPage, sorters, setCrop } = useContext(MyCropsContext);
 
   useBackHandler(() => {
     console.log("back");
@@ -91,7 +91,7 @@ export default function EnterFarm({ navigation }) {
                   </View>
                   <View style={tw`flex-row justify-center px-3 py-4`}>
                     <View style={tw`mr-1`}>
-                      <CartButtonCrop text={"Editar"} onPress={() => setIsModalOpenModifyCrop(!isModalOpenModifyCrop)} color={"rgba(234, 179, 8, 1)"} />
+                      <CartButtonCrop text={"Editar"} onPress={() => {setIsModalOpenModifyCrop(!isModalOpenModifyCrop); setCrop(crop)}} color={"rgba(234, 179, 8, 1)"} />
                     </View>
                     <View style={tw`ml-1`}>
                       <CartButtonCrop text={"Eliminar"} /*onPress={() => {global.idFarm = farm.idFarm; setFarm(farm); navigation.navigate("EnterFarm")}}*/ color={"rgba(239, 68, 68, 1)"} />

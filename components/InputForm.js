@@ -3,7 +3,7 @@ import { View, TextInput, StyleSheet} from 'react-native';
 import { Controller } from 'react-hook-form';
 import tw  from 'twrnc';
 
-const InputForm = ({control, name, placeholder, secureTextEntry, keyboardType, pattern, autoCapitalize, minLength, maxLength, min, max, autoFocus, height, multiline, oldValue, editable}) => {
+const InputForm = ({control, name, placeholder, secureTextEntry, keyboardType, pattern, autoCapitalize, minLength, maxLength, min, max, autoFocus, height, multiline, editable}) => {
   
   const styles = StyleSheet.create({
     button: {
@@ -23,10 +23,10 @@ const InputForm = ({control, name, placeholder, secureTextEntry, keyboardType, p
           min: min,
           max: max,
         }}
-        render={({ field: { onChange, onBlur, value } }) => (
+        render={({ field: { onChange, onBlur, value} }) => (
           <TextInput
             style={[tw`bg-white px-3 py-3 rounded-7px w-full mb-5 border`, styles.button]}
-            value={value || oldValue || ''}
+            value={ value || ''}
             onChangeText={(text)=>{
               
               let texto = text.replace(/\s+/g, ' ');
