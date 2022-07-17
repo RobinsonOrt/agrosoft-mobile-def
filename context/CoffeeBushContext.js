@@ -9,6 +9,7 @@ const MyCoffeeBushProvider = ({ children }) => {
     const [coffeeBushs, setCoffeeBushs] = useState([]);
     const [coffeeBush, setCoffeeBush] = useState({});
     const [sorters, setSorters] = useState({"sorter": "created_date", "order": "asc", "page": 0});
+    const [maxPage, setMaxPage] = useState(0);
 
     const GetCoffeeBushs = async (idCrop) => {
         const response = await axios.get(`${REACT_APP_API_URL}/coffeebush/${idCrop}/${sorters.sorter}/${sorters.order}/${sorters.page}`);
@@ -33,6 +34,13 @@ const MyCoffeeBushProvider = ({ children }) => {
         const response = await axios.get(`${REACT_APP_API_URL}/getbarcode/${idCoffeeBush}`);
         return response;
     }
+
+    const FindCoffeeBush = async (search, idCrop) => {
+        const findCoffeeBushResponse = await axios.get(`${REACT_APP_API_URL}/findcoffeebush/${idCrop}/${search}/0`);
+        setMaxPage(0);
+        setCoffeeBushs(findCoffeeBushResponse.data.response);
+    }
+
     return(
         <MyCoffeeBushContext.Provider value={{
             coffeeBushs,
@@ -44,7 +52,8 @@ const MyCoffeeBushProvider = ({ children }) => {
             GetCoffeeBushs,
             CreateCoffeeBush,
             DeleteCoffeeBush,
-            GetBarCodeCoffeeBush
+            GetBarCodeCoffeeBush,
+            FindCoffeeBush
         }}>{children}
         </MyCoffeeBushContext.Provider>
     )
