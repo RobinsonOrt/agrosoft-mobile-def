@@ -15,13 +15,14 @@ import ModalDelete from "../components/ModalDelete";
 import Pagination from "../components/Pagination";
 import SorterComponent from "../components/SorterComponent";
 import SearchComponent from "../components/SearchComponent";
+import ModalInfoCrop from "../components/ModalInfoCrop";
 
 
 export default function EnterFarm({ navigation }) {
 
   const [isModalOpenAddCrop, setIsModalOpenAddCrop] = useState(false);
-
   const [isModalOpenModifyCrop, setIsModalOpenModifyCrop] = useState(false);
+  const [isModalOpenInfoCrop, setIsModalOpenInfoCrop] = useState(false);
 
   const [isModalOpenDelete, setIsModalOpenDelete ] = useState(false);
 
@@ -74,7 +75,12 @@ export default function EnterFarm({ navigation }) {
         <ModalModifyCrop 
             isModalOpenModifyCrop={isModalOpenModifyCrop}
             setIsModalOpenModifyCrop={setIsModalOpenModifyCrop}
-            />  
+            />
+
+        <ModalInfoCrop 
+            isModalOpenInfoCrop={isModalOpenInfoCrop}
+            setIsModalOpenInfoCrop={setIsModalOpenInfoCrop}
+            />            
 
         <ModalDelete
           isModalOpenDelete={isModalOpenDelete}
@@ -90,8 +96,10 @@ export default function EnterFarm({ navigation }) {
               <Accordion name={crop.nameCrop} key={index} options={
                 <View style={[tw`border-t`, { borderColor: "rgba(32, 84, 0, 0.39)" }]}>
                   <View style={tw`flex-row justify-between px-3 py-4`}>
-                    <CartButtonCrop text={"Consultar"} /*onPress={() => {global.idFarm = farm.idFarm; setFarm(farm); navigation.navigate("EnterFarm")}}*/ color={"rgba(34, 158, 197, 1)"} />
+
+                    <CartButtonCrop text={"Consultar"} onPress={() => {setIsModalOpenInfoCrop(!isModalOpenInfoCrop)}} color={"rgba(34, 158, 197, 1)"} />
                     <CartButtonCrop text={"Ingresar"} onPress={() => {global.idCrop = crop.idCrop, setCrop(crop); navigation.navigate("CoffeeBush")}} color={"#22C55E"} />
+
                     <CartButtonCrop text={"Actividades"} /*onPress={() => {global.idFarm = farm.idFarm; setFarm(farm); navigation.navigate("EnterFarm")}}*/ color={"rgba(32, 84, 0, 0.81)"} />
                   </View>
                   <View style={tw`flex-row justify-center px-3 py-4`}>
@@ -99,7 +107,9 @@ export default function EnterFarm({ navigation }) {
                       <CartButtonCrop text={"Editar"} onPress={() => {setIsModalOpenModifyCrop(!isModalOpenModifyCrop); setCrop(crop)}} color={"rgba(234, 179, 8, 1)"} />
                     </View>
                     <View style={tw`ml-1`}>
+
                       <CartButtonCrop text={"Eliminar"} onPress={() => {global.idToDelete = crop.idCrop, setIsModalOpenDelete(!isModalOpenDelete)}} color={"rgba(239, 68, 68, 1)"} />
+
                     </View>
                   </View>
                 </View>
