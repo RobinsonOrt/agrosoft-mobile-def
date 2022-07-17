@@ -38,7 +38,6 @@ const ModalAddCrop = ({isModalOpenAddCrop, setIsModalOpenAddCrop}) => {
     } = useForm();
 
     const onSubmitAddCrop = async (data) =>{
-      console.log(data)
       data.idFarm = global.idFarm
       const createCropResponse = await CreateCrop(data, data.arbustoCrop);
       if(createCropResponse.data.error == true){
@@ -48,6 +47,8 @@ const ModalAddCrop = ({isModalOpenAddCrop, setIsModalOpenAddCrop}) => {
       }
       //save pdf
       //end
+      setLocalError({"error": false, "message": ""});
+      reset();
       setIsModalOpenAddCrop(false);
     }
   
