@@ -14,13 +14,14 @@ import ModalModifyCrop from "../components/ModalModifyCrop";
 import Pagination from "../components/Pagination";
 import SorterComponent from "../components/SorterComponent";
 import SearchComponent from "../components/SearchComponent";
+import ModalInfoCrop from "../components/ModalInfoCrop";
 
 
 export default function EnterFarm({ navigation }) {
 
   const [isModalOpenAddCrop, setIsModalOpenAddCrop] = useState(false);
-
   const [isModalOpenModifyCrop, setIsModalOpenModifyCrop] = useState(false);
+  const [isModalOpenInfoCrop, setIsModalOpenInfoCrop] = useState(false);
 
   const { farm } = useContext(MyFarmsContext);
   const { crops, GetCrops, FindCrops, maxPage, sorters, setCrop } = useContext(MyCropsContext);
@@ -75,7 +76,12 @@ export default function EnterFarm({ navigation }) {
         <ModalModifyCrop 
             isModalOpenModifyCrop={isModalOpenModifyCrop}
             setIsModalOpenModifyCrop={setIsModalOpenModifyCrop}
-            />  
+            />
+
+        <ModalInfoCrop 
+            isModalOpenInfoCrop={isModalOpenInfoCrop}
+            setIsModalOpenInfoCrop={setIsModalOpenInfoCrop}
+            />            
 
         <View style={[tw`rounded-xl mx-5 border`, { backgroundColor: "rgba(32, 84, 0, 0.05)", borderColor: "rgba(32, 84, 0, 0.39)" }]}>
           <View style={[tw`h-50px items-center flex-row rounded-t-lg`, { backgroundColor: "rgba(32, 84, 0, 0.15)" }]}><Text style={tw`text-center grow text-black text-18px font-bold uppercase`}>Cultivos</Text></View>
@@ -85,7 +91,7 @@ export default function EnterFarm({ navigation }) {
               <Accordion name={crop.nameCrop} key={index} options={
                 <View style={[tw`border-t`, { borderColor: "rgba(32, 84, 0, 0.39)" }]}>
                   <View style={tw`flex-row justify-between px-3 py-4`}>
-                    <CartButtonCrop text={"Consultar"} /*onPress={() => {global.idFarm = farm.idFarm; setFarm(farm); navigation.navigate("EnterFarm")}}*/ color={"rgba(34, 158, 197, 1)"} />
+                    <CartButtonCrop text={"Consultar"} onPress={() => {setIsModalOpenInfoCrop(!isModalOpenInfoCrop)}} color={"rgba(34, 158, 197, 1)"} />
                     <CartButtonCrop text={"Ingresar"} /*onPress={() => {global.idFarm = farm.idFarm; setFarm(farm); navigation.navigate("EnterFarm")}}*/ color={"#22C55E"} />
                     <CartButtonCrop text={"Actividades"} /*onPress={() => {global.idFarm = farm.idFarm; setFarm(farm); navigation.navigate("EnterFarm")}}*/ color={"rgba(32, 84, 0, 0.81)"} />
                   </View>
@@ -94,7 +100,7 @@ export default function EnterFarm({ navigation }) {
                       <CartButtonCrop text={"Editar"} onPress={() => {setIsModalOpenModifyCrop(!isModalOpenModifyCrop); setCrop(crop)}} color={"rgba(234, 179, 8, 1)"} />
                     </View>
                     <View style={tw`ml-1`}>
-                      <CartButtonCrop text={"Eliminar"} /*onPress={() => {global.idFarm = farm.idFarm; setFarm(farm); navigation.navigate("EnterFarm")}}*/ color={"rgba(239, 68, 68, 1)"} />
+                      <CartButtonCrop text={"Eliminar"} color={"rgba(239, 68, 68, 1)"} />
                     </View>
                   </View>
                 </View>
