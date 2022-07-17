@@ -35,6 +35,7 @@ export default function Farms({ navigation }){
   useEffect(async () => {
     await LoadEmployeedFarms("name_farm", "asc", 0);
   }, []);
+  
   return (
     <SafeAreaProvider>
       <SafeAreaView style={styles.safeArea}>
@@ -44,7 +45,7 @@ export default function Farms({ navigation }){
            
           employeedFarms.map((farm, index) => {
             return (
-              <Accordion title={farm.nameFarm} key={index} >
+              <Accordion name={farm.nameFarm} key={index} >
                 <View style={tw`bg-gray-300 w-full p-4 pt-1 mt-1 rounded-xl`}>
                   <TouchableOpacity style={tw`bg-blue-500 justify-between items-center flex-row w-full h-52px  p-4 mt-3 rounded-xl`}><Text style={tw`text-white text-center grow font-bold `}>Ver info</Text><Image source={Info} style={tw`h-24px w-24px float-right`} /></TouchableOpacity>
                   <TouchableOpacity style={tw`bg-green-500 justify-between items-center flex-row w-full h-52px p-4 mt-3 rounded-xl`}><Text style={tw`text-white text-center grow font-bold`}>Ingresar</Text><Image source={Enter} style={tw`h-24px w-24px float-right`} /></TouchableOpacity>

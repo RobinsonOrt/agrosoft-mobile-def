@@ -14,7 +14,7 @@ const ButtonForm = ({ title, onPress, color}) => {
     return (
 
         <TouchableOpacity onPress={ onPress } style={[tw`flex-row mx-2 content-between items-center h-40px mb-5 rounded-10px`, styles.colorButton]}>
-            <Text style={tw`text-white text-center grow uppercase font-semibold text-16px `}>{ title }</Text>
+            <Text style={tw`text-white text-center grow uppercase font-bold text-14px `}>{ title }</Text>
         </TouchableOpacity>
         
     )

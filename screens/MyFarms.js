@@ -64,7 +64,7 @@ const MyFarms = ({ navigation }) => {
               <CleanButton/>
             </View>
             <View style={tw`items-end`}>
-              <SearchByName data={farms} key='nameFarm' setData={setFilter}/>
+              <SearchByName data={farms} valuekey='nameFarm' setData={setFilter}/>
               <AddButton onPress={() => setIsModalOpenAddFarm(!isModalOpenAddFarm)}/>
             </View>
           </View>
@@ -95,7 +95,7 @@ const MyFarms = ({ navigation }) => {
             if((index >= indexInit) && (index < sum)){
             return (  
               <Cart name={farm.nameFarm} description={farm.descriptionFarm} id={farm.idFarm} key={index}>
-                  <CartButton text={"Ingresar"} onPress={() => {global.idFarm = farm.idFarm; navigation.navigate("EnterFarm")}} color={"#22C55E"} image={Enter}/>
+                  <CartButton text={"Ingresar"} onPress={() => {global.idFarm = farm.idFarm; setFarm(farm); navigation.navigate("EnterFarm")}} color={"#22C55E"} image={Enter}/>
                   <CartButton text={"Editar"} onPress={() => {
                       setFarm(farm);
                       setIsModalOpenModifyFarmerInformation(

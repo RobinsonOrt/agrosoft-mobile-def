@@ -12,8 +12,10 @@ import LogoUp from "../assets/up.png";
 import LogoDown from "../assets/down.png";
 import React, { useState } from "react";
 import tw from "twrnc";
+import CartButtonCrop from "./CartButtonCrop";
+import { MaterialIcons } from '@expo/vector-icons';
 
-export const Accordion = ({ title, children }) => {
+export const Accordion = ({ name, options}) => {
     const [isOpen, setIsOpen] = useState(false);
     const toggleOpen = () => {
         setIsOpen(value => !value);
@@ -21,13 +23,12 @@ export const Accordion = ({ title, children }) => {
 
     return (
         <>
-            <TouchableOpacity onPress={toggleOpen} style={styles.heading} activeOpacity={0.6}>
-                <Text>{title}</Text>
-
-                <Image source={isOpen ? LogoUp : LogoDown} style={tw`h-37px w-35px p-0 m-0`} />
-            </TouchableOpacity>
+            <View style={tw`h-60px items-center flex-row justify-between px-3`}>
+            <Text style={tw`grow mr-2 uppercase text-16px`}>{name}</Text> 
+            <CartButtonCrop text={"Actividades"} onPress={toggleOpen} color={"rgba(156, 163, 175, 1)"} icon={isOpen ? <MaterialIcons name="keyboard-arrow-down" size={20} color="black" />: <MaterialIcons name="keyboard-arrow-right" size={20} color="black" />} />
+            </View> 
             <View style={[styles.list, !isOpen ? styles.hidden : undefined]}>
-                {children}
+            {options}
             </View>
         </>
     );

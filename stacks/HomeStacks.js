@@ -14,6 +14,8 @@ import Employee from "../screens/Employee";
 import { MyFarmsProvider } from "../context/FarmContext";
 import { MyEmployeesProvider } from "../context/EmployeeContext";
 import { MyLaborsProvider } from "../context/LaborsContext";
+import { MyCropsProvider } from "../context/CropContext";
+//import { MyCoffeeBushProvider } from ".../context/CoffeeBushContext";
 import Farms from "../screens/Farms";
 import Hamburger from "../assets/hamburger.png"
 import Header from "../components/Header";
@@ -30,6 +32,8 @@ const HomeStacks = ({ navigation }) => {
     const HomeStack = createNativeStackNavigator();
     return (
         <MyFarmsProvider>
+        <MyCropsProvider>
+        {/*<MyCoffeeBushProvider>*/}
         <MyEmployeesProvider>
         <MyLaborsProvider>
         <HomeStack.Navigator  screenOptions={{
@@ -47,6 +51,8 @@ const HomeStacks = ({ navigation }) => {
         </HomeStack.Navigator>
         </MyLaborsProvider>
         </MyEmployeesProvider>
+        {/*</MyCoffeeBushProvider>*/}
+        </MyCropsProvider>
         </MyFarmsProvider>
 
     );     

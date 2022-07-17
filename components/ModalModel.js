@@ -59,10 +59,10 @@ export default function ModalModel({isModalOpen, setIsModalOpen, children}) {
     <>
       <Modal visible={isModalOpen} transparent={true} animationType={"fade"} onRequestClose={() => setIsModalOpen(false)}
       >
-        <View style={modalContainerStyle}>
-          <View style={modalStyle}>
-            <View style={[modalContent, tw`w-full`]}>
-              <View style={tw`w-full items-center mt-5 justify-center`}>
+        <View style={[modalContainerStyle, tw`h-full`]}>
+          <View style={[modalStyle, tw`` ]}>
+            <View style={[modalContent, tw`w-full h-full`]}>
+              <View style={tw`w-full h-full items-center mt-5 mb-5 justify-center`}>
                   {children}             
               </View>
             </View>  
