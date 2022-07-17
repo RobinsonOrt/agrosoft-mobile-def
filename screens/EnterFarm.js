@@ -27,7 +27,7 @@ export default function EnterFarm({ navigation }) {
   const [isModalOpenDelete, setIsModalOpenDelete ] = useState(false);
 
   const { farm } = useContext(MyFarmsContext);
-  const { crops, GetCrops, FindCrops, maxPage, sorters, setCrop, DeleteCrop } = useContext(MyCropsContext);
+  const { crops, GetCrops, FindCrops, maxPage, sorters, setCrop, DeleteCrop, GetCrop } = useContext(MyCropsContext);
 
   useBackHandler(() => {
     navigation.goBack();
@@ -97,7 +97,7 @@ export default function EnterFarm({ navigation }) {
                 <View style={[tw`border-t`, { borderColor: "rgba(32, 84, 0, 0.39)" }]}>
                   <View style={tw`flex-row justify-between px-3 py-4`}>
 
-                    <CartButtonCrop text={"Consultar"} onPress={() => {setIsModalOpenInfoCrop(!isModalOpenInfoCrop)}} color={"rgba(34, 158, 197, 1)"} />
+                    <CartButtonCrop text={"Consultar"} onPress={() => {GetCrop(crop.idCrop), setIsModalOpenInfoCrop(!isModalOpenInfoCrop)}} color={"rgba(34, 158, 197, 1)"} />
                     <CartButtonCrop text={"Ingresar"} onPress={() => {global.idCrop = crop.idCrop, setCrop(crop); navigation.navigate("CoffeeBush")}} color={"#22C55E"} />
 
                     <CartButtonCrop text={"Actividades"} /*onPress={() => {global.idFarm = farm.idFarm; setFarm(farm); navigation.navigate("EnterFarm")}}*/ color={"rgba(32, 84, 0, 0.81)"} />
