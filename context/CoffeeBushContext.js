@@ -12,31 +12,31 @@ const MyCoffeeBushProvider = ({ children }) => {
     const [maxPage, setMaxPage] = useState(0);
 
     const GetCoffeeBushs = async (idCrop) => {
-        const response = await axios.get(`${REACT_APP_API_URL}/coffeebush/${idCrop}/${sorters.sorter}/${sorters.order}/${sorters.page}`);
-        setCoffeeBushs(response.data);
-        console.log(response.data);
+        const response = await axios.get(`${REACT_APP_API_URL}/api/coffeebush/${idCrop}/${sorters.sorter}/${sorters.order}/${sorters.page}`);
+        setCoffeeBushs(response.data.response);
+        console.log(response.data.response);
     }
 
     const CreateCoffeeBush = async (data) => {
-        const response = await axios.post(`${REACT_APP_API_URL}/addcoffeebush`, data);
+        const response = await axios.post(`${REACT_APP_API_URL}/api/addcoffeebush`, data);
         console.log(response.data);
         GetCoffeeBushs(data.idCrop);
         return response;
     }
 
     const DeleteCoffeeBush = async (idCoffeeBush) => {
-        const response = await axios.put(`${REACT_APP_API_URL}/deletecoffeebush/${idCoffeeBush}`);
+        const response = await axios.put(`${REACT_APP_API_URL}/api/deletecoffeebush/${idCoffeeBush}`);
         GetCoffeeBushs(global.idCrop);
         return response;
     }
 
     const GetBarCodeCoffeeBush = async (idCoffeeBush) => {
-        const response = await axios.get(`${REACT_APP_API_URL}/getbarcode/${idCoffeeBush}`);
+        const response = await axios.get(`${REACT_APP_API_URL}/api/getbarcode/${idCoffeeBush}`);
         return response;
     }
 
     const FindCoffeeBush = async (search, idCrop) => {
-        const findCoffeeBushResponse = await axios.get(`${REACT_APP_API_URL}/findcoffeebush/${idCrop}/${search}/0`);
+        const findCoffeeBushResponse = await axios.get(`${REACT_APP_API_URL}/api/findcoffeebush/${idCrop}/${search}/0`);
         setMaxPage(0);
         setCoffeeBushs(findCoffeeBushResponse.data.response);
     }
@@ -53,7 +53,8 @@ const MyCoffeeBushProvider = ({ children }) => {
             CreateCoffeeBush,
             DeleteCoffeeBush,
             GetBarCodeCoffeeBush,
-            FindCoffeeBush
+            FindCoffeeBush,
+            maxPage,
         }}>{children}
         </MyCoffeeBushContext.Provider>
     )
