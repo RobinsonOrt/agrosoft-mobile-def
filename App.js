@@ -155,38 +155,44 @@ import Requests from "./screens/Requests";
 import Login2 from "./screens/Login2";
 import Loginn from "./components/Loginn";
 import { MyFarmsProvider } from "./context/FarmContext";
-import { CountryProvider} from "./context/CoutryContext";
-
+import { CountryProvider } from "./context/CoutryContext";
+import EmployeeCrops from "./screens/EmployeeCrops";
+import EmployeeShrubbery from "./screens/EmployeeShrubbery";
 
 export default function App() {
   return (
-    <CountryProvider> 
-    <AuthProvider>
-
-    <MyFarmsProvider>
-      <NativeRouter>
-        <Routes>
-          <Route exact path="/" element={<Home />} />
-          <Route path="/login" element={<Loginn />} />
-          <Route path="/register" element={<Register />} />
-          <Route path="/tokenValidation" element={<TokenValidation />} />
-          <Route path="/passwordRecovery" element={<PasswordRecovery />} />
-          <Route path="/tokenValidationPassword" element={<TokenValidationTwo />} />
-          <Route path="/passwordRecoveryForm" element={<PasswordRecoveryForm />} />
-          <Route path="/userLoged" element={<MyMenu />} />
-          <Route path="/accountActivated" element={<TokenVerificated />} />
-          <Route path="/notConected" element={<NotConected />} />
-          <Route path="/userInformation" element={<UserInformation />} />
-          <Route path="/enterFarm22" element={<EnterFarm />} />
-          
-        </Routes>
-      </NativeRouter>
-      </MyFarmsProvider>
-    </AuthProvider>
-    </CountryProvider> 
+    <CountryProvider>
+      <AuthProvider>
+        <MyFarmsProvider>
+          <NativeRouter>
+            <Routes>
+              <Route exact path="/" element={<Home />} />
+              <Route path="/login" element={<Loginn />} />
+              <Route path="/register" element={<Register />} />
+              <Route path="/tokenValidation" element={<TokenValidation />} />
+              <Route path="/passwordRecovery" element={<PasswordRecovery />} />
+              <Route
+                path="/tokenValidationPassword"
+                element={<TokenValidationTwo />}
+              />
+              <Route
+                path="/passwordRecoveryForm"
+                element={<PasswordRecoveryForm />}
+              />
+              <Route path="/userLoged" element={<MyMenu />} />
+              <Route path="/accountActivated" element={<TokenVerificated />} />
+              <Route path="/notConected" element={<NotConected />} />
+              <Route path="/userInformation" element={<UserInformation />} />
+              <Route path="/enterFarm22" element={<EnterFarm />} />
+              <Route path="/employeecrops" element={<EmployeeCrops />} />
+              <Route
+                path="/employeeshrubbery"
+                element={<EmployeeShrubbery />}
+              />
+            </Routes>
+          </NativeRouter>
+        </MyFarmsProvider>
+      </AuthProvider>
+    </CountryProvider>
   );
 }
-
-
-
-

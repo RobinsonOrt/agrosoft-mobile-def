@@ -8,10 +8,12 @@ import {
   UIManager,
   Platform,
   Image,
-  TouchableOpacity
+  TouchableOpacity,
+  ScrollView,
 } from "react-native";
+import { Link } from "react-router-native";
 import tw from "twrnc";
-import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
+import { SafeAreaProvider, SafeAreaView } from "react-native-safe-area-context";
 
 import Info from "../assets/info.png";
 import Leave from "../assets/leave.png";
@@ -20,17 +22,23 @@ import MyFarmsContext from "../context/FarmContext";
 import MyEmployeesContext from "../context/EmployeeContext";
 import { useBackHandler } from "@react-native-community/hooks";
 import { Accordion } from "../components/Accordion";
+import { Cart } from "../components/Cart";
+import CartButton from "../components/CartButton";
+import PickerSorter from "../components/PickerSorter";
+import CleanButton from "../components/CleanButton";
+import SearchByName from "../components/SearchByName";
+import SubHeader from "../components/SubHeader";
 
-
-export default function Farms({ navigation }){
-  const { LoadEmployeedFarms, employeedFarms } = useContext(MyFarmsContext)
-  const { LeaveFarm, error, message } = useContext(MyEmployeesContext)
+export default function Farms({ navigation }) {
+  const { LoadEmployeedFarms, employeedFarms, setIdFarm } =
+    useContext(MyFarmsContext);
+  const { LeaveFarm, error, message } = useContext(MyEmployeesContext);
 
   useBackHandler(() => {
     console.log("back");
-    navigation.navigate("Mis fincas")
+    navigation.navigate("Mis fincas");
     return true;
-  })
+  });
 
   useEffect(async () => {
     await LoadEmployeedFarms("name_farm", "asc", 0);
@@ -39,30 +47,73 @@ export default function Farms({ navigation }){
   return (
     <SafeAreaProvider>
       <SafeAreaView style={styles.safeArea}>
-        {error? <Text>{message}</Text>:null}
-        <View style={styles.container}>
-          {(employeedFarms.length > 0) ? (
-           
-          employeedFarms.map((farm, index) => {
-            return (
-              <Accordion name={farm.nameFarm} key={index} >
-                <View style={tw`bg-gray-300 w-full p-4 pt-1 mt-1 rounded-xl`}>
-                  <TouchableOpacity style={tw`bg-blue-500 justify-between items-center flex-row w-full h-52px  p-4 mt-3 rounded-xl`}><Text style={tw`text-white text-center grow font-bold `}>Ver info</Text><Image source={Info} style={tw`h-24px w-24px float-right`} /></TouchableOpacity>
-                  <TouchableOpacity style={tw`bg-green-500 justify-between items-center flex-row w-full h-52px p-4 mt-3 rounded-xl`}><Text style={tw`text-white text-center grow font-bold`}>Ingresar</Text><Image source={Enter} style={tw`h-24px w-24px float-right`} /></TouchableOpacity>
-                  <TouchableOpacity style={tw`bg-red-500 justify-between items-center flex-row h-52px p-4 mt-3 rounded-xl`} onPress={()=>{LeaveFarm(global.idUser, farm.idFarm)}} ><Text style={tw`text-white text-center grow font-bold`} >Abandonar</Text><Image source={Leave} style={tw`h-24px w-24px float-right`} /></TouchableOpacity>
-                </View>
-              </Accordion>
-            )
-          })
-        
-          ): (<View style={styles.container}>
-            <Text style={tw`text-center text-gray-500`}>No se encontraron resultados</Text>
-          </View>)}
-        </View>
+        <SubHeader title={"Fincas"} />
+        {error ? <Text>{message}</Text> : null}
+        <ScrollView style={styles.container}>
+          <View style={tw`flex my-5 flex-row justify-between`}>
+            <View>
+              <SearchByName
+              //data={farms} key="nameFarm" setData={setFilter}
+              />
+              <CleanButton />
+            </View>
+            <PickerSorter
+            //list={data}
+            //key1="nameFarm"
+            //key2="createdDate"
+            //newList={setFilter}
+            />
+          </View>
+          {employeedFarms.length > 0 ? (
+            employeedFarms.map((farm, index) => {
+              return (
+                <Cart
+                  name={farm.nameFarm}
+                  description={farm.nameAdmin}
+                  id={farm.idFarm}
+                  key={index}
+                >
+                  <Link
+                    style={tw`flex-1`}
+                    to="/employeecrops"
+                    onPress={() => {
+                      setIdFarm(farm.idFarm);
+                    }}
+                  >
+                    <CartButton
+                      text={"Ingresar"}
+                      onPress={() => {
+                        setIdFarm(farm.idFarm);
+                      }}
+                      color={"#22C55E"}
+                      image={Enter}
+                    />
+                  </Link>
+                  <CartButton
+                    text={"Abandonar"}
+                    // onPress={() => {
+                    //   global.idFarm = farm.idFarm;
+                    //   setIsModalOpenFarmDelete(!isModalOpenFarmDelete);
+                    // }}
+                    color={"#EF4444"}
+                    image={Leave}
+                  />
+                </Cart>
+              );
+            })
+          ) : (
+            <View style={styles.container}>
+              <Text style={tw`text-center text-gray-500`}>
+                No se encontraron resultados
+              </Text>
+            </View>
+          )}
+        </ScrollView>
+
       </SafeAreaView>
     </SafeAreaProvider>
   );
-};
+}
 
 export const styles = StyleSheet.create({
   container: {
@@ -85,35 +136,32 @@ export const styles = StyleSheet.create({
     alignItems: "center",
     flexDirection: "row",
     justifyContent: "space-between",
-    
+
     backgroundColor: "#D9D9D9",
     borderRadius: 10,
     paddingHorizontal: 10,
-
-
   },
   hidden: {
     height: 0,
   },
   list: {
-    overflow: 'hidden'
+    overflow: "hidden",
   },
   sectionTitle: {
     fontSize: 16,
     height: 30,
-    marginLeft: '5%',
-    marginTop: '5px',
-
+    marginLeft: "5%",
+    marginTop: "5px",
   },
   sectionDescription: {
     fontSize: 20,
-    fontFamily: 'Roboto',
+    fontFamily: "Roboto",
     height: 30,
-    marginLeft: '5%',
+    marginLeft: "5%",
   },
   divider: {
-    borderBottomColor: 'grey',
+    borderBottomColor: "grey",
     borderBottomWidth: StyleSheet.hairlineWidth,
-    width: '100%',
+    width: "100%",
   },
 });
