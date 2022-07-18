@@ -19,7 +19,7 @@ import { useBackHandler } from "@react-native-community/hooks";
 import useSWR from "swr";
 import axios from "axios";
 import { REACT_APP_API_URL, AGROSOFT_LINK } from "@env";
-import ModalInfoCrop from "../components/ModalInfoCrop";
+import ModalInfoEmployeeCrop from "../components/ModalInfoEmployeeCrop";
 
 export default function EmployeeCrops() {
   const { idFarm, setModalVisible, modalVisible, setIdCrop } =
@@ -91,7 +91,7 @@ export default function EmployeeCrops() {
                   >
                     <Text style={tw`text-white`}>Consultar</Text>
                   </TouchableOpacity>
-                  <ModalInfoCrop
+                  <ModalInfoEmployeeCrop
                     modalBody={
                       <>
                         <View style={tw`mb-5 w-full`}>
