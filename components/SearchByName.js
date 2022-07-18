@@ -32,7 +32,7 @@ const SearchByName = ({data, valueKey, setData}) => {
       });
 
     return (
-        <View style={tw`shadow-2xl rounded-md`}>
+        <View style={tw`rounded-md`}>
           <TextInput  
           onChangeText={(text) => {searchFilterFunction(text)}}
           placeholder="Buscar por nombre..."

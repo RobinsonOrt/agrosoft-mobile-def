@@ -14,7 +14,7 @@ const PickerSorter = ({ list, key1, key2, newList }) => {
         : [...list].sort((a, b) => (a[key].toUpperCase() > b[key].toUpperCase() ? 1 : a[key].toUpperCase() < b[key].toUpperCase() ? -1 : 0))
 
     return (
-        <View style={tw`w-140px rounded-md shadow-2xl`}>
+        <View style={tw`w-140px rounded-md`}>
             <RNPickerSelect 
                       placeholder={{ label: "Ordenar por:", value: "" }}
                       onValueChange={(itemValue) => {
