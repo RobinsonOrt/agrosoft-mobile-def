@@ -80,7 +80,7 @@ const ModalAddActivityMyFarms = ({isModalOpenAddActivityMyFarms, setIsModalOpenA
             minLength={5}
             autoFocus={true}
             height={40}
-            pattern={/^[a-zA-Z ]+$/}
+            pattern={/^[a-zA-ZÁ-ÿ0-9., ]+$/}
           />
           {errors.nameActivity?.type === "required" ? (
             <Text style={tw`text-red-600 mb-2 text-center`}>Campo requerido!</Text>
@@ -94,7 +94,7 @@ const ModalAddActivityMyFarms = ({isModalOpenAddActivityMyFarms, setIsModalOpenA
             </Text>
           ): null  }
 
-        <Text style={tw`text-16px pb-2 pt-1`}>Descripción del cultivo</Text>
+        <Text style={tw`text-16px pb-2 pt-1`}>Descripción de la actividad</Text>
         <InputForm
             control={control}
             name="descriptionActivity"
