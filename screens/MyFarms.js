@@ -1,13 +1,15 @@
 import global from "../global";
 import React, { useState, useEffect, useContext } from "react";
+
 import { View, Text, Image, TouchableOpacity, BackHandler, ScrollView, TextInput } from "react-native";
+
 import tw from "twrnc";
 import ModalAddFarm from "../components/ModalAddFarm";
 import ModalFarmDelete from "../components/ModalFarmDelete";
 import { SafeAreaProvider, SafeAreaView } from "react-native-safe-area-context";
 import Enter from "../assets/Enter.png";
 import Edit from "../assets/edit.png";
-import Delete from "../assets/delete.png"
+import Delete from "../assets/delete.png";
 import { styles } from "./Farms";
 import ModalModifyFarmerInformation from "../components/ModalModifyFarmerInformation";
 import MyFarmsContext from "../context/FarmContext";
@@ -16,6 +18,7 @@ import { Cart } from "../components/Cart";
 import CartButton from "../components/CartButton";
 import SubHeader from "../components/SubHeader";
 import AddButton from "../components/AddButton";
+
 import Pagination from "../components/Pagination";
 import SorterComponent from "../components/SorterComponent";
 import SearchComponent from "../components/SearchComponent";
@@ -32,16 +35,18 @@ const MyFarms = ({ navigation }) => {
   useBackHandler(() => {
     BackHandler.exitApp();
     return false;
-  })
+  });
+
 
   useEffect(async () => {
     await LoadFarms();
   }, []);
-
+  
   return (
     <SafeAreaProvider>
       <SafeAreaView style={styles.safeArea}>
         <SubHeader title={"Mis fincas"} />
+
         <ScrollView style={tw`h-95%`} >
         <View style={styles.container}>
           <View style={tw`flex-row justify-between`}>
@@ -51,6 +56,7 @@ const MyFarms = ({ navigation }) => {
             <View style={tw`items-end`}>
               <SearchComponent GetElements={FindFarms} GetOriginalElements={LoadFarms}/>
               <AddButton onPress={() => setIsModalOpenAddFarm(!isModalOpenAddFarm)} />
+
             </View>
           </View>
 
@@ -67,11 +73,7 @@ const MyFarms = ({ navigation }) => {
             isModalOpenModifyFarmerInformation={
               isModalOpenModifyFarmerInformation
             }
-            setIsModalOpenModifyFarmerInformation={
-              setIsModalOpenModifyFarmerInformation
-            }
           />
-          
             {
               farms.length > 0 ? (
                 farms.map((farm, index) => {
@@ -98,6 +100,7 @@ const MyFarms = ({ navigation }) => {
                 <Text style={tw`text-center text-gray-500`}>No se encontraron resultados</Text>
               </View>)}
           <Pagination maxPage={maxPage} sorters={sorters} GetElements={LoadFarms} />
+
         </View>
         </ScrollView>
       </SafeAreaView>

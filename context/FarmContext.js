@@ -1,7 +1,8 @@
 import global from "../global";
 import React, { useState, createContext } from "react";
-import {REACT_APP_API_URL, AGROSOFT_LINK} from '@env'
+import { REACT_APP_API_URL, AGROSOFT_LINK } from "@env";
 import axios from "axios";
+import useSWR from "swr";
 
 const MyFarmsContext = createContext();
 
@@ -14,6 +15,9 @@ const MyFarmsProvider = ({children}) => {
     const [allFarms, setAllFarms] = useState([]);
     const [sorters, setSorters] = useState({"sorter": "name_farm", "order": "asc", "page": 0});
     const [maxPage, setMaxPage] = useState(0);
+    const [idCrop, setIdCrop] = useState("");
+    const [idFarm, setIdFarm] = useState("");
+    const [modalVisible, setModalVisible] = useState(false);
 
     const LoadFarms = async () => {
         await axios.get(REACT_APP_API_URL + "/api/userfarms/"+ global.idUser + "/admin/"+ sorters.sorter + "/" + sorters.order + "/" + sorters.page)
@@ -96,14 +100,18 @@ const MyFarmsProvider = ({children}) => {
                 setSorters,
                 maxPage,
                 setMaxPage,
-                FindFarms
+                FindFarms,
+                idCrop,
+                setIdCrop,
+                modalVisible,
+                setModalVisible,
+                idFarm,
+                setIdFarm,
             }}>
 
             {children}
         </MyFarmsContext.Provider>
     )
-    
-
 };
-export {MyFarmsProvider};
+export { MyFarmsProvider };
 export default MyFarmsContext;
