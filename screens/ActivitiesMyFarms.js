@@ -70,7 +70,7 @@ const ActivitiesMyFarms = ({ navigation }) => {
           </View>
           <View style={tw`w-23% items-center`}>
           <View style={tw`my-1`}>  
-          <CartButtonCrop text={"Campos  "} /*onPress={() => {GetCrop(crop.idCrop), setIsModalOpenInfoCrop(!isModalOpenInfoCrop)}}*/ color={"rgba(34, 158, 197, 1)"} icon={<AntDesign name="search1" size={12} color="white" />} />
+          <CartButtonCrop text={"Campos  "} onPress={() => {global.idActivity = activity.idActivity, navigation.navigate("Fields")}} color={"rgba(34, 158, 197, 1)"} icon={<AntDesign name="search1" size={12} color="white" />} />
           </View>
           <View style={tw`my-1`}>
           <CartButtonCrop text={"Editar  "} onPress={() => {setIsModalOpenModifyActivityMyFarms(!isModalOpenModifyActivityMyFarms); setActivity(activity)}} color={"rgba(234, 179, 8, 1)"} icon={<AntDesign name="edit" size={15} color="white" />}/>
