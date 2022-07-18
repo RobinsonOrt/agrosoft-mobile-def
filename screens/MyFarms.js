@@ -70,9 +70,8 @@ const MyFarms = ({ navigation }) => {
           DeleteFunction={DeleteFarm}
           />
           <ModalModifyFarmerInformation
-            isModalOpenModifyFarmerInformation={
-              isModalOpenModifyFarmerInformation
-            }
+            isModalOpenModifyFarmerInformation={isModalOpenModifyFarmerInformation}
+            setIsModalOpenModifyFarmerInformation={setIsModalOpenModifyFarmerInformation}
           />
             {
               farms.length > 0 ? (

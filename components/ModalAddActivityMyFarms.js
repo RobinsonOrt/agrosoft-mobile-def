@@ -25,53 +25,53 @@ import ModalButton from "./ModalButton";
 import InputForm from "./InputForm";
 import PickerModel from "./PickerModel";
 
-const ModalAddActivityMyFarms = ({isModalOpenAddActivityMyFarms, setIsModalOpenAddActivityMyFarms}) => {
+const ModalAddActivityMyFarms = ({ isModalOpenAddActivityMyFarms, setIsModalOpenAddActivityMyFarms }) => {
 
   const { CreateActivity } = useContext(MyActivitiesContext);
-  const [localError, setLocalError] = useState({"error": false, "message": ""});
+  const [localError, setLocalError] = useState({ "error": false, "message": "" });
   const [activityType, setActivityType] = useState(null);
 
-    const {
-      control,
-      handleSubmit,
-      reset,
-      formState: { errors },
-    } = useForm();
+  const {
+    control,
+    handleSubmit,
+    reset,
+    formState: { errors },
+  } = useForm();
 
-    const onSubmitAddActivityMyFarm = async (data) =>{
-      if (activityType == null || activityType == ""){
-        setLocalError({"error":true, "message": "No ha seleccionado un tipo de actividad"})
-        return
-      }else{
-        data.idActivityType = activityType
-      }
-      data.idFarm = global.idFarm
-      
-      const createActivityResponse = await CreateActivity(data);
-      if(createActivityResponse.data.error == true){
-        localError.error = true;
-        localError.message = createActivityResponse.data.response;
-        return;
-      }
-      //save pdf
-      //end
-      setActivityType(null)
-      setLocalError({"error": false, "message": ""});
-      reset();
-      setIsModalOpenAddActivityMyFarms(false);
+  const onSubmitAddActivityMyFarm = async (data) => {
+    if (activityType == null || activityType == "") {
+      setLocalError({ "error": true, "message": "No ha seleccionado un tipo de actividad" })
+      return
+    } else {
+      data.idActivityType = activityType
     }
-  
-    console.log(errors)
-    return(
+    data.idFarm = global.idFarm
 
-      <ModalModel isModalOpen={isModalOpenAddActivityMyFarms} setIsModalOpen={setIsModalOpenAddActivityMyFarms} >
+    const createActivityResponse = await CreateActivity(data);
+    if (createActivityResponse.data.error == true) {
+      localError.error = true;
+      localError.message = createActivityResponse.data.response;
+      return;
+    }
+    //save pdf
+    //end
+    setActivityType(null)
+    setLocalError({ "error": false, "message": "" });
+    reset();
+    setIsModalOpenAddActivityMyFarms(false);
+  }
+
+  console.log(errors)
+  return (
+
+    <ModalModel isModalOpen={isModalOpenAddActivityMyFarms} setIsModalOpen={setIsModalOpenAddActivityMyFarms} >
       <Text style={tw`text-3xl font-bold text-black mt-5 mb-5`}>
         Agregar Actividad
       </Text>
       <ScrollView style={tw`mt-2 h-107 w-full mb-5 pb-3`}>
         <View style={tw`w-full px-7`}>
-        <Text style={tw`text-16px pb-2 pt-1`}>Nombre de la actividad</Text>
-        <InputForm
+          <Text style={tw`text-16px pb-2 pt-1`}>Nombre de la actividad</Text>
+          <InputForm
             control={control}
             name="nameActivity"
             placeholder="Nombre"
@@ -92,10 +92,10 @@ const ModalAddActivityMyFarms = ({isModalOpenAddActivityMyFarms, setIsModalOpenA
             <Text style={tw`text-red-600 mb-2 text-center`}>
               Minimo 5 caracteres!
             </Text>
-          ): null  }
+          ) : null}
 
-        <Text style={tw`text-16px pb-2 pt-1`}>Descripción de la actividad</Text>
-        <InputForm
+          <Text style={tw`text-16px pb-2 pt-1`}>Descripción de la actividad</Text>
+          <InputForm
             control={control}
             name="descriptionActivity"
             placeholder="Descripcion"
@@ -116,26 +116,26 @@ const ModalAddActivityMyFarms = ({isModalOpenAddActivityMyFarms, setIsModalOpenA
             <Text style={tw`text-red-600 mb-2 text-center`}>
               Minimo 15 caracteres!
             </Text>
-          ): null  }
+          ) : null}
 
-          <PickerModel list={[{"typeActivity":"Arbusto", "value":"1"},
-                              {"typeActivity":"Cultivo", "value":"2"}]}
-                       label="typeActivity"
-                       value="value"
-                       text="Tipo de actividad"   
-                       setSelected={setActivityType}/>
+          <PickerModel list={[{ "typeActivity": "Arbusto", "value": "1" },
+          { "typeActivity": "Cultivo", "value": "2" }]}
+            label="typeActivity"
+            value="value"
+            text="Tipo de actividad"
+            setSelected={setActivityType} />
           {localError.error ? (
-                    <Text style={tw`text-red-600 mb-2 text-center`}>
-                      {localError.message}
-                    </Text>
-                  ) : null} 
-          <ModalButton text={"Confirmar"} onPress={handleSubmit(onSubmitAddActivityMyFarm)} color={"#22C55E"}/>
-          <ModalButton text={"Cancelar"} onPress={() => {setIsModalOpenAddActivityMyFarms(!setIsModalOpenAddActivityMyFarms), reset()}} color={"rgba(220, 38, 38, 0.86)"}/>
+            <Text style={tw`text-red-600 mb-2 text-center`}>
+              {localError.message}
+            </Text>
+          ) : null}
+          <ModalButton text={"Confirmar"} onPress={handleSubmit(onSubmitAddActivityMyFarm)} color={"#22C55E"} />
+          <ModalButton text={"Cancelar"} onPress={() => { setIsModalOpenAddActivityMyFarms(!setIsModalOpenAddActivityMyFarms), reset() }} color={"rgba(220, 38, 38, 0.86)"} />
         </View>
       </ScrollView>
-</ModalModel>
+    </ModalModel>
 
-    )
+  )
 }
 
 export default ModalAddActivityMyFarms
