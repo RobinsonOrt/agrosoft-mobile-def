@@ -13,8 +13,8 @@ const MyCoffeeBushProvider = ({ children }) => {
 
     const GetCoffeeBushs = async (idCrop) => {
         const response = await axios.get(`${REACT_APP_API_URL}/api/coffeebush/${idCrop}/${sorters.sorter}/${sorters.order}/${sorters.page}`);
+        setMaxPage(response.data.maxPage);
         setCoffeeBushs(response.data.response);
-        console.log(response.data.response);
     }
 
     const CreateCoffeeBush = async (data) => {
@@ -36,7 +36,7 @@ const MyCoffeeBushProvider = ({ children }) => {
     }
 
     const FindCoffeeBush = async (search, idCrop) => {
-        const findCoffeeBushResponse = await axios.get(`${REACT_APP_API_URL}/api/findcoffeebush/${idCrop}/${search}/0`);
+        const findCoffeeBushResponse = await axios.get(`${REACT_APP_API_URL}/api/findcoffeebushs/${idCrop}/${search}/0`);
         setMaxPage(0);
         setCoffeeBushs(findCoffeeBushResponse.data.response);
     }

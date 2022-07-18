@@ -13,7 +13,7 @@ const CartButton = ({ text, onPress, color, image}) => {
     
     return (
 
-        <View style={tw`w-1/3 pr-2`}> 
+        <View style={tw`w-1/3 pr-2`}>
         <TouchableOpacity style={[tw`justify-between items-center flex-row h-35px w-full px-1 pr-2 rounded-18px`, styles.colorButton]} onPress={onPress}  activeOpacity={0.6}>
         <Text style={tw`text-center text-white grow`}>{ text }</Text>
         <Image source={image} style={tw`h-15px w-15px`}/>

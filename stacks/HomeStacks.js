@@ -12,6 +12,8 @@ import MyFarms from "../screens/MyFarms";
 import Labor from "../screens/Labor";
 import Employee from "../screens/Employee";
 import CoffeeBush from "../screens/CoffeeBush";
+import EnterCoffeeBush from "../screens/EnterCoffeeBush";
+import Fields from "../screens/Fields";
 import { MyFarmsProvider } from "../context/FarmContext";
 import { MyEmployeesProvider } from "../context/EmployeeContext";
 import { MyLaborsProvider } from "../context/LaborsContext";
@@ -55,6 +57,8 @@ const HomeStacks = ({ navigation }) => {
             <HomeStack.Screen name="Labor" component={Labor} />
             <HomeStack.Screen name="Employee" component={Employee} />
             <HomeStack.Screen name="CoffeeBush" component={CoffeeBush} />
+            <HomeStack.Screen name="EnterCoffeeBush" component={EnterCoffeeBush} />
+            <HomeStack.Screen name="Fields" component={Fields} />
         </HomeStack.Navigator>
         </MyLaborsProvider>
         </MyEmployeesProvider>

@@ -30,7 +30,7 @@ const InputForm = ({control, name, placeholder, secureTextEntry, keyboardType, p
             onChangeText={(text)=>{
               
               let texto = text.replace(/\s+/g, ' ');
-              onChange(texto);console.log(text)
+              onChange(texto);
             }
             }
             onBlur={onBlur}
