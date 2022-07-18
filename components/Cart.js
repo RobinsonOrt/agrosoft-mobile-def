@@ -14,10 +14,11 @@ export const Cart = ({ name, description, id, children }) => {
       </View>
       <View style={tw`p-5`}>
         <Text style={[tw`text-center mb-3 pr-2`, styles.description]}>
-          id: {id}
+          {id}
         </Text>
         <View style={tw`flex w-full justify-between flex-row`}>
           {children}
+
         </View>
       </View>
     </View>

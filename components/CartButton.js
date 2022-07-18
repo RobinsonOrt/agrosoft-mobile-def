@@ -10,6 +10,7 @@ const CartButton = ({ text, onPress, color, image }) => {
     },
   });
 
+
   return (
     <View style={tw`flex-1`}>
       <TouchableOpacity
@@ -26,5 +27,6 @@ const CartButton = ({ text, onPress, color, image }) => {
     </View>
   );
 };
+
 
 export default CartButton;

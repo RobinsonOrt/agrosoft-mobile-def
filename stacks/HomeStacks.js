@@ -11,9 +11,18 @@ import EnterFarm from "../screens/EnterFarm";
 import MyFarms from "../screens/MyFarms";
 import Labor from "../screens/Labor";
 import Employee from "../screens/Employee";
+import CoffeeBush from "../screens/CoffeeBush";
+import ActivitiesMyFarms from "../screens/ActivitiesMyFarms";
+import EnterCoffeeBush from "../screens/EnterCoffeeBush";
+import Fields from "../screens/Fields";
 import { MyFarmsProvider } from "../context/FarmContext";
 import { MyEmployeesProvider } from "../context/EmployeeContext";
 import { MyLaborsProvider } from "../context/LaborsContext";
+import { MyCropsProvider } from "../context/CropContext";
+import { MyCoffeeBushProvider } from "../context/CoffeeBushContext";
+import { MyActivitiesProvider } from "../context/ActivityContext";
+import { MyFieldsProvider } from "../context/FieldsContext";
+//import { MyCoffeeBushProvider } from ".../context/CoffeeBushContext";
 import Farms from "../screens/Farms";
 import Hamburger from "../assets/hamburger.png"
 import Header from "../components/Header";
@@ -30,6 +39,10 @@ const HomeStacks = ({ navigation }) => {
     const HomeStack = createNativeStackNavigator();
     return (
         <MyFarmsProvider>
+        <MyCropsProvider>
+        <MyCoffeeBushProvider>
+        <MyActivitiesProvider>
+        <MyFieldsProvider>
         <MyEmployeesProvider>
         <MyLaborsProvider>
         <HomeStack.Navigator  screenOptions={{
@@ -44,9 +57,17 @@ const HomeStacks = ({ navigation }) => {
             <HomeStack.Screen name="EnterFarm" component={EnterFarm}/>
             <HomeStack.Screen name="Labor" component={Labor} />
             <HomeStack.Screen name="Employee" component={Employee} />
+            <HomeStack.Screen name="CoffeeBush" component={CoffeeBush} />
+            <HomeStack.Screen name="ActivitiesMyFarms" component={ActivitiesMyFarms}/>
+            <HomeStack.Screen name="EnterCoffeeBush" component={EnterCoffeeBush} />
+            <HomeStack.Screen name="Fields" component={Fields} />
         </HomeStack.Navigator>
         </MyLaborsProvider>
         </MyEmployeesProvider>
+        </MyFieldsProvider>
+        </MyActivitiesProvider>
+        </MyCoffeeBushProvider>
+        </MyCropsProvider>
         </MyFarmsProvider>
 
     );     

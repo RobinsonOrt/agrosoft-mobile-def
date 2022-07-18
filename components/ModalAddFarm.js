@@ -131,8 +131,8 @@ export default function ModalAddFarm({ isModalOpenAddFarm, setIsModalOpenAddFarm
               <Text style={tw`text-3xl font-bold text-black mt-5 mb-5`}>
                 Agregar nueva finca
               </Text>
-              <ScrollView style={tw`mt-2 w-full pb-3`}>
-                <View style={tw`w-full px-7 mb-10 flex items-center justify-center`}>
+              <ScrollView style={tw`mt-2 w-full h-130 pb-3`}>
+                <View style={tw`w-full bg-red-300 px-7`}>
                   <Text style={tw` text-black mb-10 w-full  text-center`}>
                     Rellena los campos con la información correspondiente
                   </Text>
@@ -164,8 +164,6 @@ export default function ModalAddFarm({ isModalOpenAddFarm, setIsModalOpenAddFarm
                   {errors.descriptionFarm && (
                     <Text style={tw`text-red-600 mb-5 w-65`}>Campo requerido , minimo 15 caracteres y maximo 50 caracteres</Text>
                   )}
-
-                  
                 <RNPickerSelect
                       placeholder={{ label: "País", value: "" }}
                       onValueChange={(itemValue) =>

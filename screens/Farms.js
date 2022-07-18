@@ -43,6 +43,7 @@ export default function Farms({ navigation }) {
   useEffect(async () => {
     await LoadEmployeedFarms("name_farm", "asc", 0);
   }, []);
+  
   return (
     <SafeAreaProvider>
       <SafeAreaView style={styles.safeArea}>
@@ -108,6 +109,7 @@ export default function Farms({ navigation }) {
             </View>
           )}
         </ScrollView>
+
       </SafeAreaView>
     </SafeAreaProvider>
   );
@@ -121,6 +123,9 @@ export const styles = StyleSheet.create({
   text: {
     fontSize: 18,
     marginBottom: 20,
+  },
+  cardBush: {
+    backgroundColor: "red",
   },
   safeArea: {
     flex: 1,
