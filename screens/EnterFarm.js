@@ -1,6 +1,6 @@
 import global from "../global";
 import React, { useState, useEffect, useContext } from "react";
-import { View, Text, TextInput, TouchableOpacity } from "react-native";
+import { View, Text, TextInput, TouchableOpacity, ScrollView } from "react-native";
 import tw from "twrnc";
 import { useBackHandler } from "@react-native-community/hooks";
 import MyFarmsContext from "../context/FarmContext";
@@ -16,6 +16,7 @@ import Pagination from "../components/Pagination";
 import SorterComponent from "../components/SorterComponent";
 import SearchComponent from "../components/SearchComponent";
 import ModalInfoCrop from "../components/ModalInfoCrop";
+
 
 
 export default function EnterFarm({ navigation }) {
@@ -41,12 +42,13 @@ export default function EnterFarm({ navigation }) {
   return (
     <View style={tw`h-full w-full  px-0`}>
       <SubHeader title={farm.nameFarm} />
-
+      <ScrollView style={tw`h-95%`} >
       <View style={tw`px-15px pv-5px`}>
 
       <View style={tw`flex-row w-full rounded-xl mt-0 `}>
           <View style={tw`p-5 pr-2 rounded-xl w-1/2`}>
             <TouchableOpacity style={tw`bg-green-500 w-full h-52px p-4 mt-5 rounded-xl`} onPress={() => navigation.navigate('Employee')}><Text style={tw`text-white text-center font-bold`}>Empleados</Text></TouchableOpacity>
+
             <TouchableOpacity style={tw`bg-green-500 w-full h-52px p-4 mt-5 rounded-xl`} onPress={() => navigation.navigate('ActivitiesMyFarms')}><Text style={tw`text-white text-center font-bold`}>Actividades</Text></TouchableOpacity>
 
           </View>
@@ -121,6 +123,7 @@ export default function EnterFarm({ navigation }) {
           <Pagination maxPage={maxPage} sorters={sorters} GetElements={GetCrops} firstParameter={farm.idFarm} />
         </View>
       </View>
+      </ScrollView>
     </View>
   );
 }

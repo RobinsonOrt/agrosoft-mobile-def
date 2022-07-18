@@ -1,14 +1,9 @@
-import { REACT_APP_API_URL } from "@env";
 import global from "../global";
 import React, { useContext, useState } from "react";
 import {
   View,
   Text,
-  TextInput,
   ScrollView,
-  TouchableOpacity,
-  Picker,
-  Modal,
 } from "react-native";
 import MyCropsContext from "../context/CropContext";
 
@@ -23,46 +18,59 @@ import MyFarmsContext from "../context/FarmContext";
 import ModalModel from "./ModalModel";
 import ModalButton from "./ModalButton";
 import InputForm from "./InputForm";
+import * as FileSystem from 'expo-file-system';
+import { StorageAccessFramework } from 'expo-file-system';
+import * as Permissions from 'expo-permissions';
+import * as MediaLibrary from 'expo-media-library';
+import * as Sharing from 'expo-sharing';
 
 
-const ModalAddCrop = ({isModalOpenAddCrop, setIsModalOpenAddCrop}) => {
+const ModalAddCrop = ({ isModalOpenAddCrop, setIsModalOpenAddCrop }) => {
 
   const { CreateCrop } = useContext(MyCropsContext);
-  const [localError, setLocalError] = useState({"error": false, "message": ""});
+  const [localError, setLocalError] = useState({ "error": false, "message": "" });
 
-    const {
-      control,
-      handleSubmit,
-      reset,
-      formState: { errors },
-    } = useForm();
+  const {
+    control,
+    handleSubmit,
+    reset,
+    formState: { errors },
+  } = useForm();
 
-    const onSubmitAddCrop = async (data) =>{
-      data.idFarm = global.idFarm
-      const createCropResponse = await CreateCrop(data, data.arbustoCrop);
-      if(createCropResponse.data.error == true){
-        localError.error = true;
-        localError.message = createCropResponse.data.response;
-        return;
-      }
-      //save pdf
-      //end
-      setLocalError({"error": false, "message": ""});
-      reset();
-      setIsModalOpenAddCrop(false);
+  const onSubmitAddCrop = async (data) => {
+    data.idFarm = global.idFarm
+    const createCropResponse = await CreateCrop(data, data.arbustoCrop);
+    if (createCropResponse.data.error) {
+      setLocalError({ "error": true, "message": createCropResponse.data.response });
+      return;
     }
-  
-    console.log(errors)
-    return(
 
-      <ModalModel isModalOpen={isModalOpenAddCrop} setIsModalOpen={setIsModalOpenAddCrop}>
+    const base64Data = createCropResponse.data.dataBase64;
+    const fileName = data.nameCrop + "barcodes";
+
+    const picturesUri = StorageAccessFramework.getUriForDirectoryInRoot('Documents');
+    const permissions = await StorageAccessFramework.requestDirectoryPermissionsAsync(picturesUri);
+    if (permissions.granted) {
+      await StorageAccessFramework.createFileAsync(permissions.directoryUri, fileName, 'application/pdf')
+      .then(async (uri) => {
+        await FileSystem.writeAsStringAsync(uri, base64Data, { encoding: FileSystem.EncodingType.Base64 });
+      })
+    }
+
+    setLocalError({ "error": false, "message": "" });
+    reset();
+    setIsModalOpenAddCrop(false);
+  }
+  return (
+
+    <ModalModel isModalOpen={isModalOpenAddCrop} setIsModalOpen={setIsModalOpenAddCrop}>
       <Text style={tw`text-3xl font-bold text-black mt-5 mb-5`}>
         Agregar Cultivo
       </Text>
       <ScrollView style={tw`mt-2 w-full mb-5 pb-3`}>
         <View style={tw`w-full px-7`}>
-        <Text style={tw`text-16px pb-2 pt-1`}>Nombre del cultivo</Text>
-        <InputForm
+          <Text style={tw`text-16px pb-2 pt-1`}>Nombre del cultivo</Text>
+          <InputForm
             control={control}
             name="nameCrop"
             placeholder="Nombre"
@@ -83,10 +91,10 @@ const ModalAddCrop = ({isModalOpenAddCrop, setIsModalOpenAddCrop}) => {
             <Text style={tw`text-red-600 mb-2 text-center`}>
               Minimo 5 caracteres!
             </Text>
-          ): null  }
+          ) : null}
 
-        <Text style={tw`text-16px pb-2 pt-1`}>Descripción del cultivo</Text>
-        <InputForm
+          <Text style={tw`text-16px pb-2 pt-1`}>Descripción del cultivo</Text>
+          <InputForm
             control={control}
             name="descriptionCrop"
             placeholder="Descripcion"
@@ -107,10 +115,10 @@ const ModalAddCrop = ({isModalOpenAddCrop, setIsModalOpenAddCrop}) => {
             <Text style={tw`text-red-600 mb-2 text-center`}>
               Minimo 15 caracteres!
             </Text>
-          ): null  }
+          ) : null}
 
-        <Text style={tw`text-16px pb-2 pt-1`}>Cantidad de arbustos</Text>
-        <InputForm
+          <Text style={tw`text-16px pb-2 pt-1`}>Cantidad de arbustos</Text>
+          <InputForm
             control={control}
             name="arbustoCrop"
             placeholder="ej: 1000"
@@ -130,8 +138,8 @@ const ModalAddCrop = ({isModalOpenAddCrop, setIsModalOpenAddCrop}) => {
             <Text style={tw`text-red-600 mb-2 text-center`}>Maximo 10000!</Text>
           ) : null}
 
-        <Text style={tw`text-16px pb-2 pt-1`}>Variedad</Text>
-        <InputForm
+          <Text style={tw`text-16px pb-2 pt-1`}>Variedad</Text>
+          <InputForm
             control={control}
             name="coffeeVariety"
             placeholder="ej: Caturra"
@@ -146,10 +154,10 @@ const ModalAddCrop = ({isModalOpenAddCrop, setIsModalOpenAddCrop}) => {
             <Text style={tw`text-red-600 mb-2 text-center`}>
               No se permiten caracteres especiales!
             </Text>
-          ) : null}   
-           
-        <Text style={tw`text-16px pb-2 pt-1`}>Años del cultivo</Text>
-        <InputForm
+          ) : null}
+
+          <Text style={tw`text-16px pb-2 pt-1`}>Años del cultivo</Text>
+          <InputForm
             control={control}
             name="ageCrop"
             placeholder="ej: 2"
@@ -161,18 +169,18 @@ const ModalAddCrop = ({isModalOpenAddCrop, setIsModalOpenAddCrop}) => {
           />
           {errors.ageCrop?.type === "required" ? (
             <Text style={tw`text-red-600 mb-2 text-center`}>Campo requerido!</Text>
-          ) : null}  
+          ) : null}
 
           {localError.error ? (
             <Text style={tw`text-red-600 mb-2 text-center`}>{localError.message}</Text>
-          ) : null}  
-          <ModalButton text={"Confirmar"} onPress={handleSubmit(onSubmitAddCrop)} color={"#22C55E"}/>
-          <ModalButton text={"Cancelar"} onPress={() => {setIsModalOpenAddCrop(!setIsModalOpenAddCrop), reset()}} color={"rgba(220, 38, 38, 0.86)"}/>
+          ) : null}
+          <ModalButton text={"Confirmar"} onPress={handleSubmit(onSubmitAddCrop)} color={"#22C55E"} />
+          <ModalButton text={"Cancelar"} onPress={() => { setIsModalOpenAddCrop(!setIsModalOpenAddCrop), reset(), setLocalError({ "error": false, "message": "" }) }} color={"rgba(220, 38, 38, 0.86)"} />
         </View>
       </ScrollView>
-</ModalModel>
+    </ModalModel>
 
-    )
+  )
 }
 
 export default ModalAddCrop

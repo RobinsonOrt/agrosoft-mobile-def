@@ -42,6 +42,7 @@ const MyFarms = ({ navigation }) => {
     <SafeAreaProvider>
       <SafeAreaView style={styles.safeArea}>
         <SubHeader title={"Mis fincas"} />
+        <ScrollView style={tw`h-95%`} >
         <View style={styles.container}>
           <View style={tw`flex-row justify-between`}>
             <View style={tw``}>
@@ -70,7 +71,7 @@ const MyFarms = ({ navigation }) => {
               setIsModalOpenModifyFarmerInformation
             }
           />
-          <ScrollView style={tw`h-65% mt-10`} >
+          
             {
               farms.length > 0 ? (
                 farms.map((farm, index) => {
@@ -96,11 +97,9 @@ const MyFarms = ({ navigation }) => {
 
                 <Text style={tw`text-center text-gray-500`}>No se encontraron resultados</Text>
               </View>)}
-
-          </ScrollView>
-
           <Pagination maxPage={maxPage} sorters={sorters} GetElements={LoadFarms} />
         </View>
+        </ScrollView>
       </SafeAreaView>
     </SafeAreaProvider>
   );

@@ -28,11 +28,9 @@ const PickerSorter = ({ list, key1, key2, newList }) => {
                             
                         }else if(itemValue === '3' ){
                             newList(sortList(key2, list))
-                            
                         }
-                        console.log(itemValue)
                       }
-                        }
+                      }
                       style={customPickerStyles}
                       useNativeAndroidPickerStyle={false}
                       Icon={() => {

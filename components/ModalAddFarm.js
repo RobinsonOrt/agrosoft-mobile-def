@@ -164,8 +164,6 @@ export default function ModalAddFarm({ isModalOpenAddFarm, setIsModalOpenAddFarm
                   {errors.descriptionFarm && (
                     <Text style={tw`text-red-600 mb-5 w-65`}>Campo requerido , minimo 15 caracteres y maximo 50 caracteres</Text>
                   )}
-
-                  
                 <RNPickerSelect
                       placeholder={{ label: "País", value: "" }}
                       onValueChange={(itemValue) =>

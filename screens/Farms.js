@@ -73,6 +73,9 @@ export const styles = StyleSheet.create({
     fontSize: 18,
     marginBottom: 20,
   },
+  cardBush: {
+    backgroundColor: "red",
+  },
   safeArea: {
     flex: 1,
     paddingTop: 0,

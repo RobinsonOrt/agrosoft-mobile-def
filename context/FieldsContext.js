@@ -7,19 +7,19 @@ const MyFieldsContext = createContext();
 
 const MyFieldsProvider = ({ children }) => {
     const [fields, setFields] = useState([]);
-    const [field, setField] = useState({});
-    const [dataTypes, setDataTypes] = useState([]);
+    const [field, setField] = useState({idDataType : 0});
+    const [dataTypes, setDataTypes] = useState([{dataType:"", idDataType:0}]);
     const [sorters, setSorters] = useState({"sorter": "name_field", "order": "asc", "page": 0});
     const [maxPage, setMaxPage] = useState(0);
 
     const GetFields = async (idActivity) => {
-        const response = await axios.get(`${REACT_APP_API_URL}/getfields/${idActivity}/${sorters.sorter}/${sorters.order}/${sorters.page}`);
+        const response = await axios.get(`${REACT_APP_API_URL}/api/getfields/${idActivity}/${sorters.sorter}/${sorters.order}/${sorters.page}`);
         setFields(response.data.response);
         setMaxPage(response.data.maxPage);
     }
 
     const CreateField = async (data) => {
-        const response = await axios.post(`${REACT_APP_API_URL}/addfield`, data);
+        const response = await axios.post(`${REACT_APP_API_URL}/api/addfield`, data);
         sorters.sorter = "created_date";
         sorters.order = "desc";
         GetFields(data.idActivity);
@@ -27,24 +27,25 @@ const MyFieldsProvider = ({ children }) => {
     }
 
     const GetDataTypes = async () => {
-        const response = await axios.get(`${REACT_APP_API_URL}/datatypes`);
-        setDataTypes(response.data.response);
+        const response = await axios.get(`${REACT_APP_API_URL}/api/datatypes`);
+        //console.log(response.data.response);
+        setDataTypes(response.data);
     }
 
     const UpdateField = async (data) => {
-        const response = await axios.put(`${REACT_APP_API_URL}/updatefield`, data);
+        const response = await axios.put(`${REACT_APP_API_URL}/api/updatefield`, data);
         GetFields(global.idActivity);
         return response;
     }
 
     const DeleteField = async (idField) => {
-        const response = await axios.put(`${REACT_APP_API_URL}/deletefield/${idField}`);
+        const response = await axios.put(`${REACT_APP_API_URL}/api/deletefield/${idField}`);
         GetFields(global.idActivity);
         return response;
     }
 
     const FindFields = async (search, idActivity) => {
-        const response = await axios.get(`${REACT_APP_API_URL}/findfields/${idActivity}/${search}/0`);
+        const response = await axios.get(`${REACT_APP_API_URL}/api/findfields/${idActivity}/${search}/0`);
         setMaxPage(0);
         setFields(response.data.response);
     }

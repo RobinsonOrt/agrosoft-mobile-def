@@ -5,6 +5,21 @@ import RNPickerSelect from "react-native-picker-select";
 import { EvilIcons } from '@expo/vector-icons';
 
 const SorterComponent = ({ sorters, sorter, GetElements, firstParameter, secondParameter, thirdParameter }) => {
+  var itemsToShow = [];
+
+  if(sorter == "created_date"){
+    itemsToShow = [
+      { label: 'Recientes', value: '2' },
+      { label: 'Antiguos', value: '3' }
+    ]
+  }else{
+    itemsToShow = [
+      { label: 'A-Z', value: '0' },
+      { label: 'Z-A', value: '1' },
+      { label: 'Recientes', value: '2' },
+      { label: 'Antiguos', value: '3' }
+  ]
+  }
 
     return (
         <View style={tw`w-140px rounded-md shadow-2xl`}>
@@ -42,14 +57,8 @@ const SorterComponent = ({ sorters, sorter, GetElements, firstParameter, secondP
                           <View style={tw`mt-1`}><EvilIcons name="chevron-down" size={27} color="gray" /></View>
                         );
                       }}
-                      items={   
-                        [
-                            { label: 'A-Z', value: '0' },
-                            { label: 'Z-A', value: '1' },
-                            { label: 'Recientes', value: '2' },
-                            { label: 'Antiguos', value: '3' }
-                        ]
-                      }
+                      
+                      items={itemsToShow}
                 />
         </View>
     )
