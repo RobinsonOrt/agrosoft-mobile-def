@@ -13,7 +13,7 @@ import { useNavigate } from "react-router-native";
 import MyFarmsContext from "../context/FarmContext";
 import { Link } from "react-router-native";
 import { REACT_APP_API_URL, AGROSOFT_LINK } from "@env";
-import ModalInfoCrop from "../components/ModalInfoCrop";
+import ModalInfoEmployeeCrop from "../components/ModalInfoEmployeeCrop";
 
 export default function EmployeeShrubbery() {
   const { idFarm, setModalVisible, modalVisible, setIdCrop, idCrop } =
@@ -104,13 +104,19 @@ export default function EmployeeShrubbery() {
             </View>
           )}
         </ScrollView>
-        <ModalInfoCrop
+        <ModalInfoEmployeeCrop
           modalBody={
             <>
               <View>
-                <Text style={tw`text-center font-bold text-lg mb-5`}>ARBUSTO</Text>
-                <Text style={tw`text-start font-bold text-md mb-5`}>ID: {shrubberyId}</Text>
-                <Text style={tw`mb-5 text-jusitfy`}>Registro de revision de plagas y enfermedades</Text>
+                <Text style={tw`text-center font-bold text-lg mb-5`}>
+                  ARBUSTO
+                </Text>
+                <Text style={tw`text-start font-bold text-md mb-5`}>
+                  ID: {shrubberyId}
+                </Text>
+                <Text style={tw`mb-5 text-jusitfy`}>
+                  Registro de revision de plagas y enfermedades
+                </Text>
                 <TouchableOpacity style={tw`p-5 bg-cyan-400 rounded-lg mb-5`}>
                   <Text style={tw`text-white text-center`}>Revisiones</Text>
                 </TouchableOpacity>
