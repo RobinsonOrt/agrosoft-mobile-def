@@ -45,10 +45,11 @@ export default function EnterFarm({ navigation }) {
       <ScrollView style={tw`h-95%`} >
       <View style={tw`px-15px pv-5px`}>
 
-        <View style={tw`flex-row w-full rounded-xl mt-0 `}>
+      <View style={tw`flex-row w-full rounded-xl mt-0 `}>
           <View style={tw`p-5 pr-2 rounded-xl w-1/2`}>
             <TouchableOpacity style={tw`bg-green-500 w-full h-52px p-4 mt-5 rounded-xl`} onPress={() => navigation.navigate('Employee')}><Text style={tw`text-white text-center font-bold`}>Empleados</Text></TouchableOpacity>
-            <TouchableOpacity onPress={()=>{global.idActivity = "746d1762-ff62-44d9-8655-8af0570b13ed", navigation.navigate("Fields")}} style={tw`bg-green-500 w-full h-52px p-4 mt-5 rounded-xl`}><Text style={tw`text-white text-center font-bold`}>Actividades</Text></TouchableOpacity>
+
+            <TouchableOpacity style={tw`bg-green-500 w-full h-52px p-4 mt-5 rounded-xl`} onPress={() => navigation.navigate('ActivitiesMyFarms')}><Text style={tw`text-white text-center font-bold`}>Actividades</Text></TouchableOpacity>
 
           </View>
           <View style={tw`p-5 pl-2 rounded-xl w-1/2`}>
@@ -57,7 +58,7 @@ export default function EnterFarm({ navigation }) {
 
 
           </View>
-        </View>
+         </View> 
         <View style={tw`flex-row justify-between mb-3`}>
           <View style={tw``}>
             <SorterComponent sorters={sorters} sorter={"name_crop"} GetElements={GetCrops} firstParameter={farm.idFarm} />
