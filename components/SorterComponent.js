@@ -4,14 +4,22 @@ import { View, Text, Image, StyleSheet, ScrollView } from 'react-native'
 import RNPickerSelect from "react-native-picker-select";
 import { EvilIcons } from '@expo/vector-icons';
 
-const PickerSorter = ({ list, key1, key2, newList }) => {
-    
-    const {statePicker, setStatePicker} = useState(false);
-    
-    const sortList = (key, list, inverse) =>
-        inverse
-        ? [...list].sort((b, a) => (a[key].toUpperCase() > b[key].toUpperCase() ? 1 : a[key].toUpperCase() < b[key].toUpperCase() ? -1 : 0))
-        : [...list].sort((a, b) => (a[key].toUpperCase() > b[key].toUpperCase() ? 1 : a[key].toUpperCase() < b[key].toUpperCase() ? -1 : 0))
+const SorterComponent = ({ sorters, sorter, GetElements, firstParameter, secondParameter, thirdParameter }) => {
+  var itemsToShow = [];
+
+  if(sorter == "created_date"){
+    itemsToShow = [
+      { label: 'Recientes', value: '2' },
+      { label: 'Antiguos', value: '3' }
+    ]
+  }else{
+    itemsToShow = [
+      { label: 'A-Z', value: '0' },
+      { label: 'Z-A', value: '1' },
+      { label: 'Recientes', value: '2' },
+      { label: 'Antiguos', value: '3' }
+  ]
+  }
 
     return (
         <View style={tw`w-140px rounded-md shadow-2xl`}>
@@ -19,18 +27,29 @@ const PickerSorter = ({ list, key1, key2, newList }) => {
                       placeholder={{ label: "Ordenar por:", value: "" }}
                       onValueChange={(itemValue) => {
                         if(itemValue === '0' ){
-                            newList(sortList(key1, list))
+                            sorters.sorter = sorter;
+                            sorters.order = 'asc';
+                            sorters.page = 0;
+                            GetElements(firstParameter, secondParameter, thirdParameter)
                         }else if(itemValue === '1' ){
-                            newList(sortList(key1, list, true))
-
+                            sorters.sorter = sorter;
+                            sorters.order = 'desc';
+                            sorters.page = 0;
+                            GetElements(firstParameter, secondParameter, thirdParameter)
                         }else if(itemValue === '2' ){
-                            newList(sortList(key2, list, true))
-                            
+                            sorters.sorter = "created_date";
+                            sorters.order = 'desc';
+                            sorters.page = 0;
+                            GetElements(firstParameter, secondParameter, thirdParameter)
                         }else if(itemValue === '3' ){
-                            newList(sortList(key2, list))
+                            sorters.sorter = "created_date";
+                            sorters.order = 'asc';
+                            sorters.page = 0;
+                            GetElements(firstParameter, secondParameter, thirdParameter)
                         }
+                        console.log(itemValue)
                       }
-                      }
+                        }
                       style={customPickerStyles}
                       useNativeAndroidPickerStyle={false}
                       Icon={() => {
@@ -38,21 +57,15 @@ const PickerSorter = ({ list, key1, key2, newList }) => {
                           <View style={tw`mt-1`}><EvilIcons name="chevron-down" size={27} color="gray" /></View>
                         );
                       }}
-                      items={   
-                        [
-                            { label: 'A-Z', value: '0' },
-                            { label: 'Z-A', value: '1' },
-                            { label: 'Recientes', value: '2' },
-                            { label: 'Antiguos', value: '3' }
-                        ]
-                      }
+                      
+                      items={itemsToShow}
                 />
         </View>
     )
     
 }
 
-export default PickerSorter
+export default SorterComponent
 
 const customPickerStyles = StyleSheet.create({
     inputIOS: {

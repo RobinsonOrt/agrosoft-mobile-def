@@ -3,7 +3,7 @@ import tw from 'twrnc'
 import { TextInput, Image, View, StyleSheet } from 'react-native'
 
 
-const SearchByName = ({data, key, setData}) => {
+const SearchByName = ({data, valueKey, setData}) => {
 
   const {stateSearch, setStateSearch} = useState(false);
 

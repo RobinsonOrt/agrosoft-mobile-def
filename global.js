@@ -16,3 +16,9 @@ global.idEmployee = "";
 global.idLabor = "";
 
 global.identifier = "";
+
+global.idToDelete = "";
+
+global.idCrop = "";
+
+global.idActivity = "";
