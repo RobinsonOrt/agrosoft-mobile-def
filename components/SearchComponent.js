@@ -11,9 +11,11 @@ const SearchComponent = ({GetElements, GetOriginalElements, secondParameter, thi
   const [text , setText] = useState("");
 
     const searchFilterFunction = () =>{
+      console.log(secondParameter)
       if(text.length > 0){
         console.log(text)
         GetElements(text, secondParameter, thirdParameter)
+
       }
     }
     
@@ -37,7 +39,7 @@ const SearchComponent = ({GetElements, GetOriginalElements, secondParameter, thi
                 <Text style={tw`text-center text-white grow uppercase text-12px`}>Buscar</Text>
                 <AntDesign name="search1" size={24} color="black" />
             </TouchableOpacity>
-            <TouchableOpacity style={[tw`justify-between bg-red-600 items-center flex-row h-24px px-1 pr-1 rounded-7px`, styles.colorButton]} onPress={()=>{GetOriginalElements(secondParameter); setText("")}}  activeOpacity={0.6}>
+            <TouchableOpacity style={[tw`justify-between bg-red-600 items-center flex-row h-24px px-1 pr-1 rounded-7px`, styles.colorButton]} onPress={()=>{GetOriginalElements(secondParameter,thirdParameter); setText("")}}  activeOpacity={0.6}>
                 <Text style={tw`text-center text-white grow uppercase text-12px`}>Limpiar</Text>
                 <MaterialIcons name="cleaning-services" size={24} color="black" />
             </TouchableOpacity>

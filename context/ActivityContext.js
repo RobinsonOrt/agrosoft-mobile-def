@@ -12,33 +12,35 @@ const MyActivitiesProvider = ({ children }) => {
     const [maxPage, setMaxPage] = useState(0);
 
     const GetActivities = async (idActivityType, idFarm) => {
-        const response = await axios.get(`${REACT_APP_API_URL}/getactivities/${idActivityType}/${idFarm}/${sorters.sorter}/${sorters.order}/${sorters.page}`);
+        const response = await axios.get(`${REACT_APP_API_URL}/api/getactivities/${idActivityType}/${idFarm}/${sorters.sorter}/${sorters.order}/${sorters.page}`);
         setActivities(response.data.response);
         setMaxPage(response.data.maxPage);
     }
 
     const CreateActivity = async (data) => {
-        const response = await axios.post(`${REACT_APP_API_URL}/addactivity`, data);
+        const response = await axios.post(`${REACT_APP_API_URL}/api/addactivity`, data);
         sorters.sorter = "created_date";
         sorters.order = "desc";
-        GetActivities(data.idActivityType, data.idFarm);
+        GetActivities(global.idActivityType, data.idFarm);
         return response;
     }
 
     const UpdateActivity = async (data) => {
-        const response = await axios.put(`${REACT_APP_API_URL}/updateactivity`, data);
+        const response = await axios.put(`${REACT_APP_API_URL}/api/updateactivity`, data);
         GetActivities(data.idActivityType, global.idFarm);
         return response;
     }
 
     const DeleteActivity = async (idActivity) => {
-        const response = await axios.put(`${REACT_APP_API_URL}/deleteactivity/${idActivity}`);
+        const response = await axios.put(`${REACT_APP_API_URL}/api/deleteactivity/${idActivity}`);
         GetActivities(global.idActivityType, global.idFarm);
         return response;
     }
 
     const FindActivities = async (search, idActivityType, idFarm) => {
-        const response = await axios.get(`${REACT_APP_API_URL}/findactivities/${idActivityType}/${idFarm}/${search}/0`);
+        const response = await axios.get(`${REACT_APP_API_URL}/api/findactivities/${idActivityType}/${idFarm}/${search}/0`);
+        console.log(response)
+        console.log(idActivityType)
         setMaxPage(0);
         setActivities(response.data.response);
     }

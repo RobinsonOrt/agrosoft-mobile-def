@@ -32,6 +32,8 @@ export default function ModalModel({isModalOpen, setIsModalOpen, children}) {
     backgroundColor: "white",
     alignItems: "center",
     margin: 20,
+    borderRadius: 20,
+    
     borderRadius: 16,
     borderColor: "#205400",
     borderWidth: 0.5,
@@ -48,21 +50,18 @@ export default function ModalModel({isModalOpen, setIsModalOpen, children}) {
   const modalContent = {
     backgroundColor: "rgba(32, 84, 0, 0.12)",
     alignItems: "center",
-    borderRadius: 16,
-    borderColor: "#205400",
-    borderWidth: 0.5,
+    borderRadius: 20,
     paddingHorizontal: 10,
-    paddingVertical: 5,
   };
 
   return (
     <>
       <Modal visible={isModalOpen} transparent={true} animationType={"fade"} onRequestClose={() => setIsModalOpen(false)}
       >
-        <View style={[modalContainerStyle, tw`h-full`]}>
+        <View style={[modalContainerStyle, tw``]}>
           <View style={[modalStyle, tw`` ]}>
-            <View style={[modalContent, tw`w-full h-full`]}>
-              <View style={tw`w-full h-full items-center mt-5 mb-5 justify-center`}>
+            <View style={[modalContent, tw`w-full`]}>
+              <View style={tw`w-full items-center mt-5 mb-5 justify-center`}>
                   {children}             
               </View>
             </View>  
