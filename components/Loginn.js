@@ -7,6 +7,7 @@ import { Link, useNavigate } from "react-router-native";
 import { useForm } from "react-hook-form";
 import NetInfo from '@react-native-community/netinfo';
 import AuthContext from "../context/AuthContext";
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import {
   View,
   Text,
@@ -18,7 +19,7 @@ import ButtonForm from "./ButtonForm";
 
 export default function Loginn({ toggleOpenHome }) {
 
-  const {LoginUser, result} = useContext(AuthContext);
+  const {LoginUser, result, logged} = useContext(AuthContext);
 
   let navigate = useNavigate();
   const unsubscribe = NetInfo.addEventListener(state => {
@@ -51,8 +52,9 @@ export default function Loginn({ toggleOpenHome }) {
   console.log(errors)
 
   useEffect(() => {
-    console.log(global.idUser)
-    if(!global.idUser === undefined){
+    if(logged !== null){
+      global.idUser = logged;
+      console.log(logged)
       navigate("/userLoged");
     }
   }, []);
@@ -62,6 +64,11 @@ export default function Loginn({ toggleOpenHome }) {
     if(!loginresponse.data.error){
       global.jwToken = loginresponse.data.response;
       global.idUser = loginresponse.data.idUser;
+      try {
+        await AsyncStorage.setItem('idUser', loginresponse.data.idUser)
+      } catch (e) {
+        console.log("very error" + e)
+      }
       navigate("/userLoged");
     }else{
       setError(true);

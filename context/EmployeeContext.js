@@ -11,13 +11,17 @@ const MyEmployeesProvider = ({children}) => {
     const [error, setError] = useState(false);
     const [message, setMessage] = useState("");
     const [employee, setEmployee]= useState([]);
+    const [sorters, setSorters] = useState({"sorter": "name", "order": "asc", "page": 0});
+    const [maxPage, setMaxPage] = useState(0);
 
     const { LoadEmployeedFarms } = useContext(MyFarmsContext);
 
-    const LoadEmployees = async (sorter, order, page) => {
-        await axios.get(REACT_APP_API_URL + "/api/employees/"+ global.idFarm + "/" + sorter + "/" + order + "/" + page)
+    const LoadEmployees = async () => {
+        await axios.get(REACT_APP_API_URL + "/api/employees/"+ global.idFarm + "/" + sorters.sorter + "/" + sorters.order + "/" + sorters.page)
           .then(res => {
             setEmployees(res.data.response);
+            setMaxPage(res.data.maxPage);
+            console.log(res.data.response)
         })
     }
 
@@ -69,7 +73,11 @@ const MyEmployeesProvider = ({children}) => {
                 setEmployee,
                 ChangeLabor,
                 DeleteEmployee,
-                LeaveFarm
+                LeaveFarm,
+                sorters,
+                setSorters,
+                maxPage,
+                setMaxPage
             }}
         >
             {children}
