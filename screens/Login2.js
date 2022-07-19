@@ -49,10 +49,7 @@ export default function Login2() {
   console.log(errors)
 
   useEffect(() => {
-    console.log(global.idUser)
-    if(!global.idUser === undefined){
-      navigate("/userLoged");
-    }
+    console.log("global.idUser")
   }, []);
 
   const login = async (data) =>{
