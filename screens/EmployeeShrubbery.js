@@ -24,9 +24,8 @@ import actividades from "../assets/Actividades.png";
 import RNPickerSelect from "react-native-picker-select";
 import { EvilIcons } from "@expo/vector-icons";
 
-
 export default function EmployeeShrubbery({ navigation }) {
-  const { setModalVisible, idCrop } = useContext(MyFarmsContext);
+  const { idCrop, setModalVisible } = useContext(MyFarmsContext);
   let navigate = useNavigate();
 
   const [search, setSearch] = useState(false);
@@ -100,7 +99,6 @@ export default function EmployeeShrubbery({ navigation }) {
               </View>
             </View>
             <View style={tw`flex flex-col items-end flex-1`}>
-
               <View style={tw`w-140px rounded-md`}>
                 <RNPickerSelect
                   placeholder={{ label: "Ordenar por:", value: "" }}
@@ -162,8 +160,8 @@ export default function EmployeeShrubbery({ navigation }) {
                     <TouchableOpacity
                       style={tw`bg-green-600 p-2 flex-1 ml-2 rounded-lg flex flex-row items-center justify-around`}
                       onPress={() => {
-                        navigate(`/bushactivitys/${global.idFarm}`);
                         global.idCrop = item.idCoffeeBush;
+                        navigation.navigate(`BushActivitys`);
                       }}
                     >
                       <Text style={tw`text-white`}>Actividades</Text>
@@ -205,8 +203,8 @@ export default function EmployeeShrubbery({ navigation }) {
                   <TouchableOpacity
                     style={tw`bg-green-600 p-2 flex-1 ml-2 rounded-lg flex flex-row items-center justify-around`}
                     onPress={() => {
-                      navigation.navigate(`BushActivitys`);
                       global.idCrop = item.idCoffeeBush;
+                      navigation.navigate(`BushActivitys`);
                     }}
                   >
                     <Text style={tw`text-white`}>Actividades</Text>

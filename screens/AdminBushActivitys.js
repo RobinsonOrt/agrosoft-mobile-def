@@ -21,9 +21,7 @@ import enter from "../assets/Enter.png";
 import RNPickerSelect from "react-native-picker-select";
 import { EvilIcons } from "@expo/vector-icons";
 
-export default function BushActivitys({ navigation }) {
-  const { idFarm } = useParams();
-
+export default function AdminBushActivitys({ navigation }) {
   let navigate = useNavigate();
 
   const fetcher = (url) => axios.get(url).then((res) => res.data);
@@ -37,22 +35,17 @@ export default function BushActivitys({ navigation }) {
 
   const [pageIndex, setPageIndex] = useState(0);
   const { data: bushActivitys } = useSWR(
-    `${REACT_APP_API_URL}/api/activitiesbyemployee/${global.idFarm}/${
-      global.idUser
-    }/${1}/${orderBushActivitys[0]}/${orderBushActivitys[1]}/${pageIndex}`,
+    `${REACT_APP_API_URL}/api/getactivities/${1}/${global.idFarm}/${
+      orderBushActivitys[0]
+    }/${orderBushActivitys[1]}/${pageIndex}`,
     fetcher
   );
 
-  const results = !searchWord
-    ? bushActivitys?.response
-    : bushActivitys?.response
-        ?.map((item) => item)
-        .filter((item) =>
-          item.nameActivity
-            .replace(/\s+/g, "")
-            .toLowerCase()
-            .includes(searchWord.replace(/\s+/g, "").toLowerCase())
-        );
+  const { data: searchBushActivitys } = useSWR(
+    search &&
+      `${REACT_APP_API_URL}/api/findactivities/${1}/${idFarm}/${searchWord}/${pageIndex}`,
+    fetcher
+  );
 
   const noData =
     bushActivitys?.maxPage == null || bushActivitys?.maxPage == pageIndex;
@@ -127,8 +120,43 @@ export default function BushActivitys({ navigation }) {
               />
             </View>
           </View>
-          {results?.length > 0 ? (
-            results?.map((item, index) => (
+          {!search ? (
+            bushActivitys?.response?.length > 0 ? (
+              bushActivitys?.response?.map((item, index) => (
+                <View key={index} style={tw`bg-[#205400]/10 rounded-md my-6`}>
+                  <View
+                    style={tw`p-5 flex items-center border-b border-[#205400]/10`}
+                  >
+                    <Text style={tw`font-bold text-lg`}>
+                      {item.nameActivity}
+                    </Text>
+                  </View>
+                  <View>
+                    <Text style={tw`text-center mt-5`}>
+                      {item.descriptionActivity}
+                    </Text>
+                  </View>
+                  <View style={tw`flex flex-row justify-between p-5`}>
+                    <TouchableOpacity
+                      style={tw`bg-green-400 p-2 flex-1 mr-2 rounded-lg flex flex-row items-center justify-evenly`}
+                      onPress={() => {
+                        global.idActivity = item.idActivity;
+                        navigation.navigate(`CropsRecords`);
+                      }}
+                    >
+                      <Text style={tw`text-white text-center`}>Ingresar</Text>
+                      <Image style={tw`w-4 h-4`} source={enter} />
+                    </TouchableOpacity>
+                  </View>
+                </View>
+              ))
+            ) : (
+              <View style={tw`text-center w-full`}>
+                <Text>No se encontraron datos</Text>
+              </View>
+            )
+          ) : searchBushActivitys?.response?.length > 0 ? (
+            searchBushActivitys?.response?.map((item, index) => (
               <View key={index} style={tw`bg-[#205400]/10 rounded-md my-6`}>
                 <View
                   style={tw`p-5 flex items-center border-b border-[#205400]/10`}
@@ -144,7 +172,8 @@ export default function BushActivitys({ navigation }) {
                   <TouchableOpacity
                     style={tw`bg-green-400 p-2 flex-1 mr-2 rounded-lg flex flex-row items-center justify-evenly`}
                     onPress={() => {
-                      navigate(`/cropsrecords/${item.idActivity}`);
+                      global.idActivity = item.idActivity;
+                      navigation.navigate(`CropsRecords`);
                     }}
                     // onPress={() => {
                     //   setModalVisible(true);

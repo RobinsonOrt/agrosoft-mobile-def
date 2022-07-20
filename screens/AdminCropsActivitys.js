@@ -1,51 +1,56 @@
+import global from "../global";
 import React, { useState } from "react";
 import {
   ScrollView,
   TouchableOpacity,
   View,
   Text,
-  Image,
-  TextInput,
   StyleSheet,
+  TextInput,
 } from "react-native";
 import { SafeAreaProvider, SafeAreaView } from "react-native-safe-area-context";
 import SubHeader from "../components/SubHeader";
 import tw from "twrnc";
 import axios from "axios";
-import global from "../global";
 import useSWR from "swr";
 import { useBackHandler } from "@react-native-community/hooks";
 import { useNavigate, useParams } from "react-router-native";
 import { REACT_APP_API_URL } from "@env";
-import enter from "../assets/Enter.png";
 import RNPickerSelect from "react-native-picker-select";
 import { EvilIcons } from "@expo/vector-icons";
 
-export default function BushActivitys({ navigation }) {
-  const { idFarm } = useParams();
-
+export default function AdminCropsActivitys({navigation}) {
   let navigate = useNavigate();
 
   const fetcher = (url) => axios.get(url).then((res) => res.data);
 
   const [search, setSearch] = useState(false);
   const [searchWord, setSearchWord] = useState("");
-  const [orderBushActivitys, setOrderBushActivitys] = useState([
+  const [orderCropActivitys, setOrderCropActivitys] = useState([
     "name_activity",
     "asc",
   ]);
-
   const [pageIndex, setPageIndex] = useState(0);
-  const { data: bushActivitys } = useSWR(
-    `${REACT_APP_API_URL}/api/activitiesbyemployee/${global.idFarm}/${
-      global.idUser
-    }/${1}/${orderBushActivitys[0]}/${orderBushActivitys[1]}/${pageIndex}`,
+
+  const { data: cropActivitys } = useSWR(
+    `${REACT_APP_API_URL}/api/getactivities/${2}/${global.idFarm}/${
+      orderCropActivitys[0]
+    }/${orderCropActivitys[1]}/${pageIndex}`,
     fetcher
   );
 
+  const noData =
+    cropActivitys?.maxPage == null || cropActivitys?.maxPage == pageIndex;
+  const pageLength = cropActivitys?.maxPage + 1;
+
+  useBackHandler(() => {
+    navigation.goBack();
+    return true;
+  });
+
   const results = !searchWord
-    ? bushActivitys?.response
-    : bushActivitys?.response
+    ? cropActivitys?.response
+    : cropActivitys?.response
         ?.map((item) => item)
         .filter((item) =>
           item.nameActivity
@@ -54,22 +59,13 @@ export default function BushActivitys({ navigation }) {
             .includes(searchWord.replace(/\s+/g, "").toLowerCase())
         );
 
-  const noData =
-    bushActivitys?.maxPage == null || bushActivitys?.maxPage == pageIndex;
-  const pageLength = bushActivitys?.maxPage + 1;
-
-  useBackHandler(() => {
-    navigation.goBack();
-    return true;
-  });
-
   return (
     <SafeAreaProvider>
       <SafeAreaView style={tw`mt-0 pt-0 flex`}>
         <SubHeader title={"Actividades"} />
         <ScrollView contentContainerStyle={tw`py-5 pb-40 px-5`}>
           <View style={tw`flex my-5 flex-row justify-between`}>
-            <View>
+            <View style={tw` flex-1`}>
               <TextInput
                 onChangeText={setSearchWord}
                 value={searchWord}
@@ -99,14 +95,14 @@ export default function BushActivitys({ navigation }) {
                 </TouchableOpacity>
               </View>
             </View>
-            <View style={tw`w-140px rounded-md`}>
+            <View style={tw`flex flex-col items-end flex-1`}>
               <RNPickerSelect
                 placeholder={{ label: "Ordenar por:", value: "" }}
                 onValueChange={(itemValue) => {
                   const itemsObj = Object.values(itemValue);
-                  setOrderBushActivitys([
-                    (orderBushActivitys[0] = itemsObj[0]),
-                    (orderBushActivitys[1] = itemsObj[1]),
+                  setOrderCropActivitys([
+                    (orderCropActivitys[0] = itemsObj[0]),
+                    (orderCropActivitys[1] = itemsObj[1]),
                   ]);
                 }}
                 style={customPickerStyles}
@@ -142,9 +138,10 @@ export default function BushActivitys({ navigation }) {
                 </View>
                 <View style={tw`flex flex-row justify-between p-5`}>
                   <TouchableOpacity
-                    style={tw`bg-green-400 p-2 flex-1 mr-2 rounded-lg flex flex-row items-center justify-evenly`}
+                    style={tw`bg-green-400 p-2 flex-1 mr-2 rounded-lg`}
                     onPress={() => {
-                      navigate(`/cropsrecords/${item.idActivity}`);
+                      global.idActivity = item.idActivity;
+                      navigation.navigate(`CropsRecords`);
                     }}
                     // onPress={() => {
                     //   setModalVisible(true);
@@ -152,7 +149,6 @@ export default function BushActivitys({ navigation }) {
                     // }}
                   >
                     <Text style={tw`text-white text-center`}>Ingresar</Text>
-                    <Image style={tw`w-4 h-4`} source={enter} />
                   </TouchableOpacity>
                 </View>
               </View>
