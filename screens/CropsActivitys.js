@@ -1,6 +1,13 @@
 import global from "../global";
 import React, { useState } from "react";
-import { ScrollView, TouchableOpacity, View, Text } from "react-native";
+import {
+  ScrollView,
+  TouchableOpacity,
+  View,
+  Text,
+  StyleSheet,
+  TextInput,
+} from "react-native";
 import { SafeAreaProvider, SafeAreaView } from "react-native-safe-area-context";
 import CleanButton from "../components/CleanButton";
 import PickerSorter from "../components/PickerSorter";
@@ -19,7 +26,9 @@ export default function CropsActivitys({navigation}) {
   let navigate = useNavigate();
 
   const fetcher = (url) => axios.get(url).then((res) => res.data);
-
+  
+  const [search, setSearch] = useState(false);
+  const [searchWord, setSearchWord] = useState("");
   const [orderCropActivitys, setOrderCropActivitys] = useState([
     "name_activity",
     "asc",

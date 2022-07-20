@@ -7,6 +7,7 @@ import {
   Text,
   TextInput,
   Button,
+  StyleSheet,
 } from "react-native";
 import { SafeAreaProvider, SafeAreaView } from "react-native-safe-area-context";
 import CleanButton from "../components/CleanButton";
@@ -23,6 +24,8 @@ import { Link } from "react-router-native";
 import { REACT_APP_API_URL, AGROSOFT_LINK } from "@env";
 import ModalInfoEmployeeCrop from "../components/ModalInfoEmployeeCrop";
 import DatePicker from "react-native-datepicker";
+import RNPickerSelect from "react-native-picker-select";
+import { EvilIcons } from "@expo/vector-icons";
 
 export default function CropsRecords({ navigation }) {
   const {
@@ -72,20 +75,33 @@ export default function CropsRecords({ navigation }) {
       <SafeAreaView style={tw`mt-0 pt-0 flex`}>
         <SubHeader title={"Registros"} />
         <ScrollView contentContainerStyle={tw`py-5 pb-40 px-5`}>
-          <View style={tw`flex my-5 flex-row justify-between`}>
-            <View style={tw` flex-1`}>
-              <SearchByName
-              //data={farms} key="nameFarm" setData={setFilter}
-              />
-              <CleanButton />
-            </View>
-            <View style={tw`flex flex-col items-end flex-1`}>
-              <PickerSorter
-              //list={data}
-              //key1="nameFarm"
-              //key2="createdDate"
-              //newList={setFilter}
-              />
+          <View style={tw`flex my-5 flex-row w-full justify-between`}>
+            <View style={tw`flex flex-row items-center justify-between w-full`}>
+              <View>
+                <RNPickerSelect
+                  placeholder={{ label: "Ordenar por:", value: "" }}
+                  onValueChange={(itemValue) => {
+                    const itemsObj = Object.values(itemValue);
+                    setOrderCropRecords([
+                      (orderCropRecords[0] = itemsObj[0]),
+                      (orderCropRecords[1] = itemsObj[1]),
+                    ]);
+                  }}
+                  style={customPickerStyles}
+                  useNativeAndroidPickerStyle={false}
+                  Icon={() => {
+                    return (
+                      <View style={tw`mt-1`}>
+                        <EvilIcons name="chevron-down" size={27} color="gray" />
+                      </View>
+                    );
+                  }}
+                  items={[
+                    { label: "Recientes", value: ["created_date", "asc"] },
+                    { label: "Antiguos", value: ["created_date", "desc"] },
+                  ]}
+                />
+              </View>
               <TouchableOpacity
                 style={tw`p-2 bg-green-500 mt-1 rounded-md`}
                 onPress={() => {
@@ -322,3 +338,47 @@ export default function CropsRecords({ navigation }) {
     </SafeAreaProvider>
   );
 }
+
+export const customPickerStyles = StyleSheet.create({
+  inputIOS: {
+    fontSize: 16,
+    paddingHorizontal: 10,
+    paddingVertical: 6,
+    borderWidth: 1,
+    borderColor: "rgba(229, 231, 235, 1)",
+    borderRadius: 7,
+    color: "rgba(156, 163, 175, 1)",
+    backgroundColor: "white",
+    paddingRight: 30,
+    width: 140,
+    height: 30,
+  },
+  inputAndroid: {
+    fontSize: 14,
+    paddingHorizontal: 10,
+    paddingVertical: 6,
+    borderWidth: 1,
+    borderColor: "rgba(229, 231, 235, 1)",
+    borderRadius: 7,
+    color: "rgba(156, 163, 175, 1)",
+    backgroundColor: "white",
+    paddingRight: 30,
+    width: 140,
+    height: 30,
+
+    // to ensure the text is never behind the icon
+  },
+  inputWeb: {
+    fontSize: 16,
+    paddingHorizontal: 10,
+    paddingVertical: 6,
+    borderWidth: 1,
+    borderColor: "rgba(229, 231, 235, 1)",
+    borderRadius: 9,
+    color: "rgba(156, 163, 175, 1)",
+    backgroundColor: "white",
+    paddingRight: 30,
+    width: 140,
+    height: 30,
+  },
+});
