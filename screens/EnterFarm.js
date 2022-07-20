@@ -1,6 +1,12 @@
 import global from "../global";
 import React, { useState, useEffect, useContext } from "react";
-import { View, Text, TextInput, TouchableOpacity, ScrollView } from "react-native";
+import {
+  View,
+  Text,
+  TextInput,
+  TouchableOpacity,
+  ScrollView,
+} from "react-native";
 import tw from "twrnc";
 import { useBackHandler } from "@react-native-community/hooks";
 import MyFarmsContext from "../context/FarmContext";
@@ -16,24 +22,33 @@ import Pagination from "../components/Pagination";
 import SorterComponent from "../components/SorterComponent";
 import SearchComponent from "../components/SearchComponent";
 import ModalInfoCrop from "../components/ModalInfoCrop";
-
-
+import { Link, useNavigate } from "react-router-native";
 
 export default function EnterFarm({ navigation }) {
-
   const [isModalOpenAddCrop, setIsModalOpenAddCrop] = useState(false);
   const [isModalOpenModifyCrop, setIsModalOpenModifyCrop] = useState(false);
   const [isModalOpenInfoCrop, setIsModalOpenInfoCrop] = useState(false);
 
-  const [isModalOpenDelete, setIsModalOpenDelete ] = useState(false);
+  const [isModalOpenDelete, setIsModalOpenDelete] = useState(false);
 
-  const { farm } = useContext(MyFarmsContext);
-  const { crops, GetCrops, FindCrops, maxPage, sorters, setCrop, DeleteCrop, GetCrop } = useContext(MyCropsContext);
+  const { farm, setIdFarm } = useContext(MyFarmsContext);
+  const {
+    crops,
+    GetCrops,
+    FindCrops,
+    maxPage,
+    sorters,
+    setCrop,
+    DeleteCrop,
+    GetCrop,
+  } = useContext(MyCropsContext);
+
+  let navigate = useNavigate();
 
   useBackHandler(() => {
     navigation.goBack();
     return true;
-  })
+  });
 
   useEffect(() => {
     GetCrops(global.idFarm);
@@ -67,60 +82,132 @@ export default function EnterFarm({ navigation }) {
          </View> 
         
 
-        <ModalAddCrop
-          isModalOpenAddCrop={isModalOpenAddCrop}
-          setIsModalOpenAddCrop={setIsModalOpenAddCrop}
-        />
-        
-        <ModalModifyCrop 
-            isModalOpenModifyCrop={isModalOpenModifyCrop}
-            setIsModalOpenModifyCrop={setIsModalOpenModifyCrop}
-            />
 
-        <ModalInfoCrop 
-            isModalOpenInfoCrop={isModalOpenInfoCrop}
-            setIsModalOpenInfoCrop={setIsModalOpenInfoCrop}
-            />            
-
-        <ModalDelete
-          isModalOpenDelete={isModalOpenDelete}
-          setIsModalOpenDelete={setIsModalOpenDelete}
-          DeleteFunction={DeleteCrop}
+          <ModalAddCrop
+            isModalOpenAddCrop={isModalOpenAddCrop}
+            setIsModalOpenAddCrop={setIsModalOpenAddCrop}
           />
 
-        <View style={[tw`rounded-xl mx-5 border`, { backgroundColor: "rgba(32, 84, 0, 0.05)", borderColor: "rgba(32, 84, 0, 0.39)" }]}>
-          <View style={[tw`h-50px items-center flex-row rounded-t-lg`, { backgroundColor: "rgba(32, 84, 0, 0.15)" }]}><Text style={tw`text-center grow text-black text-18px font-bold uppercase`}>Cultivos</Text></View>
-          {crops.length > 0 ? (crops.map((crop, index) => {
-            return (
+          <ModalModifyCrop
+            isModalOpenModifyCrop={isModalOpenModifyCrop}
+            setIsModalOpenModifyCrop={setIsModalOpenModifyCrop}
+          />
 
-              <Accordion name={crop.nameCrop} key={index} options={
-                <View style={[tw`border-t`, { borderColor: "rgba(32, 84, 0, 0.39)" }]}>
-                  <View style={tw`flex-row justify-between px-3 py-4`}>
+          <ModalInfoCrop
+            isModalOpenInfoCrop={isModalOpenInfoCrop}
+            setIsModalOpenInfoCrop={setIsModalOpenInfoCrop}
+          />
 
-                    <CartButtonCrop text={"Consultar"} onPress={() => {GetCrop(crop.idCrop), setIsModalOpenInfoCrop(!isModalOpenInfoCrop)}} color={"rgba(34, 158, 197, 1)"} />
-                    <CartButtonCrop text={"Ingresar"} onPress={() => {global.idCrop = crop.idCrop, setCrop(crop); navigation.navigate("CoffeeBush")}} color={"#22C55E"} />
+          <ModalDelete
+            isModalOpenDelete={isModalOpenDelete}
+            setIsModalOpenDelete={setIsModalOpenDelete}
+            DeleteFunction={DeleteCrop}
+          />
 
-                    <CartButtonCrop text={"Actividades"} /*onPress={() => {global.idFarm = farm.idFarm; setFarm(farm); navigation.navigate("EnterFarm")}}*/ color={"rgba(32, 84, 0, 0.81)"} />
-                  </View>
-                  <View style={tw`flex-row justify-center px-3 py-4`}>
-                    <View style={tw`mr-1`}>
-                      <CartButtonCrop text={"Editar"} onPress={() => {setIsModalOpenModifyCrop(!isModalOpenModifyCrop); setCrop(crop)}} color={"rgba(234, 179, 8, 1)"} />
-                    </View>
-                    <View style={tw`ml-1`}>
-
-                      <CartButtonCrop text={"Eliminar"} onPress={() => {global.idToDelete = crop.idCrop, setIsModalOpenDelete(!isModalOpenDelete)}} color={"rgba(239, 68, 68, 1)"} />
-
-                    </View>
-                  </View>
-                </View>
-              } />
-            )
-          })) : (<Text style={tw`text-center text-gray-500 my-5`}>No se encontraron resultados</Text>)}
-
-
-          <Pagination maxPage={maxPage} sorters={sorters} GetElements={GetCrops} firstParameter={farm.idFarm} />
+          <View
+            style={[
+              tw`rounded-xl mx-5 border`,
+              {
+                backgroundColor: "rgba(32, 84, 0, 0.05)",
+                borderColor: "rgba(32, 84, 0, 0.39)",
+              },
+            ]}
+          >
+            <View
+              style={[
+                tw`h-50px items-center flex-row rounded-t-lg`,
+                { backgroundColor: "rgba(32, 84, 0, 0.15)" },
+              ]}
+            >
+              <Text
+                style={tw`text-center grow text-black text-18px font-bold uppercase`}
+              >
+                Cultivos
+              </Text>
+            </View>
+            {crops.length > 0 ? (
+              crops.map((crop, index) => {
+                return (
+                  <Accordion
+                    name={crop.nameCrop}
+                    key={index}
+                    options={
+                      <View
+                        style={[
+                          tw`border-t`,
+                          { borderColor: "rgba(32, 84, 0, 0.39)" },
+                        ]}
+                      >
+                        <View style={tw`flex-row justify-between px-3 py-4`}>
+                          <CartButtonCrop
+                            text={"Consultar"}
+                            onPress={() => {
+                              GetCrop(crop.idCrop),
+                                setIsModalOpenInfoCrop(!isModalOpenInfoCrop);
+                            }}
+                            color={"rgba(34, 158, 197, 1)"}
+                          />
+                          <CartButtonCrop
+                            text={"Ingresar"}
+                            onPress={() => {
+                              (global.idCrop = crop.idCrop), setCrop(crop);
+                              navigation.navigate("CoffeeBush");
+                              global.idFarm = crop.idFarm;
+                            }}
+                            color={"#22C55E"}
+                          />
+                          <CartButtonCrop
+                            text={"Actividades"}
+                            onPress={() => {
+                              navigate(`/cropsactivitys/${crop.idFarm}`);
+                              global.idCrop = crop.idCrop;
+                              global.idFarm = crop.idFarm;
+                            }}
+                            color={"rgba(32, 84, 0, 0.81)"}
+                          />
+                        </View>
+                        <View style={tw`flex-row justify-center px-3 py-4`}>
+                          <View style={tw`mr-1`}>
+                            <CartButtonCrop
+                              text={"Editar"}
+                              onPress={() => {
+                                setIsModalOpenModifyCrop(
+                                  !isModalOpenModifyCrop
+                                );
+                                setCrop(crop);
+                              }}
+                              color={"rgba(234, 179, 8, 1)"}
+                            />
+                          </View>
+                          <View style={tw`ml-1`}>
+                            <CartButtonCrop
+                              text={"Eliminar"}
+                              onPress={() => {
+                                (global.idToDelete = crop.idCrop),
+                                  setIsModalOpenDelete(!isModalOpenDelete);
+                              }}
+                              color={"rgba(239, 68, 68, 1)"}
+                            />
+                          </View>
+                        </View>
+                      </View>
+                    }
+                  />
+                );
+              })
+            ) : (
+              <Text style={tw`text-center text-gray-500 my-5`}>
+                No se encontraron resultados
+              </Text>
+            )}
+            <Pagination
+              maxPage={maxPage}
+              sorters={sorters}
+              GetElements={GetCrops}
+              firstParameter={farm.idFarm}
+            />
+          </View>
         </View>
-      </View>
       </ScrollView>
     </View>
   );
