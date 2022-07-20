@@ -6,6 +6,7 @@ const AuthContext = createContext();
 
 const AuthProvider = ({ children }) => {
   const [result, setResult] = useState();
+  const [logged, setLogged] = useState(null);
 
   const RecoveryPassword = async (data) => {
     data.link = (AGROSOFT_LINK + "/newpassword/?token=")
@@ -19,6 +20,10 @@ const AuthProvider = ({ children }) => {
     const user = { "email": data.email.toLowerCase(), "password": data.password }
     const loginResponse = await axios.post(REACT_APP_API_URL + "/api/login", user)
     setResult(loginResponse)
+    console.log(loginResponse.data)
+    if (!loginResponse.data.error) {
+      setLogged(loginResponse.data.idUser)
+    }
     return loginResponse
   };
 
@@ -28,6 +33,7 @@ const AuthProvider = ({ children }) => {
     global.jwToken = "";
     global.urlConnected = "";
     await setResult({ data: { error: true, message: "Logout" } });
+    setLogged(null);
   }
 
 
@@ -38,7 +44,8 @@ const AuthProvider = ({ children }) => {
         result,
         setResult,
         RecoveryPassword,
-        LogOut
+        LogOut,
+        logged,
       }}
     >
       {children}
