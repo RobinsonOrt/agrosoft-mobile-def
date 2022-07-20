@@ -31,14 +31,18 @@ export default function EmployeeShrubbery() {
   ]);
 
   const [shrubberyId, setShrubberyId] = useState(null);
+  const [pageIndex, setPageIndex] = useState(0);
 
   const { data: employeeShrubbery } = useSWR(
-    `${REACT_APP_API_URL}/api/coffeebush/${idCrop}/${
-      employeeShrubberyOrder[0]
-    }/${employeeShrubberyOrder[1]}/${0}`,
+    `${REACT_APP_API_URL}/api/coffeebush/${idCrop}/${employeeShrubberyOrder[0]}/${employeeShrubberyOrder[1]}/${pageIndex}`,
     fetcher
   );
 
+  const noData =
+    employeeShrubbery?.maxPage == null ||
+    employeeShrubbery?.maxPage == pageIndex;
+  const pageLength = employeeShrubbery?.maxPage + 1;
+  
   useBackHandler(() => {
     console.log("back");
     navigate("/employeecrops");
@@ -112,6 +116,39 @@ export default function EmployeeShrubbery() {
               <Text>No se encontraron datos</Text>
             </View>
           )}
+          <View style={tw`flex flex-row items-center justify-center mt-5`}>
+            <TouchableOpacity
+              style={tw`bg-green-500 p-2 rounded-md mr-3 ${
+                pageIndex <= 0 ? "hidden" : ""
+              }`}
+              onPress={() => {
+                setPageIndex(pageIndex - 1);
+              }}
+            >
+              <Text style={tw`text-white text-lg`}>Volver</Text>
+            </TouchableOpacity>
+            {Array.from({ length: pageLength }).map((_, i) => (
+              <TouchableOpacity
+                key={i}
+                style={tw`bg-gray-300 w-10 h-10 flex items-center justify-center ${
+                  i == pageIndex ? "bg-gray-400" : ""
+                }`}
+                onPress={() => setPageIndex(i)}
+              >
+                <Text style={tw`text-lg font-normal`}>{i + 1}</Text>
+              </TouchableOpacity>
+            ))}
+            <TouchableOpacity
+              style={tw`bg-green-500 p-2 rounded-md ml-3 ${
+                noData ? "hidden" : ""
+              }`}
+              onPress={() => {
+                setPageIndex(pageIndex + 1);
+              }}
+            >
+              <Text style={tw`text-white text-lg`}>Siguiente</Text>
+            </TouchableOpacity>
+          </View>
         </ScrollView>
         <ModalInfoEmployeeCrop
           modalBody={
