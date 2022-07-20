@@ -93,7 +93,7 @@ export default class ClassModalAddCropUser extends Component{
     }
 
     renderCropsToSet(){
-        return this.state.data.map((item, key) => {
+        return (this.state.data.length > 0) ? ( this.state.data.map((item, key) => {
             return(
                 <TouchableOpacity style={tw`flex-row m-2 items-center`} key={key} onPress={()=>this.onChecked(item.key.idCrop)}>
                     <Checkbox
@@ -104,7 +104,9 @@ export default class ClassModalAddCropUser extends Component{
                     <Text style={tw`content-center w-full uppercase`}>{item.key.nameCrop}</Text>
                 </TouchableOpacity>
             )
-        })
+        })) : (<Text style={tw`text-center text-gray-500 my-5`}>
+        No se encontraron registros
+      </Text>)
     }
 
     render(){

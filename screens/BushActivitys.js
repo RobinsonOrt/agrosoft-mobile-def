@@ -7,6 +7,7 @@ import SearchByName from "../components/SearchByName";
 import SubHeader from "../components/SubHeader";
 import tw from "twrnc";
 import axios from "axios";
+import global from "../global";
 import useSWR from "swr";
 import { useBackHandler } from "@react-native-community/hooks";
 import { useNavigate, useParams } from "react-router-native";
@@ -14,7 +15,7 @@ import { REACT_APP_API_URL } from "@env";
 import enter from "../assets/Enter.png";
 import actividades from "../assets/Actividades.png";
 
-export default function BushActivitys() {
+export default function BushActivitys({navigation}) {
   const { idFarm } = useParams();
 
   let navigate = useNavigate();
@@ -28,7 +29,7 @@ export default function BushActivitys() {
 
   const [pageIndex, setPageIndex] = useState(0);
   const { data: bushActivitys } = useSWR(
-    `${REACT_APP_API_URL}/api/getactivities/${1}/${idFarm}/${
+    `${REACT_APP_API_URL}/api/activitiesbyemployee/${global.idFarm}/${global.idUser}/${1}/${
       orderBushActivitys[0]
     }/${orderBushActivitys[1]}/${pageIndex}`,
     fetcher
@@ -39,8 +40,7 @@ export default function BushActivitys() {
   const pageLength = bushActivitys?.maxPage + 1;
 
   useBackHandler(() => {
-    console.log("back");
-    navigate("/");
+    navigation.goBack();
     return true;
   });
 
@@ -90,7 +90,8 @@ export default function BushActivitys() {
                   <TouchableOpacity
                     style={tw`bg-green-400 p-2 flex-1 mr-2 rounded-lg flex flex-row items-center justify-evenly`}
                     onPress={() => {
-                      navigate(`/cropsrecords/${item.idActivity}`);
+                      global.idActivity = item.idActivity;
+                      navigation.navigate(`CropsRecords`);
                     }}
                     // onPress={() => {
                     //   setModalVisible(true);

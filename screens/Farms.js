@@ -73,22 +73,17 @@ export default function Farms({ navigation }) {
                   id={farm.idFarm}
                   key={index}
                 >
-                  <Link
-                    style={tw`flex-1`}
-                    to="/employeecrops"
-                    onPress={() => {
-                      setIdFarm(farm.idFarm);
-                    }}
-                  >
+                  
                     <CartButton
                       text={"Ingresar"}
                       onPress={() => {
                         setIdFarm(farm.idFarm);
+                        navigation.navigate("EmployeeCrops");
                       }}
                       color={"#22C55E"}
                       image={Enter}
                     />
-                  </Link>
+                  
                   <CartButton
                     text={"Abandonar"}
                     // onPress={() => {

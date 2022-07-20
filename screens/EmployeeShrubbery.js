@@ -18,7 +18,7 @@ import global from "../global";
 import enter from "../assets/Enter.png";
 import actividades from "../assets/Actividades.png";
 
-export default function EmployeeShrubbery() {
+export default function EmployeeShrubbery({ navigation }) {
   const { idFarm, setModalVisible, modalVisible, setIdCrop, idCrop } =
     useContext(MyFarmsContext);
   let navigate = useNavigate();
@@ -44,8 +44,7 @@ export default function EmployeeShrubbery() {
   const pageLength = employeeShrubbery?.maxPage + 1;
   
   useBackHandler(() => {
-    console.log("back");
-    navigate("/employeecrops");
+    navigation.goBack();
     return true;
   });
 
@@ -67,10 +66,10 @@ export default function EmployeeShrubbery() {
               //key1="nameFarm"
               //key2="createdDate"
               //newList={setFilter}
-              />
+              />{/* 
               <TouchableOpacity style={tw`p-2 bg-green-500 mt-1 rounded-md`}>
                 <Text style={tw`text-white`}>Descargar códigos de barras</Text>
-              </TouchableOpacity>
+              </TouchableOpacity> */}
             </View>
           </View>
           {employeeShrubbery?.response?.length > 0 ? (
@@ -101,7 +100,7 @@ export default function EmployeeShrubbery() {
                   <TouchableOpacity
                     style={tw`bg-green-600 p-2 flex-1 ml-2 rounded-lg flex flex-row items-center justify-around`}
                     onPress={() => {
-                      navigate(`/bushactivitys/${global.idFarm}`);
+                      navigation.navigate(`BushActivitys`);
                       global.idCrop = item.idCoffeeBush;
                     }}
                   >

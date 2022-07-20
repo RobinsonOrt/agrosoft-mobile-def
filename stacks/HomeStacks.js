@@ -17,6 +17,7 @@ import EnterCoffeeBush from "../screens/EnterCoffeeBush";
 import Fields from "../screens/Fields";
 import AssignedCrops from "../screens/AssignedCrops";
 
+
 import { MyFarmsProvider } from "../context/FarmContext";
 import { MyEmployeesProvider } from "../context/EmployeeContext";
 import { MyLaborsProvider } from "../context/LaborsContext";
@@ -70,6 +71,7 @@ const HomeStacks = ({ navigation }) => {
             <HomeStack.Screen name="Fields" component={Fields} />
             <HomeStack.Screen name="AssignedCrops" component={AssignedCrops} />
             <HomeStack.Screen name="AddCropUser" component={ClassModalAddCropUser}  />
+            
         </HomeStack.Navigator>
         </MyCropUserProvider>
         </MyLaborsProvider>

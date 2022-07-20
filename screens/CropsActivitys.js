@@ -1,3 +1,4 @@
+import global from "../global";
 import React, { useState } from "react";
 import { ScrollView, TouchableOpacity, View, Text } from "react-native";
 import { SafeAreaProvider, SafeAreaView } from "react-native-safe-area-context";
@@ -12,8 +13,8 @@ import { useBackHandler } from "@react-native-community/hooks";
 import { useNavigate, useParams } from "react-router-native";
 import { REACT_APP_API_URL } from "@env";
 
-export default function CropsActivitys() {
-  const { idFarm } = useParams();
+export default function CropsActivitys({navigation}) {
+  const { idFarm } = global.idFarm;
 
   let navigate = useNavigate();
 
@@ -26,7 +27,7 @@ export default function CropsActivitys() {
   const [pageIndex, setPageIndex] = useState(0);
 
   const { data: cropActivitys } = useSWR(
-    `${REACT_APP_API_URL}/api/getactivities/${2}/${idFarm}/${
+    `${REACT_APP_API_URL}/api/activitiesbyemployee/${global.idFarm}/${global.idUser}/${2}/${
       orderCropActivitys[0]
     }/${orderCropActivitys[1]}/${pageIndex}`,
     fetcher
@@ -37,8 +38,7 @@ export default function CropsActivitys() {
   const pageLength = cropActivitys?.maxPage + 1;
 
   useBackHandler(() => {
-    console.log("back");
-    navigate("/");
+    navigation.goBack();
     return true;
   });
 
@@ -88,7 +88,8 @@ export default function CropsActivitys() {
                   <TouchableOpacity
                     style={tw`bg-green-400 p-2 flex-1 mr-2 rounded-lg`}
                     onPress={() => {
-                      navigate(`/cropsrecords/${item.idActivity}`);
+                      global.idActivity = item.idActivity;
+                      navigation.navigate(`CropsRecords`);
                     }}
                     // onPress={() => {
                     //   setModalVisible(true);
