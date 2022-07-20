@@ -16,6 +16,7 @@ import ActivitiesMyFarms from "../screens/ActivitiesMyFarms";
 import EnterCoffeeBush from "../screens/EnterCoffeeBush";
 import Fields from "../screens/Fields";
 import AssignedCrops from "../screens/AssignedCrops";
+
 import { MyFarmsProvider } from "../context/FarmContext";
 import { MyEmployeesProvider } from "../context/EmployeeContext";
 import { MyLaborsProvider } from "../context/LaborsContext";
@@ -30,6 +31,8 @@ import Hamburger from "../assets/hamburger.png"
 import Header from "../components/Header";
 import { SimpleLineIcons } from '@expo/vector-icons';
 import { HeaderTitle, HeaderRight, styles } from "../components/Header";
+
+import ClassModalAddCropUser from "../components/ClassModalAddCropUser";
 
 
 
@@ -66,6 +69,7 @@ const HomeStacks = ({ navigation }) => {
             <HomeStack.Screen name="EnterCoffeeBush" component={EnterCoffeeBush} />
             <HomeStack.Screen name="Fields" component={Fields} />
             <HomeStack.Screen name="AssignedCrops" component={AssignedCrops} />
+            <HomeStack.Screen name="AddCropUser" component={ClassModalAddCropUser}  />
         </HomeStack.Navigator>
         </MyCropUserProvider>
         </MyLaborsProvider>

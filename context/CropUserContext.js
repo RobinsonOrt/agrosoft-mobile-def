@@ -27,6 +27,7 @@ const MyCropUserProvider = ({children}) => {
     const AddCropUser = async (data) => {
         const response = await axios.post(`${REACT_APP_API_URL}/api/addcropuser`, data);
         GetCropUsers(data.idUser);
+        GetCropsToSet(data.idUser);
         return response;
     }
 
@@ -39,6 +40,7 @@ const MyCropUserProvider = ({children}) => {
     const DeleteCropUser = async (data) => {
         const response = await axios.put(`${REACT_APP_API_URL}/api/deletecropuser`, data);
         GetCropUsers(data.idUser);
+        GetCropsToSet(data.idUser);
         return response;
     }
 

@@ -21,6 +21,7 @@ import { AccordionAssignedCrops } from "../components/AccordionAssignedCrops";
 import ButtonCard from "../components/ButtonCard";
 import ModalAddCropUser from "../components/ModalAddCropUser";
 
+
 const AssignedCrops = ({ navigation }) => {
     const { GetCropUsers, cropUsers, FindCropUsers, maxPage, sorters, DeleteCropUser, GetCropsToSet } = useContext(MyCropUserContext);
     const [isModalOpenDeleteCropUser, setIsModalOpenDeleteCropUser] = useState(false);
@@ -40,7 +41,7 @@ const AssignedCrops = ({ navigation }) => {
                             </View>
                             <View style={tw`items-end`}>
                                 <SearchComponent GetElements={FindCropUsers} GetOriginalElements={GetCropUsers} secondParameter={global.idEmployee} />
-                                <AddButton onPress={() => {setIsModalOpenAddCropUser(!isModalOpenAddCropUser), GetCropsToSet(global.idEmployee)}} />
+                                <AddButton onPress={() => {GetCropsToSet(global.idEmployee), navigation.navigate("AddCropUser")}} />
                             </View>
                         </View>
                         <ModalDeleteCropUser
