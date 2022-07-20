@@ -41,7 +41,7 @@ export default function Register() {
   const [selectedLanguage, setSelectedLanguage] = useState();
   //const phoneInput = useRef(null);
   // const [value, setValue] = useState();
-  
+  console.log("Paise: "+identifiers)
 
  
   
@@ -103,17 +103,13 @@ export default function Register() {
   };
 
 
-  /*const onSubmit = async (data) => {
+  const onSubmit = async (data) => {
     data.idIdentifier = selectedLanguage
     await axios
       .post(REACT_APP_API_URL + "/api/register", data)
       .then((res) => setResult(res));
-  };*/
-
-  const onSubmit = async (data) => {
-    data.idIdentifier = selectedLanguage
-    console.log(data)
   };
+
 
   useEffect(() => {
     loadIdentiiers()

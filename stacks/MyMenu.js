@@ -88,25 +88,19 @@ export function MyMenu() {
         screenOptions={{
           drawerStyle: {
             backgroundColor: "#348800",
-            borderRadius: 8,
-            borderBottomLeftRadius: 0,
-            borderTopLeftRadius: 0,
+            borderRadius: 10,
+            borderBottomRightRadius: 0,
+            borderTopRightRadius: 0,
           },
-          drawerPosition: "left",
+          drawerPosition: "right",
           headerShown: false,
         }}
       >
         <Menu.Screen name="Administrar perfil" component={AccountStack} />
         <Menu.Screen name="Mis fincas" component={HomeStacks} />
         <Menu.Screen name="Fincas" component={EmployeeStack} />
-        <Menu.Screen
-          name="Solicitudes mis fincas"
-          component={RequestsMyFarmsStack}
-        />
-        <Menu.Screen
-          name="Solicitudes otras fincas"
-          component={RequestsOtherFarmsStack}
-        />
+        <Menu.Screen name="Solicitudes mis fincas" component={RequestsMyFarmsStack}/>
+        <Menu.Screen name="Solicitudes otras fincas" component={RequestsOtherFarmsStack}/>
       </Menu.Navigator>
     </NavigationContainer>
   );
