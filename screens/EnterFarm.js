@@ -57,64 +57,31 @@ export default function EnterFarm({ navigation }) {
   return (
     <View style={tw`h-full w-full  px-0`}>
       <SubHeader title={farm.nameFarm} />
-      <ScrollView style={tw`h-95%`}>
-        <View style={tw`px-15px pv-5px`}>
-          <View style={tw`flex-row w-full rounded-xl mt-0 `}>
-            <View style={tw`p-5 pr-2 rounded-xl w-1/2`}>
-              <TouchableOpacity
-                style={tw`bg-green-500 w-full h-52px p-4 mt-5 rounded-xl`}
-                onPress={() => navigation.navigate("Employee")}
-              >
-                <Text style={tw`text-white text-center font-bold`}>
-                  Empleados
-                </Text>
-              </TouchableOpacity>
+      <ScrollView style={tw`h-95%`} >
+      <View style={tw`px-15px pv-5px`}>
+      <View style={tw`flex-row mt-5 justify-between mb-3`}>
+        <View style={tw``}>
+          <SorterComponent sorters={sorters} sorter={"name_crop"} GetElements={GetCrops} firstParameter={farm.idFarm} />
+        </View>
+        <View style={tw`items-end`}>
+          <SearchComponent GetElements={FindCrops} GetOriginalElements={GetCrops} secondParameter={farm.idFarm} />
+          <AddButton onPress={() => setIsModalOpenAddCrop(!isModalOpenAddCrop)} />
+        </View>
+      </View>
 
-              <TouchableOpacity
-                style={tw`bg-green-500 w-full h-52px p-4 mt-5 rounded-xl`}
-                onPress={() => navigation.navigate("ActivitiesMyFarms")}
-              >
-                <Text style={tw`text-white text-center font-bold`}>
-                  Actividades
-                </Text>
-              </TouchableOpacity>
-            </View>
-            <View style={tw`p-5 pl-2 rounded-xl w-1/2`}>
-              <TouchableOpacity
-                style={tw`bg-green-500 w-full h-52px p-4 mt-5 rounded-xl`}
-                onPress={() => navigation.navigate("Labor")}
-              >
-                <Text style={tw`text-white text-center font-bold`}>Cargos</Text>
-              </TouchableOpacity>
-              <TouchableOpacity
-                style={tw`bg-green-500 w-full h-52px p-4 mt-5 rounded-xl`}
-              >
-                <Text style={tw`text-white text-center font-bold`}>
-                  Agregar cultivo
-                </Text>
-              </TouchableOpacity>
-            </View>
+      <View style={tw`flex-row w-full rounded-xl mt-0 `}>
+          <View style={tw`p-5 pr-2 rounded-xl w-1/2`}>
+            <TouchableOpacity style={tw`bg-green-500 w-full h-52px p-4 mt-5 rounded-xl`} onPress={() => navigation.navigate('Employee')}><Text style={tw`text-white text-center font-bold`}>Empleados</Text></TouchableOpacity>
+
+            <TouchableOpacity style={tw`bg-green-500 w-full h-52px p-4 mt-5 rounded-xl`} onPress={() => navigation.navigate('ActivitiesMyFarms')}><Text style={tw`text-white text-center font-bold`}>Actividades</Text></TouchableOpacity>
+
           </View>
-          <View style={tw`flex-row justify-between mb-3`}>
-            <View style={tw``}>
-              <SorterComponent
-                sorters={sorters}
-                sorter={"name_crop"}
-                GetElements={GetCrops}
-                firstParameter={farm.idFarm}
-              />
-            </View>
-            <View style={tw`items-end`}>
-              <SearchComponent
-                GetElements={FindCrops}
-                GetOriginalElements={GetCrops}
-                secondParameter={farm.idFarm}
-              />
-              <AddButton
-                onPress={() => setIsModalOpenAddCrop(!isModalOpenAddCrop)}
-              />
-            </View>
+          <View style={tw`p-5 pl-2 rounded-xl w-1/2`}>
+            <TouchableOpacity style={tw`bg-green-500 w-full h-52px p-4 mt-5 rounded-xl`} onPress={() => navigation.navigate('Labor')}><Text style={tw`text-white text-center font-bold`}>Cargos</Text></TouchableOpacity>
           </View>
+         </View> 
+        
+
 
           <ModalAddCrop
             isModalOpenAddCrop={isModalOpenAddCrop}
