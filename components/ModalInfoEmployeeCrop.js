@@ -1,9 +1,18 @@
 import React, { useContext, useState } from "react";
-import { Alert, Modal, StyleSheet, Text, Pressable, View } from "react-native";
+import {
+  Alert,
+  Modal,
+  StyleSheet,
+  Text,
+  Pressable,
+  View,
+  ScrollView,
+} from "react-native";
 import MyFarmsContext from "../context/FarmContext";
 
 export default function ModalInfoCrop({ modalBody }) {
-  const { modalVisible, setModalVisible } = useContext(MyFarmsContext);
+  const { modalVisible, setModalVisible, submitResponse, setSubmitResponse } =
+    useContext(MyFarmsContext);
   return (
     <Modal
       animationType="slide"
@@ -14,17 +23,22 @@ export default function ModalInfoCrop({ modalBody }) {
         setModalVisible(!modalVisible);
       }}
     >
-      <View style={styles.centeredView}>
-        <View style={styles.modalView}>
-          {modalBody}
-          <Pressable
-            style={[styles.button, styles.buttonClose]}
-            onPress={() => setModalVisible(!modalVisible)}
-          >
-            <Text style={styles.textStyle}>Cerrar</Text>
-          </Pressable>
+      <ScrollView>
+        <View style={styles.centeredView}>
+          <View style={styles.modalView}>
+            {modalBody}
+            <Pressable
+              style={[styles.button, styles.buttonClose]}
+              onPress={() => {
+                setModalVisible(!modalVisible);
+                setSubmitResponse(null);
+              }}
+            >
+              <Text style={styles.textStyle}>Cerrar</Text>
+            </Pressable>
+          </View>
         </View>
-      </View>
+      </ScrollView>
     </Modal>
   );
 }
@@ -40,7 +54,7 @@ const styles = StyleSheet.create({
     margin: 20,
     backgroundColor: "white",
     borderRadius: 20,
-    padding: 35,
+    padding: 30,
     alignItems: "flex-start",
     shadowColor: "#000",
     shadowOffset: {

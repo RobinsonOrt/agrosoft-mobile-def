@@ -158,6 +158,9 @@ import { MyFarmsProvider } from "./context/FarmContext";
 import { CountryProvider } from "./context/CoutryContext";
 import EmployeeCrops from "./screens/EmployeeCrops";
 import EmployeeShrubbery from "./screens/EmployeeShrubbery";
+import CropsActivitys from "./screens/CropsActivitys";
+import CropsRecords from "./screens/CropsRecords";
+import BushActivitys from "./screens/BushActivitys";
 
 export default function App() {
   return (
@@ -189,6 +192,12 @@ export default function App() {
                 path="/employeeshrubbery"
                 element={<EmployeeShrubbery />}
               />
+              <Route
+                path="/cropsactivitys/:idFarm"
+                element={<CropsActivitys />}
+              />
+              <Route path="/cropsrecords/:idActivity" element={<CropsRecords />} />
+              <Route path="/bushactivitys/:idFarm" element={<BushActivitys />} />
             </Routes>
           </NativeRouter>
         </MyFarmsProvider>
