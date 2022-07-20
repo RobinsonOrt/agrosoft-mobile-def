@@ -9,7 +9,6 @@ import { Link } from "react-router-native";
 import NetInfo from '@react-native-community/netinfo';
 import { useNavigate } from "react-router-native";
 import Loginn from "../components/Loginn";
-import Registerr from "../components/Registerr";
 
 export default function Home() {
 
@@ -90,7 +89,7 @@ export default function Home() {
         </View>
 
         <View style={[styles.list, !isOpenLogin ? [styles.hidden, tw`w-full items-center`] : undefined]}>
-          <Registerr toggleOpenHome={toggleOpenHome}/>
+          <Loginn toggleOpenHome={toggleOpenHome}/>
         </View>
 
         <View style={[styles.list, !isOpenRegister ? [styles.hidden, tw`w-full items-center`] : undefined]}>

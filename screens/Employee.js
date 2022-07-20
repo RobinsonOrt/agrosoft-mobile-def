@@ -8,13 +8,11 @@ import {
 import { Feather, EvilIcons, AntDesign } from '@expo/vector-icons';
 
 import tw from "twrnc";
-import ModalAddLabor from "../components/ModalAddLabor";
 import SubHeader from "../components/SubHeader";
 import { AccordionEmployees } from "../components/AccordionEmployees";
 import { SafeAreaProvider, SafeAreaView } from "react-native-safe-area-context";
 import { styles } from "./Farms";
 import { useBackHandler } from "@react-native-community/hooks";
-import ModalEmployeeDelete from "../components/ModalEmployeeDelete";
 import MyEmployeesContext from "../context/EmployeeContext";
 import ModalChangeLabor from "../components/ModalChangeLabor";
 import SorterComponent from "../components/SorterComponent";
@@ -24,9 +22,7 @@ import FieldsItems from "../components/FieldsItems";
 import ModalDelete from "../components/ModalDelete";
 
 const Employee = ({ navigation }) => {
-  const [isModalOpenAddLabor, setIsModalOpenAddLabor] = useState(false);
   const [isModalOpenChangeLabor, setIsModalOpenChangeLabor] = useState(false);
-  const [isModalOpenEmployeeDelete, setIsModalOpenEmployeeDelete] = useState(false);
   const [isModalOpenDelete, setIsModalOpenDelete] = useState(false);
 
   const { LoadEmployees, employees, sorters, maxPage, FindEmployees, DeleteEmployee, setSelectedUserRole } = useContext(MyEmployeesContext);
@@ -70,7 +66,7 @@ const Employee = ({ navigation }) => {
                 <AccordionEmployees name={employee.name + " " + employee.lastName} text={"correo"} value={employee.email} hei={250} key={index} >
                   <View style={[tw`w-full`]}>
                     <FieldsItems tittle={"Cargo:"} value={employee.nameSubRole} onPress={()=>{global.idEmployee = employee.idUser, setSelectedUserRole(employee.idSubRole), setIsModalOpenChangeLabor(!isModalOpenChangeLabor)}} color={"rgba(234, 179, 8, 1)"} text={"Editar"} icon={<Feather name="edit-3" size={18} color="white" />} />
-                    <FieldsItems tittle={"Cultivos asignados:"} onPress={()=>{console.log("hdhd")}} color={"rgba(34, 158, 197, 1)"} text={"Editar"} icon={<EvilIcons name="search" size={25} color="white" />} />
+                    <FieldsItems tittle={"Cultivos asignados:"} onPress={()=>{global.idEmployee = employee.idUser, navigation.navigate("AssignedCrops")}} color={"rgba(34, 158, 197, 1)"} text={"Ver mas"} icon={<EvilIcons name="search" size={25} color="white" />} />
                     <FieldsItems tittle={"Opciones:"} onPress={()=>{global.idToDelete = employee.idUser, setIsModalOpenDelete(!isModalOpenDelete)}} color={"rgba(239, 68, 68, 1)"} text={"Eliminar"} icon={<AntDesign name="delete" size={18} color="white" />} />
                   </View>
                 </AccordionEmployees>
