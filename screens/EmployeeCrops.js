@@ -24,12 +24,19 @@ import ModalInfoEmployeeCrop from "../components/ModalInfoEmployeeCrop";
 import enter from "../assets/Enter.png";
 import actividades from "../assets/Actividades.png";
 
-export default function EmployeeCrops() {
+export default function EmployeeCrops({navigation}) {
   const { idFarm, setModalVisible, modalVisible, setIdCrop } =
     useContext(MyFarmsContext);
 
+
+  useBackHandler(() => {
+    navigation.goBack();
+    return true;
+  });
+
   const [search, setSearch] = useState(false);
   const [searchWord, setSearchWord] = useState("");
+
 
   const [pageIndex, setPageIndex] = useState(0);
 
@@ -51,11 +58,7 @@ export default function EmployeeCrops() {
     employeeCrops?.maxPage == null || employeeCrops?.maxPage == pageIndex;
   const pageLength = employeeCrops?.maxPage + 1;
 
-  useBackHandler(() => {
-    console.log("back");
-    navigate("/");
-    return true;
-  });
+
 
   const { data: searchEmployeeCrops } = useSWR(
     search &&
@@ -227,12 +230,13 @@ export default function EmployeeCrops() {
                   <Text style={tw`font-bold text-lg`}>{item.nameCrop}</Text>
                 </View>
                 <View style={tw`flex flex-row justify-between p-5`}>
-                  <Link
+                  <TouchableOpacity
                     style={tw`bg-green-400 p-2 flex-1 mr-2 rounded-lg`}
-                    to="/employeeshrubbery"
+                    /* to="/employeeshrubbery" */
                     onPress={() => {
                       setIdCrop(item.idCrop);
                       global.idFarm = item.idFarm;
+                      navigation.navigate("EmployeeShrubbery");
                     }}
                   >
                     <View
@@ -241,7 +245,7 @@ export default function EmployeeCrops() {
                       <Text style={tw`text-white`}>Ingresar</Text>
                       <Image style={tw`w-4 h-4`} source={enter} />
                     </View>
-                  </Link>
+                  </TouchableOpacity>
                   <TouchableOpacity
                     onPress={() => {
                       setModalVisible(true);
@@ -291,9 +295,9 @@ export default function EmployeeCrops() {
                   <TouchableOpacity
                     style={tw`bg-green-600 p-2 flex-1 ml-2 rounded-lg flex flex-row items-center`}
                     onPress={() => {
-                      navigate(`/cropsactivitys/${item.idFarm}`);
                       global.idCrop = item.idCrop;
                       global.idFarm = item.idFarm;
+                      navigation.navigate("CropsActivitys");
                     }}
                   >
                     <Text style={tw`text-white`}>Actividades</Text>

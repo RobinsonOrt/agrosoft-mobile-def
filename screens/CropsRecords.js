@@ -27,7 +27,7 @@ import DatePicker from "react-native-datepicker";
 import RNPickerSelect from "react-native-picker-select";
 import { EvilIcons } from "@expo/vector-icons";
 
-export default function CropsRecords() {
+export default function CropsRecords({ navigation }) {
   const {
     setModalVisible,
     modalVisible,
@@ -35,8 +35,6 @@ export default function CropsRecords() {
     submitResponse,
     setSubmitResponse,
   } = useContext(MyFarmsContext);
-
-  const { idActivity } = useParams();
 
   let navigate = useNavigate();
 
@@ -49,12 +47,12 @@ export default function CropsRecords() {
 
   const [pageIndex, setPageIndex] = useState(0);
   const { data: cropRecords } = useSWR(
-    `${REACT_APP_API_URL}/api/recordsbyactivity/${idActivity}/${global.idCrop}/${orderCropRecords[0]}/${orderCropRecords[1]}/${pageIndex}`,
+    `${REACT_APP_API_URL}/api/recordsbyactivity/${global.idActivity}/${global.idCrop}/${orderCropRecords[0]}/${orderCropRecords[1]}/${pageIndex}`,
     fetcher
   );
 
   const { data: recordsFields } = useSWR(
-    `${REACT_APP_API_URL}/api/getallfieldsbyactivity/${idActivity}`,
+    `${REACT_APP_API_URL}/api/getallfieldsbyactivity/${global.idActivity}`,
     fetcher
   );
 
@@ -63,8 +61,7 @@ export default function CropsRecords() {
   const pageLength = cropRecords?.maxPage + 1;
 
   useBackHandler(() => {
-    console.log("back");
-    navigate("/");
+    navigation.goBack();
     return true;
   });
 
@@ -309,7 +306,7 @@ export default function CropsRecords() {
                         await axios
                           .post(`${REACT_APP_API_URL}/api/addrecord`, {
                             idBushOrIdCrop: global.idCrop,
-                            idActivity: idActivity,
+                            idActivity: global.idActivity,
                             idEmployee: global.idUser,
                             idFarm: global.idFarm,
                             fields: data,
@@ -317,7 +314,7 @@ export default function CropsRecords() {
                           .then((res) => setSubmitResponse(res.data.response))
                           .catch((err) => console.log(err.response));
                         mutate(
-                          `${REACT_APP_API_URL}/api/recordsbyactivity/${idActivity}/${
+                          `${REACT_APP_API_URL}/api/recordsbyactivity/${global.idActivity}/${
                             global.idCrop
                           }/${orderCropRecords[0]}/${orderCropRecords[1]}/${0}`
                         );

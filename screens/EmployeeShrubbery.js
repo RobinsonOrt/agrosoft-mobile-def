@@ -24,9 +24,9 @@ import actividades from "../assets/Actividades.png";
 import RNPickerSelect from "react-native-picker-select";
 import { EvilIcons } from "@expo/vector-icons";
 
-export default function EmployeeShrubbery() {
-  const { setModalVisible, idCrop } =
-    useContext(MyFarmsContext);
+
+export default function EmployeeShrubbery({ navigation }) {
+  const { setModalVisible, idCrop } = useContext(MyFarmsContext);
   let navigate = useNavigate();
 
   const [search, setSearch] = useState(false);
@@ -59,8 +59,7 @@ export default function EmployeeShrubbery() {
   const pageLength = employeeShrubbery?.maxPage + 1;
 
   useBackHandler(() => {
-    console.log("back");
-    navigate("/employeecrops");
+    navigation.goBack();
     return true;
   });
 
@@ -101,6 +100,7 @@ export default function EmployeeShrubbery() {
               </View>
             </View>
             <View style={tw`flex flex-col items-end flex-1`}>
+
               <View style={tw`w-140px rounded-md`}>
                 <RNPickerSelect
                   placeholder={{ label: "Ordenar por:", value: "" }}
@@ -126,9 +126,9 @@ export default function EmployeeShrubbery() {
                   ]}
                 />
               </View>
-              <TouchableOpacity style={tw`p-2 bg-green-500 mt-1 rounded-md`}>
+              {/*<TouchableOpacity style={tw`p-2 bg-green-500 mt-1 rounded-md`}>
                 <Text style={tw`text-white`}>Descargar códigos de barras</Text>
-              </TouchableOpacity>
+              </TouchableOpacity> */}
             </View>
           </View>
           {!search ? (
@@ -205,7 +205,7 @@ export default function EmployeeShrubbery() {
                   <TouchableOpacity
                     style={tw`bg-green-600 p-2 flex-1 ml-2 rounded-lg flex flex-row items-center justify-around`}
                     onPress={() => {
-                      navigate(`/bushactivitys/${global.idFarm}`);
+                      navigation.navigate(`BushActivitys`);
                       global.idCrop = item.idCoffeeBush;
                     }}
                   >
