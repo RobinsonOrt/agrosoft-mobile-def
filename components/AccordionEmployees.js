@@ -15,7 +15,65 @@ import {
   import CartButtonCrop from "./CartButtonCrop";
   import { MaterialIcons } from '@expo/vector-icons';
   
-  export const AccordionEmployees = ({ name, email, children }) => {
+  export const AccordionEmployees = ({ name, text, value, hei, children }) => {
+
+
+    const styles = StyleSheet.create({
+      container: {
+        paddingHorizontal: 15,
+        paddingVertical: 5,
+      },
+      text: {
+        fontSize: 18,
+        marginBottom: 20,
+      },
+      safeArea: {
+        flex: 1,
+        paddingTop: 0,
+        marginTop: 0,
+      },
+      heading: {
+        alignItems: "center",
+        flexDirection: "row",
+        justifyContent: "space-between",
+    
+        backgroundColor: "#D9D9D9",
+        borderRadius: 10,
+        paddingHorizontal: 10,
+    
+    
+      },
+      hidden: {
+        height: 0,
+      },
+      list: {
+        overflow: 'hidden',
+        height: hei,
+        backgroundColor: "rgba(214,222,210,1)",
+        borderBottomLeftRadius: 16,
+        borderBottomRightRadius: 16,
+        marginBottom: 10,
+      },
+      sectionTitle: {
+        fontSize: 16,
+        height: 30,
+        marginLeft: '5%',
+        marginTop: '5px',
+    
+      },
+      sectionDescription: {
+        fontSize: 20,
+        fontFamily: 'Roboto',
+        height: 30,
+        marginLeft: '5%',
+      },
+      divider: {
+        borderBottomColor: 'grey',
+        borderBottomWidth: StyleSheet.hairlineWidth,
+        width: '100%',
+      },
+    });
+
     const [isOpen, setIsOpen] = useState(false);
     const toggleOpen = () => {
       setIsOpen(value => !value);
@@ -48,9 +106,9 @@ import {
           </TouchableOpacity>
           <Text style={tw`grow mr-2 uppercase text-center text-20px`}>{name}</Text>
         </View>
-        <View style={[styles.list, !isOpen ? styles.hidden : undefined]}>
-          <Text style={tw`grow uppercase font-bold text-center text-18px`}>Correo</Text>
-          <Text style={tw`grow text-center text-15px`}>{email}</Text>
+        <View style={[styles.list, !isOpen ? styles.hidden : tw`p-13px`]}>
+          <Text style={tw`grow uppercase font-bold text-center text-18px`}>{text}</Text>
+          <Text style={tw`grow text-center text-15px`}>{value}</Text>
           <View style={tw`flex-row justify-center px-3 py-4`}>
             {children}
           </View>
@@ -59,58 +117,4 @@ import {
     );
   };
   
-  export const styles = StyleSheet.create({
-    container: {
-      paddingHorizontal: 15,
-      paddingVertical: 5,
-    },
-    text: {
-      fontSize: 18,
-      marginBottom: 20,
-    },
-    safeArea: {
-      flex: 1,
-      paddingTop: 0,
-      marginTop: 0,
-    },
-    heading: {
-      alignItems: "center",
-      flexDirection: "row",
-      justifyContent: "space-between",
   
-      backgroundColor: "#D9D9D9",
-      borderRadius: 10,
-      paddingHorizontal: 10,
-  
-  
-    },
-    hidden: {
-      height: 0,
-    },
-    list: {
-      overflow: 'hidden',
-      height: 250,
-      backgroundColor: "rgba(214,222,210,1)",
-      borderBottomLeftRadius: 16,
-      borderBottomRightRadius: 16,
-      marginBottom: 10,
-    },
-    sectionTitle: {
-      fontSize: 16,
-      height: 30,
-      marginLeft: '5%',
-      marginTop: '5px',
-  
-    },
-    sectionDescription: {
-      fontSize: 20,
-      fontFamily: 'Roboto',
-      height: 30,
-      marginLeft: '5%',
-    },
-    divider: {
-      borderBottomColor: 'grey',
-      borderBottomWidth: StyleSheet.hairlineWidth,
-      width: '100%',
-    },
-  });

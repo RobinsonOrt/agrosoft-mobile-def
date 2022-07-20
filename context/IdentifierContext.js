@@ -12,8 +12,8 @@ const MyIdentifierProvider = ({ children }) => {
 
   const LoadIdentifiers = async () => {
     await axios.get(`${REACT_APP_API_URL}/api/identifiers`)
-        .then((response) => {
-        setIdentifiers(response.data);
+        .then((res) => {
+        setIdentifiers(res.data);
     });
   };
 
