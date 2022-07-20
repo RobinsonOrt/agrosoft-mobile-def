@@ -101,16 +101,16 @@ export default function ModalModifyEmail({ isModalOpenModifyEmail, setIsModalOpe
             <Modal visible={isModalOpenModifyEmail} transparent={true} animationType={'fade'} onRequestClose={() => cancelEmailChange()}>
                 <View style={modalContainerStyle}>
                     <View style={modalStyle}>
-                        <View style={tw`h-full flex items-center justify-center`}>
-                            <Text style={tw`text-3xl font-bold text-black mt-20 mb-5`}>Editar correo</Text>
+                        <View style={tw`flex items-center justify-center`}>
+                            <Text style={tw`text-3xl font-bold text-black  mt-20 mb-5`}>Editar correo</Text>
                             <ScrollView style={tw`mt-2`}>
-                                <View style={tw`px-7 mb-10 flex items-center justify-center`}>
+                                <View style={tw`flex items-center justify-center`}>
                                     <Text style={tw`text-black mb-10 w-283px  text-center`}>
                                         Rellena los campos con la información correspondiente
                                     </Text>
                                     <View style={[styles.list, !isOpen ? [styles.hidden, tw`w-full items-center`] : undefined]}>
-                                        <View style={tw`w-full items-center`}>
-                                            {response.status ? <Text style={tw`text-red-500 text-center`}>{response.message}</Text> : null}
+                                        <View style={tw`w-full justify-center items-center`}>
+                                            {response.status ? <Text style={tw`text-red-500 text-center `}>{response.message}</Text> : null}
                                             <TextInput
                                                 id="password"
                                                 placeholder="Contraseña"

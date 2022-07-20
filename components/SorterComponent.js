@@ -12,6 +12,11 @@ const SorterComponent = ({ sorters, sorter, GetElements, firstParameter, secondP
       { label: 'Recientes', value: '2' },
       { label: 'Antiguos', value: '3' }
     ]
+  }else if(sorter == "name"){
+    itemsToShow = [
+      { label: 'A-Z', value: '0' },
+      { label: 'Z-A', value: '1' }
+  ]
   }else{
     itemsToShow = [
       { label: 'A-Z', value: '0' },
@@ -37,12 +42,12 @@ const SorterComponent = ({ sorters, sorter, GetElements, firstParameter, secondP
                             sorters.page = 0;
                             GetElements(firstParameter, secondParameter, thirdParameter)
                         }else if(itemValue === '2' ){
-                            sorters.sorter = "created_date";
+                            sorters.sorter = (sorter == "name_sub_role") ? "created_sub_role" : "created_date";
                             sorters.order = 'desc';
                             sorters.page = 0;
                             GetElements(firstParameter, secondParameter, thirdParameter)
                         }else if(itemValue === '3' ){
-                            sorters.sorter = "created_date";
+                            sorters.sorter = (sorter == "name_sub_role") ? "created_sub_role" : "created_date";
                             sorters.order = 'asc';
                             sorters.page = 0;
                             GetElements(firstParameter, secondParameter, thirdParameter)

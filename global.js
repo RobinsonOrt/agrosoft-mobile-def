@@ -22,3 +22,5 @@ global.idToDelete = "";
 global.idCrop = "";
 
 global.idActivity = "";
+
+global.idSubrole = "";

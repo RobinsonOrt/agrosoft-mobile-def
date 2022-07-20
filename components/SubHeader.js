@@ -9,7 +9,7 @@ const SubHeader = ({title}) => {
           backgroundColor: "rgba(81, 212, 0, 0.38)"      
         },
         textColor: {
-            color: "#FFFFFF"
+            color: "rgba(52, 136, 0, 1)"
         }
       });
 
