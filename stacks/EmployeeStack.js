@@ -2,7 +2,8 @@ import React from "react";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import Farms from "../screens/Farms";
 import { MyEmployeesProvider } from "../context/EmployeeContext";
-import { HeaderLeft, HeaderRight, styles } from "../components/Header";
+import { HeaderTitle, HeaderRight, styles } from "../components/Header";
+
 
 const EmployeeStack = ({ navigation }) => {
 
@@ -13,8 +14,9 @@ const EmployeeStack = ({ navigation }) => {
             <HomeStack.Navigator screenOptions={{
                 title:"",
                 headerStyle:styles.headerStyle,
-                headerLeft:() => ( <HeaderLeft navigation={navigation} />),
                 headerRight:() => ( <HeaderRight navigation={navigation} />),
+                headerTitle:() => ( <HeaderTitle navigation={navigation}/>),
+                headerTitleAlign:"center",
                 }}>
 
                 <HomeStack.Screen name="Farms" component={Farms}/>

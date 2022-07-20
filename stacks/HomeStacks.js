@@ -27,7 +27,7 @@ import Farms from "../screens/Farms";
 import Hamburger from "../assets/hamburger.png"
 import Header from "../components/Header";
 import { SimpleLineIcons } from '@expo/vector-icons';
-import { HeaderLeft, HeaderRight, styles } from "../components/Header";
+import { HeaderTitle, HeaderRight, styles } from "../components/Header";
 
 
 
@@ -48,8 +48,9 @@ const HomeStacks = ({ navigation }) => {
         <HomeStack.Navigator  screenOptions={{
             title:"",
             headerStyle:styles.headerStyle,
-            headerLeft:() => ( <HeaderLeft navigation={navigation} />),
             headerRight:() => ( <HeaderRight navigation={navigation} />),
+            headerTitle:() => ( <HeaderTitle navigation={navigation}/>),
+            headerTitleAlign:"center",
             }}>
             
         

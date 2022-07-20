@@ -63,6 +63,8 @@ export default function Loginn({ toggleOpenHome }) {
       global.jwToken = loginresponse.data.response;
       global.idUser = loginresponse.data.idUser;
       navigate("/userLoged");
+      setError(false)
+      setChecked(false)
     }else{
       setError(true);
     }
@@ -91,6 +93,7 @@ export default function Loginn({ toggleOpenHome }) {
             placeholder="example@gmail.com"
             autoCapitalize="none"
             keyboardType="email-address"
+            height={40}
             pattern={
               /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/
             }
@@ -107,6 +110,7 @@ export default function Loginn({ toggleOpenHome }) {
             control={control}
             name="password"
             placeholder="Contraseña"
+            height={40}
             secureTextEntry={!isChecked}
           />
           
@@ -114,13 +118,13 @@ export default function Loginn({ toggleOpenHome }) {
             <Text style={tw`text-red-600 mb-10 text-center`}>Campo requerido!</Text>
           ) : null}
           <View style={tw`flex flex-row justify-center items-center mb-10`}>
-            <Checkbox value={isChecked} onValueChange={setChecked} />
+            <Checkbox style={tw`rounded-xl`} value={isChecked} onValueChange={setChecked} />
             <Text style={tw`text-base text-white ml-3`}>
               Mostrar contraseña
             </Text>
           </View>
           <ButtonForm onPress={handleSubmit(login)} title="Iniciar Sesión" color={"rgba(32, 84, 0, 1)"}/>
-          <ButtonForm onPress={() => {toggleOpenHome(); reset()}} title="Regresar" color={"rgba(88, 155, 47, 1)"}/>
+          <ButtonForm onPress={() => {toggleOpenHome(); reset(); setError(false);setChecked(false)}} title="Regresar" color={"rgba(88, 155, 47, 1)"}/>
             
           <Link to={'/passwordRecovery'}>
             <Text style={tw`text-base text-white mt-7 text-center underline`}>
