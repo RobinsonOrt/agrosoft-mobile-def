@@ -1,6 +1,6 @@
 import global from "../global";
 import React, { useState, useEffect, useContext } from "react";
-import { View, Text, Image, TouchableOpacity, BackHandler, ScrollView, TextInput } from "react-native";
+import { View, Text, Button, Image, TouchableOpacity, BackHandler, ScrollView, TextInput } from "react-native";
 import tw from "twrnc";
 import { SafeAreaProvider, SafeAreaView } from "react-native-safe-area-context";
 import SubHeader from "../components/SubHeader";
@@ -18,17 +18,74 @@ import AddButton from "../components/AddButton";
 import ScanButton from "../components/ScanButton";
 import ModalDelete from "../components/ModalDelete";
 import ModalAddCoffeeBush from "../components/ModalAddCoffeeBush";
+import { BarCodeScanner } from "expo-barcode-scanner";
 
 const CoffeeBush = ({ navigation }) => {
-    
+
     const [isModalOpenAddCoffeeBush, setIsModalOpenAddCoffeeBush] = useState(false);
     const [isModalOpenDelete, setIsModalOpenDelete] = useState(false);
+    const [hasPermission, setHasPermission] = useState(null);
+    const [scanned, setScanned] = useState(false);
+    const [text, setText] = useState("Not yet scanned");
+    const [scan, setScan] = useState("false");
+
+    const askForCameraPermission = () => {
+        (async () => {
+            const { status } = await BarCodeScanner.requestPermissionsAsync();
+            setHasPermission(status == 'granted')
+        })()
+    }
 
     const { GetCoffeeBushs, coffeeBushs, sorters, maxPage, FindCoffeeBush, DeleteCoffeeBush, setCoffeeBush } = useContext(MyCoffeeBushContext);
 
     useEffect(() => {
+        askForCameraPermission();
         GetCoffeeBushs(global.idCrop);
     }, []);
+
+    //gonna happen when we scan the bar code
+    const handleBarCodeScanned = ({ type, data }) => {
+        setScanned(true)
+        setText(data)
+        console.log('Type: ' + type + '\nData: ' + data)
+    }
+
+    //check permissions and return the screens
+    if (hasPermission === null) {
+        return (
+            <View>
+                <Text>Requesting for camera permission</Text>
+            </View>
+        )
+    }
+
+    if (hasPermission === false) {
+        return (
+            <View>
+                <Text>No access to camera</Text>
+                <Button title={'Allow Camera'} onPress={() => askForCameraPermission()} />
+            </View>
+        )
+    }
+
+    if (scan === true) {
+        return (
+            <View style={styles.container}>
+                <View style={styles.barcodebox}>
+                    <BarCodeScanner
+                        onBarCodeScanned={scanned ? undefined : handleBarCodeScanned}
+                        style={{ height: 400, width: 400 }} />
+                </View>
+                <Text style={styles.maintext}>{text}</Text>
+
+                {scanned && <Button title={'Scan again?'} onPress={() => setScanned(false)} color='tomato' />}
+                <Button title={'OK'} onPress={() => setScan(false)} color='green' />
+            </View>
+        );
+    }
+
+
+
 
     return (
         <SafeAreaProvider>
@@ -39,7 +96,7 @@ const CoffeeBush = ({ navigation }) => {
                         <View style={tw`flex-row justify-between`}>
                             <View style={tw``}>
                                 <SorterComponent sorters={sorters} sorter={"created_date"} GetElements={GetCoffeeBushs} firstParameter={global.idCrop} />
-                                <ScanButton onPress={() => console.log("scan")} />
+                                <ScanButton onPress={() => setScan(true)} />
                             </View>
                             <View style={tw`items-end`}>
                                 <SearchComponent GetElements={FindCoffeeBush} GetOriginalElements={GetCoffeeBushs} secondParameter={global.idCrop} />
@@ -65,7 +122,7 @@ const CoffeeBush = ({ navigation }) => {
                                 return (
                                     <CardBush qrCode={coffeeBush.qrCode} id={coffeeBush.idCoffeeBush} date={coffeeBush.createdDdate} key={index}>
                                         <CardCoffeeButton onPress={() => console.log("ddhd")} color={"rgba(88, 155, 47, 1)"} icon={Actividades} />
-                                        <CardCoffeeButton onPress={() => { setCoffeeBush(coffeeBush), navigation.navigate("EnterCoffeeBush")}} color={"rgba(34, 197, 94, 1)"} icon={Enter} />
+                                        <CardCoffeeButton onPress={() => { setCoffeeBush(coffeeBush), navigation.navigate("EnterCoffeeBush") }} color={"rgba(34, 197, 94, 1)"} icon={Enter} />
                                         <CardCoffeeButton onPress={() => { global.idToDelete = coffeeBush.idCoffeeBush, setIsModalOpenDelete(!isModalOpenDelete) }} color={"rgba(239, 68, 68, 1)"} icon={Delete} />
                                     </CardBush>
                                 )

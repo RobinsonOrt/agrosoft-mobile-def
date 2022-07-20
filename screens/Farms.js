@@ -43,7 +43,7 @@ export default function Farms({ navigation }) {
   useEffect(async () => {
     await LoadEmployeedFarms("name_farm", "asc", 0);
   }, []);
-  
+
   return (
     <SafeAreaProvider>
       <SafeAreaView style={styles.safeArea}>
@@ -167,4 +167,13 @@ export const styles = StyleSheet.create({
     borderBottomWidth: StyleSheet.hairlineWidth,
     width: "100%",
   },
+  barcodebox: {
+    alignItems: 'center',
+    justifyContent: 'center',
+    height: 300,
+    width: 300,
+    overflow: 'hidden',
+    borderRadius: 30,
+    backgroundColor: 'tomato'
+  }
 });
