@@ -1,5 +1,5 @@
 import React, { useContext, useState } from "react";
-import { ScrollView, TouchableOpacity, View, Text } from "react-native";
+import { ScrollView, TouchableOpacity, View, Text, Image } from "react-native";
 import { SafeAreaProvider, SafeAreaView } from "react-native-safe-area-context";
 import CleanButton from "../components/CleanButton";
 import PickerSorter from "../components/PickerSorter";
@@ -14,6 +14,9 @@ import MyFarmsContext from "../context/FarmContext";
 import { Link } from "react-router-native";
 import { REACT_APP_API_URL, AGROSOFT_LINK } from "@env";
 import ModalInfoEmployeeCrop from "../components/ModalInfoEmployeeCrop";
+import global from "../global";
+import enter from "../assets/Enter.png";
+import actividades from "../assets/Actividades.png";
 
 export default function EmployeeShrubbery() {
   const { idFarm, setModalVisible, modalVisible, setIdCrop, idCrop } =
@@ -41,7 +44,7 @@ export default function EmployeeShrubbery() {
     navigate("/employeecrops");
     return true;
   });
-  console.log(employeeShrubbery?.response);
+
   return (
     <SafeAreaProvider>
       <SafeAreaView style={tw`mt-0 pt-0 flex`}>
@@ -82,18 +85,24 @@ export default function EmployeeShrubbery() {
                 </View>
                 <View style={tw`flex flex-row justify-between p-5`}>
                   <TouchableOpacity
-                    style={tw`bg-green-400 p-2 flex-1 mr-2 rounded-lg`}
+                    style={tw`bg-green-400 p-2 flex-1 mr-2 rounded-lg flex flex-row items-center justify-around`}
                     onPress={() => {
                       setModalVisible(true);
                       setShrubberyId(item.idCoffeeBush);
                     }}
                   >
                     <Text style={tw`text-white`}>Ingresar</Text>
+                    <Image style={tw`w-4 h-4`} source={enter} />
                   </TouchableOpacity>
                   <TouchableOpacity
-                    style={tw`bg-green-600 p-2 flex-1 ml-2 rounded-lg`}
+                    style={tw`bg-green-600 p-2 flex-1 ml-2 rounded-lg flex flex-row items-center justify-around`}
+                    onPress={() => {
+                      navigate(`/bushactivitys/${global.idFarm}`);
+                      global.idCrop = item.idCoffeeBush;
+                    }}
                   >
                     <Text style={tw`text-white`}>Actividades</Text>
+                    <Image source={actividades} />
                   </TouchableOpacity>
                 </View>
               </View>

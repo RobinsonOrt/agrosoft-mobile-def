@@ -23,9 +23,32 @@ import ModalModel from "./ModalModel";
 import ModalButton from "./ModalButton";
 import InputForm from "./InputForm";
 import ButtonForm from "./ButtonForm";
+import * as FileSystem from 'expo-file-system';
+import { StorageAccessFramework } from 'expo-file-system';
 
 const ModalInfoCrop = ({ isModalOpenInfoCrop, setIsModalOpenInfoCrop }) => {
-  const { crop, coffeeBushCount } = useContext(MyCropsContext);
+  const { crop, coffeeBushCount, GetBarCodeCrops } = useContext(MyCropsContext);
+
+  const downloadPdf = async () => {
+    const response = await GetBarCodeCrops(crop.idCrop);
+    
+    if (response.data.error) {
+      return;
+    }
+
+    const base64Data = response.data.dataBase64;
+    const fileName = crop.nameCrop + "barcodes" + coffeeBushCount;
+
+    const picturesUri = StorageAccessFramework.getUriForDirectoryInRoot('Documents');
+    const permissions = await StorageAccessFramework.requestDirectoryPermissionsAsync(picturesUri);
+    if (permissions.granted) {
+      await StorageAccessFramework.createFileAsync(permissions.directoryUri, fileName, 'application/pdf')
+        .then(async (uri) => {
+          await FileSystem.writeAsStringAsync(uri, base64Data, { encoding: FileSystem.EncodingType.Base64 });
+        })
+    }
+
+  }
 
   return (
     <ModalModel
@@ -57,7 +80,7 @@ const ModalInfoCrop = ({ isModalOpenInfoCrop, setIsModalOpenInfoCrop }) => {
         <Text style={tw`text-15px font-bold text-center mb-3 mt-4`}>
           Descripción:{" "}
         </Text>
-        <View style={tw`w-full items-center flex-row justify-center mb-2`}>
+        <View style={tw`w-full  items-center flex-row justify-center mb-2`}>
           <Text style={tw`text-14px w-210px text-justify`}>
             {crop.descriptionCrop}
           </Text>
@@ -111,9 +134,12 @@ const ModalInfoCrop = ({ isModalOpenInfoCrop, setIsModalOpenInfoCrop }) => {
           </View>
         </View>
       </View>
-      <View style={tw`mt-7 mx-8`}>
+      <View style={tw`mt-7 items-center mx-8`}>
         <ModalButton
           text={"Descargar codigo de barras"}
+          onPress={() => {
+            downloadPdf();
+          }}
           color={"rgba(248, 189, 35, 0.85)"}
         />
         <ModalButton

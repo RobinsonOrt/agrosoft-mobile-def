@@ -13,6 +13,7 @@ const MyEmployeesProvider = ({children}) => {
     const [employee, setEmployee]= useState([]);
     const [sorters, setSorters] = useState({"sorter": "name", "order": "asc", "page": 0});
     const [maxPage, setMaxPage] = useState(0);
+    const [selectedUserRole, setSelectedUserRole] = useState("0");
 
     const { LoadEmployeedFarms } = useContext(MyFarmsContext);
 
@@ -32,18 +33,20 @@ const MyEmployeesProvider = ({children}) => {
             console.log(res.data);
             setError(res.data.error)
             setMessage(res.data.response);
-            LoadEmployees("name", "asc", 0);
+            LoadEmployees();
         })
     }
 
-    const DeleteEmployee = async (data) => {
+    const DeleteEmployee = async (idUser) => {
+        const data = {};
+        data.idUser = idUser;
+        data.idFarm = global.idFarm;
         await axios.put(REACT_APP_API_URL + "/api/deleteemployee", data)
             .then(res => {
                 setError(res.data.error)
                 setMessage(res.data.response);
-                LoadEmployees("name", "asc", 0);
+                LoadEmployees();
             })
-
     }
 
     const LeaveFarm = async (idUser, idFarm) => {
@@ -53,11 +56,16 @@ const MyEmployeesProvider = ({children}) => {
         console.log("data", data);
         await axios.put(`${REACT_APP_API_URL}/api/deleteemployee`, data)
             .then(res => {
-                console.log(res.data);
                 setError(res.data.error)
                 setMessage(res.data.response);
-                LoadEmployeedFarms("name_farm", "asc", 0);
+                LoadEmployeedFarms();
             })
+    }
+
+    const FindEmployees = async (search) => {
+        const response = await axios.get(REACT_APP_API_URL + "/api/findemployees/"+ global.idFarm + "/" + search + "/0");
+        setMaxPage(0);
+        setEmployees(response.data.response);
     }
 
     return (
@@ -77,7 +85,10 @@ const MyEmployeesProvider = ({children}) => {
                 sorters,
                 setSorters,
                 maxPage,
-                setMaxPage
+                setMaxPage,
+                FindEmployees,
+                selectedUserRole,
+                setSelectedUserRole
             }}
         >
             {children}

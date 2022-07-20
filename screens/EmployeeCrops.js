@@ -5,6 +5,7 @@ import {
   StyleSheet,
   ScrollView,
   TouchableOpacity,
+  Image,
 } from "react-native";
 import global from "../global";
 import { useNavigate, Link } from "react-router-native";
@@ -20,6 +21,8 @@ import useSWR from "swr";
 import axios from "axios";
 import { REACT_APP_API_URL, AGROSOFT_LINK } from "@env";
 import ModalInfoEmployeeCrop from "../components/ModalInfoEmployeeCrop";
+import enter from "../assets/Enter.png";
+import actividades from "../assets/Actividades.png";
 
 export default function EmployeeCrops() {
   const { idFarm, setModalVisible, modalVisible, setIdCrop } =
@@ -79,9 +82,13 @@ export default function EmployeeCrops() {
                     to="/employeeshrubbery"
                     onPress={() => {
                       setIdCrop(item.idCrop);
+                      global.idFarm = item.idFarm;
                     }}
                   >
-                    <Text style={tw`text-white`}>Ingresar</Text>
+                    <View style={tw`flex flex-row items-center w-full justify-between`}>
+                      <Text style={tw`text-white`}>Ingresar</Text>
+                      <Image style={tw`w-4 h-4`} source={enter} />
+                    </View>
                   </Link>
                   <TouchableOpacity
                     onPress={() => {
@@ -130,9 +137,15 @@ export default function EmployeeCrops() {
                     }
                   />
                   <TouchableOpacity
-                    style={tw`bg-green-600 p-2 flex-1 ml-2 rounded-lg`}
+                    style={tw`bg-green-600 p-2 flex-1 ml-2 rounded-lg flex flex-row items-center`}
+                    onPress={() => {
+                      navigate(`/cropsactivitys/${item.idFarm}`);
+                      global.idCrop = item.idCrop;
+                      global.idFarm = item.idFarm;
+                    }}
                   >
                     <Text style={tw`text-white`}>Actividades</Text>
+                    <Image source={actividades} />
                   </TouchableOpacity>
                 </View>
               </View>

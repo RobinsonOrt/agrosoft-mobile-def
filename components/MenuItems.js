@@ -13,17 +13,19 @@ import { SimpleLineIcons } from '@expo/vector-icons';
 export const MenuItems = ({ navigation, statusOpenAccountStack, statusOpenHomeStacks, statusOpenEmployeeStack, statusOpenRequestsMyFarmsStack, statusOpenRequestsOtherFarmsStack }) => {
 
     return(
-      <DrawerContentScrollView style={tw`pt-1 px-5 `}>     
-          <View style={tw`h-60%`}>
-              <View style={tw`mb-10 h-48px items-center flex-row`}>
+      <DrawerContentScrollView style={tw`pt-1 h-full `}>     
+          
+              <View style={tw`mb-10 h-48px px-4 items-center justify-end flex-row`}>
+                  <Image source={Agrosoft} style={tw`h-53px w-205px`}/>
                   <TouchableOpacity onPress={() => navigation.closeDrawer()}>
-                      <SimpleLineIcons name="menu" size={22} color="white" />
+                      <SimpleLineIcons name="menu" size={25} color="white" />
                   </TouchableOpacity>
-                  <Image source={Agrosoft} style={tw`h-50px w-200px`}/>
               </View>  
+          <View style={tw`h-55%  px-5`}>    
               <MenuDropDownItems navigation={navigation} statusUser={statusOpenAccountStack} statusAdmin={statusOpenHomeStacks} statusEmployee={statusOpenEmployeeStack} statusRequestsMyFarms={statusOpenRequestsMyFarmsStack} statusRequestsOtherFarms={statusOpenRequestsOtherFarmsStack} />
           </View>
-          <View style={tw`h-218px justify-end mt-20`}>
+          <View style={tw`h-50% items-center  mt-20
+          pt-4 pb-40`}>
               <MenuButton title={"Contáctenos"} /*onPress={() => logOut()} isOpen={isOpenRequests}*/ image={ContactUs} styleImage={tw`h-16px w-17px`} activeOpacity={0.6} />
               <MenuButton title={"Cerrar Sesión"} /* onPress={logOut()} isOpen={isOpenRequests}*/ image={SignOff} styleImage={tw`h-16px w-19px`} activeOpacity={0.6} /> 
           </View> 

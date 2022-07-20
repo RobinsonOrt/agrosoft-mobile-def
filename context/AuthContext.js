@@ -33,6 +33,7 @@ const AuthProvider = ({ children }) => {
     global.jwToken = "";
     global.urlConnected = "";
     await setResult({ data: { error: true, message: "Logout" } });
+    setLogged(null);
   }
 
 
