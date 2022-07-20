@@ -17,7 +17,7 @@ import {
 
 export default function Login() {
 
-  const {LoginUser, result} = useContext(AuthContext);
+  const {LoginUser, result, logged} = useContext(AuthContext);
 
   let navigate = useNavigate();
   const unsubscribe = NetInfo.addEventListener(state => {
@@ -80,8 +80,9 @@ export default function Login() {
   };
 
   useEffect(() => {
-    console.log(global.idUser)
-    if(!global.idUser === undefined){
+    console.log(logged + "ddddddddddddddddddddd")
+    if(logged){
+      console.log("jdjdjjdjdjdjdjjd")
       navigate("/userLoged");
     }
   }, []);

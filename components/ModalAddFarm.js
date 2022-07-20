@@ -131,8 +131,8 @@ export default function ModalAddFarm({ isModalOpenAddFarm, setIsModalOpenAddFarm
               <Text style={tw`text-3xl font-bold text-black mt-5 mb-5`}>
                 Agregar nueva finca
               </Text>
-              <ScrollView style={tw`mt-2 w-full h-130 pb-3`}>
-                <View style={tw`w-full bg-red-300 px-7`}>
+              <ScrollView style={tw`mt-2 w-full  h-130 pb-3`}>
+                <View style={tw`w-full items-center`}>
                   <Text style={tw` text-black mb-10 w-full  text-center`}>
                     Rellena los campos con la información correspondiente
                   </Text>

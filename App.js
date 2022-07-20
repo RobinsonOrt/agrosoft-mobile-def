@@ -132,11 +132,12 @@ export default function App() {
 }*/
 
 import "react-native-gesture-handler";
+import React, {useContext} from 'react';
 import { NativeRouter, Route, Routes } from "react-router-native";
 import Home from "./screens/Home";
 import Login from "./screens/Login";
 import Register from "./screens/Register";
-import { AuthProvider } from "./context/AuthContext";
+import { AuthProvider  } from "./context/AuthContext";
 import TokenValidation from "./screens/TokenValidation";
 import PasswordRecovery from "./screens/PasswordRecovery";
 import TokenValidationTwo from "./screens/TokenValidationTwo";

@@ -116,6 +116,9 @@ export default function Farms({ navigation }) {
 }
 
 export const styles = StyleSheet.create({
+  colorButton: {
+    backgroundColor: "rgba(234, 179, 8, 1)",
+  },
   container: {
     paddingHorizontal: 15,
     paddingVertical: 5,
