@@ -13,7 +13,6 @@ import { useNavigate, useParams } from "react-router-native";
 import { REACT_APP_API_URL } from "@env";
 
 export default function CropsActivitys() {
-
   const { idFarm } = useParams();
 
   let navigate = useNavigate();
@@ -24,13 +23,18 @@ export default function CropsActivitys() {
     "name_activity",
     "asc",
   ]);
+  const [pageIndex, setPageIndex] = useState(0);
 
   const { data: cropActivitys } = useSWR(
     `${REACT_APP_API_URL}/api/getactivities/${2}/${idFarm}/${
       orderCropActivitys[0]
-    }/${orderCropActivitys[1]}/${0}`,
+    }/${orderCropActivitys[1]}/${pageIndex}`,
     fetcher
   );
+
+  const noData =
+    cropActivitys?.maxPage == null || cropActivitys?.maxPage == pageIndex;
+  const pageLength = cropActivitys?.maxPage + 1;
 
   useBackHandler(() => {
     console.log("back");
@@ -101,6 +105,39 @@ export default function CropsActivitys() {
               <Text>No se encontraron datos</Text>
             </View>
           )}
+          <View style={tw`flex flex-row items-center justify-center mt-5`}>
+            <TouchableOpacity
+              style={tw`bg-green-500 p-2 rounded-md mr-3 ${
+                pageIndex <= 0 ? "hidden" : ""
+              }`}
+              onPress={() => {
+                setPageIndex(pageIndex - 1);
+              }}
+            >
+              <Text style={tw`text-white text-lg`}>Volver</Text>
+            </TouchableOpacity>
+            {Array.from({ length: pageLength }).map((_, i) => (
+              <TouchableOpacity
+                key={i}
+                style={tw`bg-gray-300 w-10 h-10 flex items-center justify-center ${
+                  i == pageIndex ? "bg-gray-400" : ""
+                }`}
+                onPress={() => setPageIndex(i)}
+              >
+                <Text style={tw`text-lg font-normal`}>{i + 1}</Text>
+              </TouchableOpacity>
+            ))}
+            <TouchableOpacity
+              style={tw`bg-green-500 p-2 rounded-md ml-3 ${
+                noData ? "hidden" : ""
+              }`}
+              onPress={() => {
+                setPageIndex(pageIndex + 1);
+              }}
+            >
+              <Text style={tw`text-white text-lg`}>Siguiente</Text>
+            </TouchableOpacity>
+          </View>
         </ScrollView>
       </SafeAreaView>
     </SafeAreaProvider>
