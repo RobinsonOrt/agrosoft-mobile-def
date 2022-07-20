@@ -9,6 +9,7 @@ import {
   ScrollView,
   TextInput,
 } from "react-native";
+
 import tw from "twrnc";
 import { SafeAreaProvider, SafeAreaView } from "react-native-safe-area-context";
 import SubHeader from "../components/SubHeader";
@@ -26,12 +27,26 @@ import AddButton from "../components/AddButton";
 import ScanButton from "../components/ScanButton";
 import ModalDelete from "../components/ModalDelete";
 import ModalAddCoffeeBush from "../components/ModalAddCoffeeBush";
+import { BarCodeScanner } from "expo-barcode-scanner";
+
 import { useNavigate } from "react-router-native";
 
 const CoffeeBush = ({ navigation }) => {
   const [isModalOpenAddCoffeeBush, setIsModalOpenAddCoffeeBush] =
     useState(false);
   const [isModalOpenDelete, setIsModalOpenDelete] = useState(false);
+  const [hasPermission, setHasPermission] = useState(null);
+    const [scanned, setScanned] = useState(false);
+    const [text, setText] = useState("Not yet scanned");
+    const [scan, setScan] = useState("false");
+  
+  const askForCameraPermission = () => {
+        (async () => {
+            const { status } = await BarCodeScanner.requestPermissionsAsync();
+            setHasPermission(status == 'granted')
+        })()
+    }
+
 
   let navigate = useNavigate();
 
@@ -46,8 +61,50 @@ const CoffeeBush = ({ navigation }) => {
   } = useContext(MyCoffeeBushContext);
 
   useEffect(() => {
+    askForCameraPermission();
     GetCoffeeBushs(global.idCrop);
   }, []);
+
+    //gonna happen when we scan the bar code
+    const handleBarCodeScanned = ({ type, data }) => {
+        setScanned(true)
+        setText(data)
+        console.log('Type: ' + type + '\nData: ' + data)
+    }
+
+    //check permissions and return the screens
+    if (hasPermission === null) {
+        return (
+            <View>
+                <Text>Requesting for camera permission</Text>
+            </View>
+        )
+    }
+
+    if (hasPermission === false) {
+        return (
+            <View>
+                <Text>No access to camera</Text>
+                <Button title={'Allow Camera'} onPress={() => askForCameraPermission()} />
+            </View>
+        )
+    }
+
+    if (scan === true) {
+        return (
+            <View style={styles.container}>
+                <View style={styles.barcodebox}>
+                    <BarCodeScanner
+                        onBarCodeScanned={scanned ? undefined : handleBarCodeScanned}
+                        style={{ height: 400, width: 400 }} />
+                </View>
+                <Text style={styles.maintext}>{text}</Text>
+
+                {scanned && <Button title={'Scan again?'} onPress={() => setScanned(false)} color='tomato' />}
+                <Button title={'OK'} onPress={() => setScan(false)} color='green' />
+            </View>
+        );
+    }
 
   console.log(coffeeBushs);
 
@@ -85,6 +142,7 @@ const CoffeeBush = ({ navigation }) => {
               isModalOpenAddCoffeeBush={isModalOpenAddCoffeeBush}
               setIsModalOpenAddCoffeeBush={setIsModalOpenAddCoffeeBush}
             />
+
 
             <ModalDelete
               isModalOpenDelete={isModalOpenDelete}
