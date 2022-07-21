@@ -24,6 +24,8 @@ import MyFarmsContext from "../context/FarmContext";
 import CountryProvider from '../context/CoutryContext';
 import RNPickerSelect from "react-native-picker-select";
 import dropDownOpen from '../assets/dropDownOpen.png';
+import InputForm from './InputForm';
+import PickerModel from "./PickerModel";
 //import {Picker} from '@react-native-picker/picker';
 
 export default function ModalAddFarm({ isModalOpenAddFarm, setIsModalOpenAddFarm }) {
@@ -36,15 +38,14 @@ export default function ModalAddFarm({ isModalOpenAddFarm, setIsModalOpenAddFarm
   });
 
   const [result, setResult] = useState();
-  const [localError, setLocalError] = useState({
-    msg: "",
-    status: false
-  });
-
-  const [selectedCountry, setSelectedCountry] = useState();
+  
+  const [selectedCountry, setSelectedCountry] = useState(null);
   
   const { message, error, setError, setMessage, AddFarm } = useContext(MyFarmsContext);
   const {country, loadCountries} = useContext(CountryProvider);
+
+  const [localError, setLocalError] = useState({ "error": false, "message": "" });
+ 
   
 
   useBackHandler(() => {
@@ -59,60 +60,20 @@ export default function ModalAddFarm({ isModalOpenAddFarm, setIsModalOpenAddFarm
     formState: { errors },
   } = useForm();
 
-  const Input = ({
-    style,
-    fieldValue,
-    placeholder,
-    keyboardType,
-    secureTextEntry,
-    pattern,
-    autoCapitalize,
-    minLength,
-    maxLength,
-    multiline,
-  }) => {
-    return (
-      <Controller
-        control={control}
-        rules={{
-          required: true,
-          pattern: pattern,
-          minLength: minLength,
-          maxLength: maxLength,
-        }}
-        render={({ field: { onChange, onBlur, value } }) => (
-          <TextInput
-            style={style}
-            onChangeText={onChange}
-            onBlur={onBlur}
-            value={value}
-            placeholder={placeholder}
-            keyboardType={keyboardType}
-            secureTextEntry={secureTextEntry}
-            autoCapitalize={autoCapitalize}
-            multiline={multiline}
-          />
-        )}
-        name={fieldValue}
-      />
-    );
-  };
-
   const onSubmitAddFarm = (data) => {
-    
-    if(data.nameFarm.trim().length > 150 || data.descriptionFarm.trim().length < 15 || data.descriptionFarm.trim().length > 150 || data.descriptionFarm.trim().length < 15){
-      setLocalError({
-        msg: "Los campos no pueden quedar vacios o con solo espacios",
-        status: true
-      });
-      return;
-    }
-    data.idCountry = selectedCountry;
+    if (selectedCountry == null || selectedCountry == "") {
+      setLocalError({ "error": true, "message": "No ha seleccionado el pais" })
+      return} 
+      else {
+        data.idCountry = selectedCountry
+      }
     const response = AddFarm(data);
     console.log(response);
     if(!response.error){
       setIsModalOpenAddFarm(false);
       reset();
+      setSelectedCountry(null)
+      setLocalError({ "error": false, "message": "" });
     }
   };
 
@@ -131,8 +92,8 @@ export default function ModalAddFarm({ isModalOpenAddFarm, setIsModalOpenAddFarm
               <Text style={tw`text-3xl font-bold text-black mt-5 mb-5`}>
                 Agregar nueva finca
               </Text>
-              <ScrollView style={tw`mt-2 w-full h-130 pb-3`}>
-                <View style={tw`w-full bg-red-300 px-7`}>
+              <ScrollView style={tw`mt-2 w-full h-120 pb-3`}>
+                <View style={tw`w-full px-7`}>
                   <Text style={tw` text-black mb-10 w-full  text-center`}>
                     Rellena los campos con la información correspondiente
                   </Text>
@@ -143,45 +104,65 @@ export default function ModalAddFarm({ isModalOpenAddFarm, setIsModalOpenAddFarm
                       {localError.msg}
                     </Text>
                   ) : null}
-                  <Input
-                    style={tw`bg-slate-50 px-5 py-3 rounded-lg w-321px mb-5 border-b border-yellow-700`}
-                    fieldValue="nameFarm"
-                    placeholder="Nombre"
-                    autoCapitalize="words"
-                    
-                  />
-                  {errors.nameFarm && (
-                    <Text style={tw`text-red-600 mb-5`}>Campo requerido, maximo 50 caracteres!</Text>
-                  )}
-                  <Input
-                    style={tw`bg-slate-50 px-5 py-3 rounded-lg h-83px w-321px mb-5 border-b border-yellow-700`}
-                    fieldValue="descriptionFarm"
-                    placeholder="Descripción"
-                    multiline={true}
-                  />
-
                 
-                  {errors.descriptionFarm && (
-                    <Text style={tw`text-red-600 mb-5 w-65`}>Campo requerido , minimo 15 caracteres y maximo 50 caracteres</Text>
-                  )}
-                <RNPickerSelect
-                      placeholder={{ label: "País", value: "" }}
-                      onValueChange={(itemValue) =>
-                        setSelectedCountry(itemValue)}
-                      style={customPickerStyles}
-                      useNativeAndroidPickerStyle={false}
-                      Icon={() => {
-                        return (
-                          <Image source={dropDownOpen} style={tw`h-8px w-12px mt-5 mr-3`}/>
-                        );
-                      }}
-                      items={   
-                        Array.isArray(country)?
-                        country.map((item, index) => {
-                          return  {label:item.nameCountry, value:item.idCountry, key:index}
-                        }) : {label:"", value:"", key:""}
-                      }
-                  />
+                      <InputForm
+                      control={control}
+                      name="nameFarm"
+                      placeholder="Nombre finca"
+                      autoCapitalize="words"
+                      maxLength={50}
+                      minLength={5}
+                      autoFocus={true}
+                      height={40}
+                      pattern={/^[a-zA-ZÁ-ÿ0-9., ]+$/}
+                    />
+                    {errors.nameFarm?.type === "required" ? (
+                      <Text style={tw`text-red-600 mb-2 text-center`}>Campo requerido!</Text>
+                    ) : errors.nameFarm?.type === "pattern" ? (
+                      <Text style={tw`text-red-600 mb-2 text-center`}>
+                        No se aceptan caracteres especiales
+                      </Text>
+                    ) : errors.nameFarm?.type === "minLength" ? (
+                      <Text style={tw`text-red-600 mb-2 text-center`}>
+                        Minimo 5 caracteres!
+                      </Text>
+                    ) : null}
+
+                    
+                    <InputForm
+                      control={control}
+                      name="descriptionFarm"
+                      placeholder="Descripcion"
+                      autoCapitalize="sentences"
+                      height={80}
+                      maxLength={100}
+                      minLength={15}
+                      multiline={true}
+                      pattern={/^[a-zA-ZÁ-ÿ0-9., ]+$/}
+                    />
+                    {errors.descriptionFarm?.type === "required" ? (
+                      <Text style={tw`text-red-600 mb-2 text-center`}>Campo requerido!</Text>
+                    ) : errors.descriptionFarm?.type === "pattern" ? (
+                      <Text style={tw`text-red-600 mb-2 text-center`}>
+                        No se permiten caracteres especiales!
+                      </Text>
+                    ) : errors.descriptionFarm?.type === "minLength" ? (
+                      <Text style={tw`text-red-600 mb-2 text-center`}>
+                        Minimo 15 caracteres!
+                      </Text>
+                    ) : null}
+
+                    <PickerModel list={country}
+                      label="nameCountry"
+                      value="idCountry"
+                      text="Pais"
+                      setSelected={setSelectedCountry} />
+                    {localError.error ? (
+                      <Text style={tw`text-red-600 mb-2 text-center`}>
+                        {localError.message}
+                      </Text>
+                    ) : null}
+
 
                   <ModalButton text={"Confirmar"} onPress={handleSubmit(onSubmitAddFarm)} color={"#22C55E"}/>
                   <ModalButton text={"Cancelar"} onPress={() => {setIsModalOpenAddFarm(!setIsModalOpenAddFarm), setError(false), reset()}} color={"rgba(220, 38, 38, 0.86)"}/>

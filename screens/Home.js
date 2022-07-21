@@ -8,30 +8,10 @@ import { BlurView } from "expo-blur";
 import { Link } from "react-router-native";
 import NetInfo from '@react-native-community/netinfo';
 import { useNavigate } from "react-router-native";
-import Loginn from "../components/Loginn";
-import Registerr from "../components/Registerr";
 
-export default function Home() {
+export default function Home({navigation}) {
 
-  const [isOpenHome, setIsOpenHome] = useState(true);
-  const [isOpenLogin, setIsOpenLogin] = useState(false);
-  const [isOpenRegister, setIsOpenRegister] = useState(false);
-
-  const toggleOpenHome = () => {
-    setIsOpenHome(true)
-    setIsOpenLogin(false)
-    setIsOpenRegister(false)
-  }
-  const toggleOpenLogin = () => {
-    setIsOpenHome(false)
-    setIsOpenLogin(true)
-    setIsOpenRegister(false)
-  }
-  const toggleOpenRegister = () => {
-    setIsOpenHome(false)
-    setIsOpenLogin(false)
-    setIsOpenRegister(true)
-  }
+  
   
   const navigate = useNavigate();
   
@@ -68,9 +48,9 @@ export default function Home() {
         
         <Image source={Logo} style={tw`h-30px w-263px mb-10`} />
 
-        <View style={[styles.list, !isOpenHome ? [styles.hidden, tw`w-full items-center`] : undefined]}>
+      
           <View style={[tw`py-15px px-10px rounded-2xl w-80 mt-30`, styles.colorView ]}>
-            <TouchableOpacity onPress={() => toggleOpenLogin()}>
+            <TouchableOpacity onPress={() => navigation.navigate("Login")}>
               <Text style={[tw`h-45px text-lg text-white py-9px rounded-2xl mb-7 font-bold uppercase text-center`, styles.colorButton]}>
                 Ingresar
               </Text>
@@ -81,21 +61,14 @@ export default function Home() {
               <View style={tw`w-1/2 h-0`}><View style={tw`h-1px opacity-50 bg-white mr-2 ml-5`}/></View>
             </View>
 
-            <Link to={'/register'}  underlayColor="#ddddd">
+            <TouchableOpacity onPress={() => navigation.navigate("Register")}>
               <Text style={[tw`h-45px text-lg text-white py-9px rounded-2xl font-bold uppercase text-center`, styles.colorButton]}>
                 Registrarse
               </Text>
-            </Link>
+            </TouchableOpacity>
+
           </View>
-        </View>
-
-        <View style={[styles.list, !isOpenLogin ? [styles.hidden, tw`w-full items-center`] : undefined]}>
-          <Registerr toggleOpenHome={toggleOpenHome}/>
-        </View>
-
-        <View style={[styles.list, !isOpenRegister ? [styles.hidden, tw`w-full items-center`] : undefined]}>
-
-        </View>
+        
 
       </View>
     </ImageBackground>

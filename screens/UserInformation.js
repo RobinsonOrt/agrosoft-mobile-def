@@ -65,8 +65,8 @@ export default function UserInformation( {navigation} ) {
           />
         <View style={tw`flex-row w-80 p-0`}>
         <TextInput
-            style={tw`bg-slate-50 text-base px-5 py-3 rounded-lg w-55px mb-5 pl-0 pr-0 border-b border-yellow-700`}
-            value={"+" + identifier.identifier + " " + identifier.countryName}
+            style={tw`bg-slate-50 text-base py-3 rounded-lg w-55px mb-5 pl-0 pr-0 border-b border-yellow-700`}
+            value={"+" + identifier.identifier}
             placeholder="identificador"
             editable={false}
           />  

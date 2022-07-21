@@ -2,7 +2,7 @@ import React from "react";
 import { View, Text, StyleSheet } from "react-native";
 import tw from "twrnc";
 
-const SubHeader = ({title}) => {
+const SubHeader2 = ({title}) => {
     
     const styles = StyleSheet.create({
         backgroundView: {     
@@ -20,4 +20,4 @@ const SubHeader = ({title}) => {
     )
 }
 
-export default SubHeader;
+export default SubHeader2;

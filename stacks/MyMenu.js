@@ -1,5 +1,6 @@
+import global from "../global";
 import "react-native-gesture-handler";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { NavigationContainer } from "@react-navigation/native";
 import { createDrawerNavigator } from "@react-navigation/drawer";
 import HomeStacks from "./HomeStacks";
@@ -8,21 +9,42 @@ import EmployeeStack from "./EmployeeStack";
 import RequestsMyFarmsStack from "./RequestsMyFarmsStack";
 import RequestsOtherFarmsStack from "./RequestsOtherFarmsStack";
 import { MenuItems } from "../components/MenuItems";
+import MainStack from "./MainStack";
+import { AuthProvider } from "../context/AuthContext";
+import { DrawerContentScrollView } from "@react-navigation/drawer";
+import tw from "twrnc"
+import Home from "../screens/Home";
 
 const Menu = createDrawerNavigator();
 
+
+
 export function MyMenu() {
   const routeNameRef = React.useRef();
-  const navigationRef = React.useRef();
-  const [isOpenAccountStack, setIsOpenAccountStack] = useState(false);
-  const [isOpenHomeStacks, setIsOpenHomeStacks] = useState(false);
-  const [isOpenEmployeeStack, setIsOpenEmployeeStack] = useState(false);
-  const [isOpenRequestsMyFarmsStack, setIsOpenRequestsMyFarmsStack] =
+    const navigationRef = React.useRef();
+    const [isOpenAccountStack, setIsOpenAccountStack] = useState(false);
+    const [isOpenHomeStacks, setIsOpenHomeStacks] = useState(false);
+    const [isOpenEmployeeStack, setIsOpenEmployeeStack] = useState(false);
+    const [isOpenRequestsMyFarmsStack, setIsOpenRequestsMyFarmsStack] =
     useState(false);
-  const [isOpenRequestsOtherFarmsStack, setIsOpenRequestsOtherFarmsStack] =
+    const [isOpenRequestsOtherFarmsStack, setIsOpenRequestsOtherFarmsStack] =
     useState(false);
 
+    useEffect(() => {
+      console.log("este es el global:"+global.id)
+    console.log("jwToken: "+global.jwToken)
+    const singOn = global.jwToken !== undefined
+    console.log(singOn)
+    },[global.jwToken])
+    
+
+    
+    
+
   return (
+
+    
+    <AuthProvider>
     <NavigationContainer
       ref={navigationRef}
       onReady={() => {
@@ -75,16 +97,17 @@ export function MyMenu() {
     >
       <Menu.Navigator
         drawerContent={(props) => (
-          <MenuItems
+          global.jwToken !== undefined || global.jwToken !== "" ?
+          (<MenuItems
             statusOpenAccountStack={isOpenAccountStack}
             statusOpenHomeStacks={isOpenHomeStacks}
             statusOpenEmployeeStack={isOpenEmployeeStack}
             statusOpenRequestsMyFarmsStack={isOpenRequestsMyFarmsStack}
             statusOpenRequestsOtherFarmsStack={isOpenRequestsOtherFarmsStack}
             {...props}
-          />
+          />):null
         )}
-        initialRouteName="Mis fincas"
+        initialRouteName="Home"
         screenOptions={{
           drawerStyle: {
             backgroundColor: "#348800",
@@ -96,13 +119,25 @@ export function MyMenu() {
           headerShown: false,
         }}
       >
-        <Menu.Screen name="Administrar perfil" component={AccountStack} />
+        { global.jwToken === undefined || global.jwToken === "" ?
+          
+        (<> 
+            <Menu.Screen name='Homee' component={MainStack} />
+        </>):
+        (
+          <>
+        
         <Menu.Screen name="Mis fincas" component={HomeStacks} />
+        <Menu.Screen name="Administrar perfil" component={AccountStack} />
         <Menu.Screen name="Fincas" component={EmployeeStack} />
         <Menu.Screen name="Solicitudes mis fincas" component={RequestsMyFarmsStack}/>
         <Menu.Screen name="Solicitudes otras fincas" component={RequestsOtherFarmsStack}/>
+        </>
+        )
+}
       </Menu.Navigator>
-    </NavigationContainer>
+      </NavigationContainer>
+      </AuthProvider>
   );
 }
 

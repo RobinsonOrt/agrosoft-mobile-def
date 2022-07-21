@@ -10,17 +10,21 @@ import {
 } from "react-native";
 import ModalModel from "./ModalModel";
 import ModalButton from "./ModalButton";
-
 import tw from "twrnc";
 import { useNavigate } from "react-router-native";
 import { useBackHandler } from "@react-native-community/hooks";
-
 import NetInfo from '@react-native-community/netinfo';
 import MyFarmsContext from "../context/FarmContext";
 import CountryContext from '../context/CoutryContext';
+import InputForm from './InputForm';
+import PickerModel from "./PickerModel";
+import { useForm, Controller } from "react-hook-form";
 
 export default function ModalModifyFarmerInformation({ isModalOpenModifyFarmerInformation, setIsModalOpenModifyFarmerInformation }) {
   let navigate = useNavigate();
+
+  const [selectedCountry, setSelectedCountry] = useState(null);
+  const [localError, setLocalError] = useState({ "error": false, "message": "" });
 
   const unsubscribe = NetInfo.addEventListener(state => {
     if (!state.isConnected) {
@@ -28,9 +32,16 @@ export default function ModalModifyFarmerInformation({ isModalOpenModifyFarmerIn
     }
   });
 
+  const {
+    control,
+    reset,
+    handleSubmit,
+    formState: { errors },
+  } = useForm();
+
   const { farm, LoadFarms, UpdateFarm, error, message } = useContext(MyFarmsContext);
   const { country, loadCountries } = useContext(CountryContext);
-  const [localError, setLocalError] = useState(false);
+
   const [localErrorMsg, setLocalErrorMsg] = useState("");
 
 
@@ -39,22 +50,33 @@ export default function ModalModifyFarmerInformation({ isModalOpenModifyFarmerIn
     return true;
   });
 
-  const saveFarm = () => {
-
-    //validate if all fields are filled
-    if (farm.nameFarm == null || farm.nameFarm == "" || farm.nameFarm.trim().length < 1 || farm.nameFarm.length > 20) {
-      setLocalError(true);
-      setLocalErrorMsg("El nombre de la granja debe tener entre 1 y 20 caracteres");
-    }else if (farm.descriptionFarm == null || farm.descriptionFarm == "" || farm.descriptionFarm.trim().length <15 || farm.descriptionFarm.length > 150){
-      setLocalError(true);
-      setLocalErrorMsg("La descripción de la granja debe tener entre 15 y 150 caracteres");
-    }else{
-      setLocalError(false);
-      setLocalErrorMsg("");
-      UpdateFarm(farm);
+  const saveFarm = async (data) => {
+    if (selectedCountry == null || selectedCountry == "") {
+      setLocalError({ "error": true, "message": "No ha seleccionado el pais" })
+      return} 
+      else {
+        data.idCountry = selectedCountry
+      }
+    
+      
+    data.idFarm = global.idFarm  
+    const response = UpdateFarm(data);
+    console.log(response);
+    if(!response.error){
       setIsModalOpenModifyFarmerInformation(false);
+      reset();
+      setSelectedCountry(null)
+      setLocalError({ "error": false, "message": "" });
     }
-  }
+  };
+
+  useEffect(() => {
+    reset({
+      nameFarm: farm.nameFarm,
+      descriptionFarm: farm.descriptionFarm,
+    });
+    setSelectedCountry(farm.idCountry)
+  }, [farm]);
 
 
   useEffect(() => {
@@ -72,59 +94,74 @@ export default function ModalModifyFarmerInformation({ isModalOpenModifyFarmerIn
                   <Text style={tw` text-black mb-3 w-full  text-center`}>
                     Rellena los campos con la información correspondiente
                   </Text>
-                  {error ? (
+                  {localError.status ? (
                     <Text
                       style={tw`text-white bg-red-500 p-5 rounded-lg mb-10 font-bold text-center`}
                     >
-                      {message}
+                      {localError.msg}
                     </Text>
                   ) : null}
+                
+                      <InputForm
+                      control={control}
+                      name="nameFarm"
+                      placeholder="Nombre finca"
+                      autoCapitalize="words"
+                      maxLength={50}
+                      minLength={5}
+                      autoFocus={true}
+                      height={40}
+                      pattern={/^[a-zA-ZÁ-ÿ0-9., ]+$/}
+                    />
+                    {errors.nameFarm?.type === "required" ? (
+                      <Text style={tw`text-red-600 mb-2 text-center`}>Campo requerido!</Text>
+                    ) : errors.nameFarm?.type === "pattern" ? (
+                      <Text style={tw`text-red-600 mb-2 text-center`}>
+                        No se aceptan caracteres especiales
+                      </Text>
+                    ) : errors.nameFarm?.type === "minLength" ? (
+                      <Text style={tw`text-red-600 mb-2 text-center`}>
+                        Minimo 5 caracteres!
+                      </Text>
+                    ) : null}
 
-                  {localError ? (
-                    <Text
-                      style={tw`text-white bg-red-500 p-5 rounded-lg mb-10 font-bold text-center`}
-                    >
-                      {localErrorMsg}
-                    </Text>
-                  ) : null}
+                    
+                    <InputForm
+                      control={control}
+                      name="descriptionFarm"
+                      placeholder="Descripcion"
+                      autoCapitalize="sentences"
+                      height={80}
+                      maxLength={100}
+                      minLength={15}
+                      multiline={true}
+                      pattern={/^[a-zA-ZÁ-ÿ0-9., ]+$/}
+                    />
+                    {errors.descriptionFarm?.type === "required" ? (
+                      <Text style={tw`text-red-600 mb-2 text-center`}>Campo requerido!</Text>
+                    ) : errors.descriptionFarm?.type === "pattern" ? (
+                      <Text style={tw`text-red-600 mb-2 text-center`}>
+                        No se permiten caracteres especiales!
+                      </Text>
+                    ) : errors.descriptionFarm?.type === "minLength" ? (
+                      <Text style={tw`text-red-600 mb-2 text-center`}>
+                        Minimo 15 caracteres!
+                      </Text>
+                    ) : null}
 
+                    <PickerModel list={country}
+                      label="nameCountry"
+                      value="idCountry"
+                      text="Pais"
+                      setSelected={setSelectedCountry}
+                      selected={selectedCountry} />
+                    {localError.error ? (
+                      <Text style={tw`text-red-600 mb-2 text-center`}>
+                        {localError.message}
+                      </Text>
+                    ) : null}
 
-                  <TextInput
-                    onChange={(e) => farm.nameFarm = e.nativeEvent.text}
-                    style={tw`bg-slate-50 px-5 py-3 rounded-lg w-full mb-5 border-b border-yellow-700`}
-                    defaultValue={farm.nameFarm}
-                    placeholder={"Nombre de la granja"}
-                  />
-
-                  <TextInput
-                    onChange={(e) => farm.descriptionFarm = e.nativeEvent.text}
-                    style={tw`bg-slate-50 px-5 py-3 rounded-lg h-83px w-full mb-5 border-b border-yellow-700`}
-                    defaultValue={farm.descriptionFarm}
-                    placeholder={"Descripcion de la granja"}
-                    multiline={true}
-                  />
-
-                  <Picker
-                    style={tw`bg-slate-50 text-base px-5 py-3 rounded-lg w-full mb-5 pl-0 pr-0 border-b border-yellow-700`}
-                    itemStyle={{ backgroundColor: "yellow", color: "blue", fontFamily: "Ebrima", fontSize: 17 }}
-                    selectedValue={farm.idCountry}
-                    enabled={false}
-                    onValueChange={(itemValue) =>
-                      farm.idCountry = itemValue
-                    }>
-
-                    {
-                      Array.isArray(country) ?
-
-                        country.map((item, index) => {
-
-                          return <Picker.Item label={item.nameCountry} value={item.idCountry} key={index} />
-
-                        }) : <Picker.Item label="" value="" key="" />
-                    }
-                  </Picker>
-
-                   <ModalButton text={"Guardar"} onPress={saveFarm} color={"#22C55E"}/>
+                   <ModalButton text={"Guardar"} onPress={handleSubmit(saveFarm)} color={"#22C55E"}/>
                    <ModalButton onPress={() => { LoadFarms("name_farm", "asc", "0"); setIsModalOpenModifyFarmerInformation(!setIsModalOpenModifyFarmerInformation) }}
                                 text="Cancelar"
                                 color="rgba(220, 38, 38, 0.86)"/>

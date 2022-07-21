@@ -7,7 +7,8 @@ import {
 } from "react-native";
 import tw from "twrnc";
 import RNPickerSelect from "react-native-picker-select";
-import dropDownOpen from '../assets/dropDownOpen.png';               
+import dropDownOpen from '../assets/dropDownOpen.png';
+import { AntDesign } from '@expo/vector-icons';               
                     
                     
 const PickerModel = ({list, label, value, text, setSelected, selected})=>{   
@@ -24,7 +25,7 @@ const PickerModel = ({list, label, value, text, setSelected, selected})=>{
                       useNativeAndroidPickerStyle={false}
                       Icon={() => {
                         return (
-                          <Image source={dropDownOpen} style={tw`h-8px w-12px mt-5 mr-3`}/>
+                          <View style={tw`items-center flex-row pt-4 pr-2`}><AntDesign name="down" size={16} color="black" /></View>
                         );
                       }}
                       items={   
