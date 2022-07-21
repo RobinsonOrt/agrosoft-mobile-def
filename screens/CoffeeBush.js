@@ -9,6 +9,7 @@ import {
   ScrollView,
   TextInput,
 } from "react-native";
+
 import tw from "twrnc";
 import { SafeAreaProvider, SafeAreaView } from "react-native-safe-area-context";
 import SubHeader from "../components/SubHeader";
@@ -26,12 +27,16 @@ import AddButton from "../components/AddButton";
 import ScanButton from "../components/ScanButton";
 import ModalDelete from "../components/ModalDelete";
 import ModalAddCoffeeBush from "../components/ModalAddCoffeeBush";
+
 import { useNavigate } from "react-router-native";
 
 const CoffeeBush = ({ navigation }) => {
-  const [isModalOpenAddCoffeeBush, setIsModalOpenAddCoffeeBush] =
-    useState(false);
+  const [isModalOpenAddCoffeeBush, setIsModalOpenAddCoffeeBush] = useState(false);
   const [isModalOpenDelete, setIsModalOpenDelete] = useState(false);
+  const [hasPermission, setHasPermission] = useState(null);
+  const [scanned, setScanned] = useState(false);
+  const [text, setText] = useState("Not yet scanned");
+  const [scan, setScan] = useState("false");
 
   let navigate = useNavigate();
 
@@ -49,7 +54,7 @@ const CoffeeBush = ({ navigation }) => {
     GetCoffeeBushs(global.idCrop);
   }, []);
 
-  console.log(coffeeBushs);
+   
 
   return (
     <SafeAreaProvider>
@@ -65,7 +70,7 @@ const CoffeeBush = ({ navigation }) => {
                   GetElements={GetCoffeeBushs}
                   firstParameter={global.idCrop}
                 />
-                <ScanButton onPress={() => console.log("scan")} />
+                <ScanButton onPress={() => {navigation.navigate("ScannScreen")}} />
               </View>
               <View style={tw`items-end`}>
                 <SearchComponent
@@ -85,6 +90,7 @@ const CoffeeBush = ({ navigation }) => {
               isModalOpenAddCoffeeBush={isModalOpenAddCoffeeBush}
               setIsModalOpenAddCoffeeBush={setIsModalOpenAddCoffeeBush}
             />
+
 
             <ModalDelete
               isModalOpenDelete={isModalOpenDelete}

@@ -25,6 +25,8 @@ import AssignedCrops from "../screens/AssignedCrops";
 import AdminCropsActivitys from "../screens/AdminCropsActivitys";
 import CropsRecords from "../screens/CropsRecords";
 import AdminBushActivitys from "../screens/AdminBushActivitys";
+import ScannScreen from "../screens/ScannScreen";
+
 
 import { MyFarmsProvider } from "../context/FarmContext";
 import { MyEmployeesProvider } from "../context/EmployeeContext";
@@ -107,6 +109,7 @@ const HomeStacks = ({ navigation }) => {
                         name="BushActivitys"
                         component={AdminBushActivitys}
                       />
+                      <HomeStack.Screen name="ScannScreen" component={ScannScreen} />
                     </HomeStack.Navigator>
                   </MyCropUserProvider>
                 </MyLaborsProvider>
