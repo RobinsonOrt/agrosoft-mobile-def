@@ -18,12 +18,43 @@ import { useBackHandler } from "@react-native-community/hooks";
 import { useForm } from "react-hook-form";
 import Barcode from "../components/Barcode";
 import ModalButton from "../components/ModalButton";
+import * as FileSystem from 'expo-file-system';
+import { StorageAccessFramework } from 'expo-file-system';
+
 
 import SubHeader from "../components/SubHeader";
 
 const EnterCoffeeBush = ({ navigation }) => {
 
-    const { coffeeBush } = useContext(MyCoffeeBushContext);
+    const { coffeeBush, GetBarCodeCoffeeBush } = useContext(MyCoffeeBushContext);
+
+    
+    const downloadPdf = async () => {
+    const response = await GetBarCodeCoffeeBush(coffeeBush.idCoffeeBush);
+    
+    if (response.data.error) {
+      return;
+    }
+
+    const base64Data = response.data.dataBase64;
+    const fileName = coffeeBush.qrCode + "barcode";
+
+    const picturesUri = StorageAccessFramework.getUriForDirectoryInRoot('Documents');
+    const permissions = await StorageAccessFramework.requestDirectoryPermissionsAsync(picturesUri);
+    if (permissions.granted) {
+      await StorageAccessFramework.createFileAsync(permissions.directoryUri, fileName, 'application/pdf')
+        .then(async (uri) => {
+          await FileSystem.writeAsStringAsync(uri, base64Data, { encoding: FileSystem.EncodingType.Base64 });
+        })
+    }
+
+  }
+  useBackHandler(() => {
+    navigation.navigate("CoffeeBush")
+    return true;
+  });
+    
+   
 
     return (
         <View style={tw`h-full w-full px-0`}>
@@ -69,7 +100,7 @@ const EnterCoffeeBush = ({ navigation }) => {
                     </View>
                     <View style={tw`items-center`}>
                         <View style={tw`mt-10 w-75% items-center justify-center`}>
-                            <ModalButton text={"Descargar codigo de barras"} onPress={() => {console.log("descargado")}} color={"rgba(248, 189, 35, 1)"}/>
+                            <ModalButton text={"Descargar codigo de barras"} onPress={() => {downloadPdf()}} color={"rgba(248, 189, 35, 1)"}/>
                             <ModalButton text={"Cerrar"} onPress={() => {navigation.navigate("CoffeeBush")}} color={"rgba(239, 68, 68, 1)"}/>
                         </View>
                     </View>

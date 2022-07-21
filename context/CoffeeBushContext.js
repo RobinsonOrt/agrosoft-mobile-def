@@ -41,6 +41,12 @@ const MyCoffeeBushProvider = ({ children }) => {
         setCoffeeBushs(findCoffeeBushResponse.data.response);
     }
 
+    const GetCoffeeBushByQr = async (qrCode, idCrop) => {
+        const response = await axios.get(`${REACT_APP_API_URL}/api/getcoffeebushbyqr/${qrCode}/${idCrop}`);
+        setCoffeeBush(response.data.response);
+        return response;
+    }
+
     return(
         <MyCoffeeBushContext.Provider value={{
             coffeeBushs,
@@ -54,6 +60,7 @@ const MyCoffeeBushProvider = ({ children }) => {
             DeleteCoffeeBush,
             GetBarCodeCoffeeBush,
             FindCoffeeBush,
+            GetCoffeeBushByQr,
             maxPage,
         }}>{children}
         </MyCoffeeBushContext.Provider>

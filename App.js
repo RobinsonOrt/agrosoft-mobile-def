@@ -1,11 +1,12 @@
 import global from "./global";
 import React, {useReducer} from "react";
 import "react-native-gesture-handler";
+import React, {useContext} from 'react';
 import { NativeRouter, Route, Routes } from "react-router-native";
 import Home from "./screens/Home";
 import Login from "./screens/Login";
 import Register from "./screens/Register";
-import { AuthProvider } from "./context/AuthContext";
+import { AuthProvider  } from "./context/AuthContext";
 import TokenValidation from "./screens/TokenValidation";
 import PasswordRecovery from "./screens/PasswordRecovery";
 import TokenValidationTwo from "./screens/TokenValidationTwo";
@@ -25,9 +26,11 @@ import { MyFarmsProvider } from "./context/FarmContext";
 import { CountryProvider } from "./context/CoutryContext";
 import EmployeeCrops from "./screens/EmployeeCrops";
 import EmployeeShrubbery from "./screens/EmployeeShrubbery";
-import * as SecureStore from 'expo-secure-store';
-export default function App({navigation}) {
-  
+import CropsActivitys from "./screens/CropsActivitys";
+import CropsRecords from "./screens/CropsRecords";
+import BushActivitys from "./screens/BushActivitys";
+
+export default function App() {
   return (
     <CountryProvider>
       <AuthProvider>
@@ -57,6 +60,12 @@ export default function App({navigation}) {
                 path="/employeeshrubbery"
                 element={<EmployeeShrubbery />}
               />
+              <Route
+                path="/cropsactivitys/:idFarm"
+                element={<CropsActivitys />}
+              />
+              <Route path="/cropsrecords/:idActivity" element={<CropsRecords />} />
+              <Route path="/bushactivitys/:idFarm" element={<BushActivitys />} />
             </Routes>
           </NativeRouter>
         </MyFarmsProvider>

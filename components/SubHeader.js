@@ -9,7 +9,11 @@ const SubHeader = ({title}) => {
           backgroundColor: "rgba(81, 212, 0, 0.2)"      
         },
         textColor: {
+<<<<<<< HEAD
             color: "rgba(13, 158, 8, 0.5)"
+=======
+            color: "rgba(52, 136, 0, 1)"
+>>>>>>> cultivosRobinson
         }
       });
 

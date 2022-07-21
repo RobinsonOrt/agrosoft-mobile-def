@@ -43,7 +43,7 @@ export default function Farms({ navigation }) {
   useEffect(async () => {
     await LoadEmployeedFarms("name_farm", "asc", 0);
   }, []);
-  
+
   return (
     <SafeAreaProvider>
       <SafeAreaView style={styles.safeArea}>
@@ -73,22 +73,17 @@ export default function Farms({ navigation }) {
                   id={farm.idFarm}
                   key={index}
                 >
-                  <Link
-                    style={tw`flex-1`}
-                    to="/employeecrops"
-                    onPress={() => {
-                      setIdFarm(farm.idFarm);
-                    }}
-                  >
+                  
                     <CartButton
                       text={"Ingresar"}
                       onPress={() => {
                         setIdFarm(farm.idFarm);
+                        navigation.navigate("EmployeeCrops");
                       }}
                       color={"#22C55E"}
                       image={Enter}
                     />
-                  </Link>
+                  
                   <CartButton
                     text={"Abandonar"}
                     // onPress={() => {
@@ -116,6 +111,9 @@ export default function Farms({ navigation }) {
 }
 
 export const styles = StyleSheet.create({
+  colorButton: {
+    backgroundColor: "rgba(234, 179, 8, 1)",
+  },
   container: {
     paddingHorizontal: 15,
     paddingVertical: 5,
@@ -164,4 +162,13 @@ export const styles = StyleSheet.create({
     borderBottomWidth: StyleSheet.hairlineWidth,
     width: "100%",
   },
+  barcodebox: {
+    alignItems: 'center',
+    justifyContent: 'center',
+    height: 300,
+    width: 300,
+    overflow: 'hidden',
+    borderRadius: 30,
+    backgroundColor: 'tomato'
+  }
 });

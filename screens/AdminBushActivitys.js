@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { useState } from "react";
 import {
   ScrollView,
   TouchableOpacity,
@@ -12,50 +12,44 @@ import { SafeAreaProvider, SafeAreaView } from "react-native-safe-area-context";
 import SubHeader from "../components/SubHeader";
 import tw from "twrnc";
 import axios from "axios";
+import global from "../global";
 import useSWR from "swr";
 import { useBackHandler } from "@react-native-community/hooks";
-import { useNavigate } from "react-router-native";
-import MyFarmsContext from "../context/FarmContext";
+import { useNavigate, useParams } from "react-router-native";
 import { REACT_APP_API_URL } from "@env";
-import ModalInfoEmployeeCrop from "../components/ModalInfoEmployeeCrop";
-import global from "../global";
 import enter from "../assets/Enter.png";
-import actividades from "../assets/Actividades.png";
 import RNPickerSelect from "react-native-picker-select";
 import { EvilIcons } from "@expo/vector-icons";
 
-export default function EmployeeShrubbery({ navigation }) {
-  const { idCrop, setModalVisible } = useContext(MyFarmsContext);
+export default function AdminBushActivitys({ navigation }) {
   let navigate = useNavigate();
-
-  const [search, setSearch] = useState(false);
-  const [searchWord, setSearchWord] = useState("");
 
   const fetcher = (url) => axios.get(url).then((res) => res.data);
 
-  const [employeeShrubberyOrder, setEmployeeShrubberyOrder] = useState([
-    "created_date",
+  const [search, setSearch] = useState(false);
+  const [searchWord, setSearchWord] = useState("");
+  const [orderBushActivitys, setOrderBushActivitys] = useState([
+    "name_activity",
     "asc",
   ]);
 
-  const [shrubberyId, setShrubberyId] = useState(null);
   const [pageIndex, setPageIndex] = useState(0);
-
-  const { data: employeeShrubbery } = useSWR(
-    `${REACT_APP_API_URL}/api/coffeebush/${idCrop}/${employeeShrubberyOrder[0]}/${employeeShrubberyOrder[1]}/${pageIndex}`,
+  const { data: bushActivitys } = useSWR(
+    `${REACT_APP_API_URL}/api/getactivities/${1}/${global.idFarm}/${
+      orderBushActivitys[0]
+    }/${orderBushActivitys[1]}/${pageIndex}`,
     fetcher
   );
 
-  const { data: searchEmployeeShrubbery } = useSWR(
+  const { data: searchBushActivitys } = useSWR(
     search &&
-      `${REACT_APP_API_URL}/api/findcoffeebushs/${idCrop}/${searchWord}/${pageIndex}`,
+      `${REACT_APP_API_URL}/api/findactivities/${1}/${idFarm}/${searchWord}/${pageIndex}`,
     fetcher
   );
 
   const noData =
-    employeeShrubbery?.maxPage == null ||
-    employeeShrubbery?.maxPage == pageIndex;
-  const pageLength = employeeShrubbery?.maxPage + 1;
+    bushActivitys?.maxPage == null || bushActivitys?.maxPage == pageIndex;
+  const pageLength = bushActivitys?.maxPage + 1;
 
   useBackHandler(() => {
     navigation.goBack();
@@ -65,10 +59,10 @@ export default function EmployeeShrubbery({ navigation }) {
   return (
     <SafeAreaProvider>
       <SafeAreaView style={tw`mt-0 pt-0 flex`}>
-        <SubHeader title={"Arbustos"} />
+        <SubHeader title={"Actividades"} />
         <ScrollView contentContainerStyle={tw`py-5 pb-40 px-5`}>
           <View style={tw`flex my-5 flex-row justify-between`}>
-            <View style={tw` flex-1`}>
+            <View>
               <TextInput
                 onChangeText={setSearchWord}
                 value={searchWord}
@@ -98,74 +92,60 @@ export default function EmployeeShrubbery({ navigation }) {
                 </TouchableOpacity>
               </View>
             </View>
-            <View style={tw`flex flex-col items-end flex-1`}>
-              <View style={tw`w-140px rounded-md`}>
-                <RNPickerSelect
-                  placeholder={{ label: "Ordenar por:", value: "" }}
-                  onValueChange={(itemValue) => {
-                    const itemsObj = Object.values(itemValue);
-                    setEmployeeShrubberyOrder([
-                      (employeeShrubberyOrder[0] = itemsObj[0]),
-                      (employeeShrubberyOrder[1] = itemsObj[1]),
-                    ]);
-                  }}
-                  style={customPickerStyles}
-                  useNativeAndroidPickerStyle={false}
-                  Icon={() => {
-                    return (
-                      <View style={tw`mt-1`}>
-                        <EvilIcons name="chevron-down" size={27} color="gray" />
-                      </View>
-                    );
-                  }}
-                  items={[
-                    { label: "Recientes", value: ["created_date", "asc"] },
-                    { label: "Antiguos", value: ["created_date", "desc"] },
-                  ]}
-                />
-              </View>
-              {/*<TouchableOpacity style={tw`p-2 bg-green-500 mt-1 rounded-md`}>
-                <Text style={tw`text-white`}>Descargar códigos de barras</Text>
-              </TouchableOpacity> */}
+            <View style={tw`w-140px rounded-md`}>
+              <RNPickerSelect
+                placeholder={{ label: "Ordenar por:", value: "" }}
+                onValueChange={(itemValue) => {
+                  const itemsObj = Object.values(itemValue);
+                  setOrderBushActivitys([
+                    (orderBushActivitys[0] = itemsObj[0]),
+                    (orderBushActivitys[1] = itemsObj[1]),
+                  ]);
+                }}
+                style={customPickerStyles}
+                useNativeAndroidPickerStyle={false}
+                Icon={() => {
+                  return (
+                    <View style={tw`mt-1`}>
+                      <EvilIcons name="chevron-down" size={27} color="gray" />
+                    </View>
+                  );
+                }}
+                items={[
+                  { label: "A-Z", value: ["name_activity", "asc"] },
+                  { label: "Z-A", value: ["name_activity", "desc"] },
+                  { label: "Recientes", value: ["created_date", "asc"] },
+                  { label: "Antiguos", value: ["created_date", "desc"] },
+                ]}
+              />
             </View>
           </View>
           {!search ? (
-            employeeShrubbery?.response?.length > 0 ? (
-              employeeShrubbery?.response?.map((item, index) => (
+            bushActivitys?.response?.length > 0 ? (
+              bushActivitys?.response?.map((item, index) => (
                 <View key={index} style={tw`bg-[#205400]/10 rounded-md my-6`}>
                   <View
                     style={tw`p-5 flex items-center border-b border-[#205400]/10`}
                   >
-                    <Text style={tw`font-bold text-lg`}>{item.qrCode}</Text>
+                    <Text style={tw`font-bold text-lg`}>
+                      {item.nameActivity}
+                    </Text>
                   </View>
                   <View>
                     <Text style={tw`text-center mt-5`}>
-                      {item.idCoffeeBush}
-                    </Text>
-                    <Text style={tw`text-center mt-5`}>
-                      {new Date(item.createdDdate).toLocaleDateString()}
+                      {item.descriptionActivity}
                     </Text>
                   </View>
                   <View style={tw`flex flex-row justify-between p-5`}>
                     <TouchableOpacity
-                      style={tw`bg-green-400 p-2 flex-1 mr-2 rounded-lg flex flex-row items-center justify-around`}
+                      style={tw`bg-green-400 p-2 flex-1 mr-2 rounded-lg flex flex-row items-center justify-evenly`}
                       onPress={() => {
-                        setModalVisible(true);
-                        setShrubberyId(item.idCoffeeBush);
+                        global.idActivity = item.idActivity;
+                        navigation.navigate(`CropsRecords`);
                       }}
                     >
-                      <Text style={tw`text-white`}>Ingresar</Text>
+                      <Text style={tw`text-white text-center`}>Ingresar</Text>
                       <Image style={tw`w-4 h-4`} source={enter} />
-                    </TouchableOpacity>
-                    <TouchableOpacity
-                      style={tw`bg-green-600 p-2 flex-1 ml-2 rounded-lg flex flex-row items-center justify-around`}
-                      onPress={() => {
-                        global.idCrop = item.idCoffeeBush;
-                        navigation.navigate(`BushActivitys`);
-                      }}
-                    >
-                      <Text style={tw`text-white`}>Actividades</Text>
-                      <Image source={actividades} />
                     </TouchableOpacity>
                   </View>
                 </View>
@@ -175,40 +155,33 @@ export default function EmployeeShrubbery({ navigation }) {
                 <Text>No se encontraron datos</Text>
               </View>
             )
-          ) : searchEmployeeShrubbery?.response?.length > 0 ? (
-            searchEmployeeShrubbery?.response?.map((item, index) => (
+          ) : searchBushActivitys?.response?.length > 0 ? (
+            searchBushActivitys?.response?.map((item, index) => (
               <View key={index} style={tw`bg-[#205400]/10 rounded-md my-6`}>
                 <View
                   style={tw`p-5 flex items-center border-b border-[#205400]/10`}
                 >
-                  <Text style={tw`font-bold text-lg`}>{item.qrCode}</Text>
+                  <Text style={tw`font-bold text-lg`}>{item.nameActivity}</Text>
                 </View>
                 <View>
-                  <Text style={tw`text-center mt-5`}>{item.idCoffeeBush}</Text>
                   <Text style={tw`text-center mt-5`}>
-                    {new Date(item.createdDdate).toLocaleDateString()}
+                    {item.descriptionActivity}
                   </Text>
                 </View>
                 <View style={tw`flex flex-row justify-between p-5`}>
                   <TouchableOpacity
-                    style={tw`bg-green-400 p-2 flex-1 mr-2 rounded-lg flex flex-row items-center justify-around`}
+                    style={tw`bg-green-400 p-2 flex-1 mr-2 rounded-lg flex flex-row items-center justify-evenly`}
                     onPress={() => {
-                      setModalVisible(true);
-                      setShrubberyId(item.idCoffeeBush);
+                      global.idActivity = item.idActivity;
+                      navigation.navigate(`CropsRecords`);
                     }}
+                    // onPress={() => {
+                    //   setModalVisible(true);
+                    //   setShrubberyId(item.idCoffeeBush);
+                    // }}
                   >
-                    <Text style={tw`text-white`}>Ingresar</Text>
+                    <Text style={tw`text-white text-center`}>Ingresar</Text>
                     <Image style={tw`w-4 h-4`} source={enter} />
-                  </TouchableOpacity>
-                  <TouchableOpacity
-                    style={tw`bg-green-600 p-2 flex-1 ml-2 rounded-lg flex flex-row items-center justify-around`}
-                    onPress={() => {
-                      global.idCrop = item.idCoffeeBush;
-                      navigation.navigate(`BushActivitys`);
-                    }}
-                  >
-                    <Text style={tw`text-white`}>Actividades</Text>
-                    <Image source={actividades} />
                   </TouchableOpacity>
                 </View>
               </View>
@@ -252,26 +225,6 @@ export default function EmployeeShrubbery({ navigation }) {
             </TouchableOpacity>
           </View>
         </ScrollView>
-        <ModalInfoEmployeeCrop
-          modalBody={
-            <>
-              <View>
-                <Text style={tw`text-center font-bold text-lg mb-5`}>
-                  ARBUSTO
-                </Text>
-                <Text style={tw`text-start font-bold text-md mb-5`}>
-                  ID: {shrubberyId}
-                </Text>
-                <Text style={tw`mb-5 text-jusitfy`}>
-                  Registro de revision de plagas y enfermedades
-                </Text>
-                <TouchableOpacity style={tw`p-5 bg-cyan-400 rounded-lg mb-5`}>
-                  <Text style={tw`text-white text-center`}>Revisiones</Text>
-                </TouchableOpacity>
-              </View>
-            </>
-          }
-        />
       </SafeAreaView>
     </SafeAreaProvider>
   );

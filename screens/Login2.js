@@ -4,25 +4,21 @@ import tw from "twrnc";
 import Checkbox from "expo-checkbox";
 import { useBackHandler } from "@react-native-community/hooks";
 import { Link, useNavigate } from "react-router-native";
-import { useForm } from "react-hook-form";
+import { useForm, Controller } from "react-hook-form";
 import NetInfo from '@react-native-community/netinfo';
 import AuthContext from "../context/AuthContext";
 import {
   View,
   Text,
+  TextInput,
   ScrollView,
-  StyleSheet,
-  ImageBackground,
-  Image
+  TouchableOpacity,
 } from "react-native";
 import InputForm from "../components/InputForm";
-import ButtonForm from "../components/ButtonForm";
-import Background from "../assets/background.png";
-import Logo from "../assets/logo.png";
 
-export default function Login({ navigation }) {
+export default function Login2() {
 
-  const {LoginUser, result, logged} = useContext(AuthContext);
+  const {LoginUser, result} = useContext(AuthContext);
 
   let navigate = useNavigate();
   const unsubscribe = NetInfo.addEventListener(state => {
@@ -38,36 +34,45 @@ export default function Login({ navigation }) {
   const [isChecked, setChecked] = useState(false);
   const [error, setError] = useState(false);
 
+
+  useBackHandler(() => {
+    navigate("/");
+    return true;
+  });
+
   const {
     control,
     handleSubmit,
-    reset,
     formState: { errors },
   } = useForm();
+ 
+  console.log(errors)
+
+  useEffect(() => {
+    console.log("global.idUser")
+  }, []);
 
   const login = async (data) =>{
     const loginresponse = await LoginUser(data);
     if(!loginresponse.data.error){
       global.jwToken = loginresponse.data.response;
       global.idUser = loginresponse.data.idUser;
-      navigate("/userLoged")
-      setError(false)
-      setChecked(false)
+      navigate("/userLoged");
     }else{
       setError(true);
     }
   }
 
+  const onSubmit = data => console.log(data);
+
+
+
   return (
-    <ImageBackground source={Background} resizeMode="cover" style={tw`flex justify-center`}>
-      <View style={tw`h-full w-full flex items-center justify-center px-42 pt-10`}>
-        
-        <Image source={Logo} style={tw`h-30px w-263px mb-10`} />
-    <View style={[tw`w-85 flex items-center justify-center rounded-20px py-30px px-10px`, styles.backgroundContainer]}>
-      <Text style={tw`text-25px font-bold text-white mb-4`}>
-        INICIO DE SESIÓN
+    <View style={tw`h-full flex items-center justify-center`}>
+      <Text style={tw`text-4xl font-bold text-black mb-5 mt-20`}>
+        Iniciar sesión
       </Text>
-      <ScrollView style={tw`w-full`}>
+      <ScrollView style={tw`mt-10`}>
         {error ? (
           <Text
             style={tw`text-white bg-red-500 p-5 rounded-lg mb-10 font-bold text-center`}
@@ -75,34 +80,34 @@ export default function Login({ navigation }) {
             {result.data.response}
           </Text>
         ) : null}
-        <View style={tw` py-8 rounded-xl`}>
-          <Text style={tw`text-xl text-white mb-3`}>
-            Correo electrónico:
+        <View style={tw`px-7 py-8 rounded-xl`}>
+          <Text style={tw`text-xl text-black mb-5 font-bold`}>
+            Correo electrónico
           </Text>
           <InputForm
             control={control}
+            style={tw`bg-slate-50 px-5 py-3 rounded-lg w-70`}
             name="email"
             placeholder="example@gmail.com"
             autoCapitalize="none"
             keyboardType="email-address"
-            height={40}
             pattern={
               /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/
             }
           />
           {errors.email?.type === "required" ? (
-            <Text style={tw`text-red-600 mb-2 text-center`}>Campo requerido!</Text>
+            <Text style={tw`text-red-600 mb-5 text-center`}>Campo requerido!</Text>
           ) : errors.email?.type === "pattern" ? (
-            <Text style={tw`text-red-600 mb-2 text-center`}>
+            <Text style={tw`text-red-600 mb-5 text-center`}>
               Correo invalido!
             </Text>
           ) : null}
-          <Text style={tw`text-xl text-white my-3`}>Contraseña:</Text>
+          <Text style={tw`text-xl text-black my-5 font-bold`}>Contraseña</Text>
           <InputForm
             control={control}
+            style={tw`bg-slate-50 px-5 py-3 rounded-lg w-70 mb-5`}
             name="password"
             placeholder="Contraseña"
-            height={40}
             secureTextEntry={!isChecked}
           />
           
@@ -110,29 +115,24 @@ export default function Login({ navigation }) {
             <Text style={tw`text-red-600 mb-10 text-center`}>Campo requerido!</Text>
           ) : null}
           <View style={tw`flex flex-row justify-center items-center mb-10`}>
-            <Checkbox style={tw`rounded-xl`} value={isChecked} onValueChange={setChecked} />
-            <Text style={tw`text-base text-white ml-3`}>
+            <Checkbox value={isChecked} onValueChange={setChecked} />
+            <Text style={tw`text-base text-black ml-3`}>
               Mostrar contraseña
             </Text>
           </View>
-          <ButtonForm onPress={handleSubmit(login)} title="Iniciar Sesión" color={"rgba(32, 84, 0, 1)"}/>
-          <ButtonForm onPress={() => {toggleOpenHome(); reset(); setError(false);setChecked(false)}} title="Regresar" color={"rgba(88, 155, 47, 1)"}/>
-            
+          <TouchableOpacity
+            style={tw`bg-yellow-600 p-3 rounded-lg`}
+            onPress={handleSubmit(onSubmit)}
+          >
+            <Text style={tw`text-lg text-white text-center`}>Ingresar</Text>
+          </TouchableOpacity >
           <Link to={'/passwordRecovery'}>
-            <Text style={tw`text-base text-white mt-7 text-center underline`}>
+            <Text style={tw`text-base text-black mt-7 text-center underline`}>
               Olvidé mi contraseña
             </Text>
           </Link>
         </View>
       </ScrollView>
     </View>
-    </View>
-    </ImageBackground>
   );
 }
-
-const styles = StyleSheet.create({
-  backgroundContainer: {     
-    backgroundColor: "rgba(14, 24, 7, 1)"      
-  },
-});

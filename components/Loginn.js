@@ -7,20 +7,17 @@ import { Link, useNavigate } from "react-router-native";
 import { useForm } from "react-hook-form";
 import NetInfo from '@react-native-community/netinfo';
 import AuthContext from "../context/AuthContext";
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import {
   View,
   Text,
   ScrollView,
-  StyleSheet,
-  ImageBackground,
-  Image
+  StyleSheet
 } from "react-native";
 import InputForm from "../components/InputForm";
-import ButtonForm from "../components/ButtonForm";
-import Background from "../assets/background.png";
-import Logo from "../assets/logo.png";
+import ButtonForm from "./ButtonForm";
 
-export default function Login({ navigation }) {
+export default function Loginn({ toggleOpenHome }) {
 
   const {LoginUser, result, logged} = useContext(AuthContext);
 
@@ -38,19 +35,41 @@ export default function Login({ navigation }) {
   const [isChecked, setChecked] = useState(false);
   const [error, setError] = useState(false);
 
+  useBackHandler(() => {
+    navigate("/")
+    toggleOpenHome();
+    reset();
+    return true;
+  });
+
   const {
     control,
     handleSubmit,
     reset,
     formState: { errors },
   } = useForm();
+ 
+  console.log(errors)
+
+  useEffect(() => {
+    if(logged !== null){
+      global.idUser = logged;
+      console.log(logged)
+      navigate("/userLoged");
+    }
+  }, []);
 
   const login = async (data) =>{
     const loginresponse = await LoginUser(data);
     if(!loginresponse.data.error){
       global.jwToken = loginresponse.data.response;
       global.idUser = loginresponse.data.idUser;
-      navigate("/userLoged")
+      try {
+        await AsyncStorage.setItem('idUser', loginresponse.data.idUser)
+      } catch (e) {
+        console.log("very error" + e)
+      }
+      navigate("/userLoged");
       setError(false)
       setChecked(false)
     }else{
@@ -59,10 +78,6 @@ export default function Login({ navigation }) {
   }
 
   return (
-    <ImageBackground source={Background} resizeMode="cover" style={tw`flex justify-center`}>
-      <View style={tw`h-full w-full flex items-center justify-center px-42 pt-10`}>
-        
-        <Image source={Logo} style={tw`h-30px w-263px mb-10`} />
     <View style={[tw`w-85 flex items-center justify-center rounded-20px py-30px px-10px`, styles.backgroundContainer]}>
       <Text style={tw`text-25px font-bold text-white mb-4`}>
         INICIO DE SESIÓN
@@ -126,8 +141,6 @@ export default function Login({ navigation }) {
         </View>
       </ScrollView>
     </View>
-    </View>
-    </ImageBackground>
   );
 }
 
