@@ -49,6 +49,10 @@ const EnterCoffeeBush = ({ navigation }) => {
     }
 
   }
+  useBackHandler(() => {
+    navigation.navigate("CoffeeBush")
+    return true;
+  });
     
    
 
