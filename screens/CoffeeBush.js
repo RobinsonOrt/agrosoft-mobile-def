@@ -113,8 +113,8 @@ const CoffeeBush = ({ navigation }) => {
                   >
                     <CardCoffeeButton
                       onPress={() => {
-                        navigate(`/bushactivitys/${global.idFarm}`);
                         global.idCrop = coffeeBush.idCoffeeBush;
+                        navigation.navigate(`BushActivitys`);
                       }}
                       color={"rgba(88, 155, 47, 1)"}
                       icon={Actividades}
