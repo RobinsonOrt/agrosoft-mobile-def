@@ -1,7 +1,6 @@
 import global from "./global";
-import React, {useReducer} from "react";
+import React, {useReducer, useContext} from "react";
 import "react-native-gesture-handler";
-import React, {useContext} from 'react';
 import { NativeRouter, Route, Routes } from "react-router-native";
 import Home from "./screens/Home";
 import Login from "./screens/Login";

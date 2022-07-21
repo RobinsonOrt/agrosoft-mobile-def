@@ -295,7 +295,7 @@ console.log(selectedLanguage)
 
 
           <ButtonForm onPress={handleSubmit(onSubmit)} title="Registrarse" color={"rgba(32, 84, 0, 1)"}/>
-          <ButtonForm onPress={() => {toggleOpenHome(); reset(); setError(false);setChecked(false);setChecked1(false)}} title="Regresar" color={"rgba(88, 155, 47, 1)"}/>
+          <ButtonForm onPress={() => {navigation.navigate("Home"); reset(); setError(false);setChecked(false);setChecked1(false)}} title="Regresar" color={"rgba(88, 155, 47, 1)"}/>
             
       
         </View>
