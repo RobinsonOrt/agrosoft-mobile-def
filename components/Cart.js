@@ -3,7 +3,7 @@ import tw from "twrnc";
 
 export const Cart = ({ name, description, id, children }) => {
   return (
-    <View style={[tw`m-5 rounded-xl`, styles.safeArea]}>
+    <View style={[tw`m-5 rounded-xl max-w-239`, styles.safeArea]}>
       <View style={[tw`rounded-t-xl rounded-b-40px p-10`, styles.container]}>
         <Text style={[tw`text-center uppercase font-bold`, styles.title]}>
           {name}

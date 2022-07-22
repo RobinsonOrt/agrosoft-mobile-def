@@ -1,6 +1,7 @@
 import global from "../global";
 import "react-native-gesture-handler";
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
+import { View, ActivityIndicator, Text } from "react-native";
 import { NavigationContainer } from "@react-navigation/native";
 import { createDrawerNavigator } from "@react-navigation/drawer";
 import HomeStacks from "./HomeStacks";
@@ -10,17 +11,19 @@ import RequestsMyFarmsStack from "./RequestsMyFarmsStack";
 import RequestsOtherFarmsStack from "./RequestsOtherFarmsStack";
 import { MenuItems } from "../components/MenuItems";
 import MainStack from "./MainStack";
-import { AuthProvider } from "../context/AuthContext";
+import AuthContext, { AuthProvider } from "../context/AuthContext";
 import { DrawerContentScrollView } from "@react-navigation/drawer";
 import tw from "twrnc"
 import Home from "../screens/Home";
+import Loading from "../components/Loading";
+
 
 const Menu = createDrawerNavigator();
 
 
 
 export function MyMenu() {
-  const routeNameRef = React.useRef();
+    const routeNameRef = React.useRef();
     const navigationRef = React.useRef();
     const [isOpenAccountStack, setIsOpenAccountStack] = useState(false);
     const [isOpenHomeStacks, setIsOpenHomeStacks] = useState(false);
@@ -30,21 +33,27 @@ export function MyMenu() {
     const [isOpenRequestsOtherFarmsStack, setIsOpenRequestsOtherFarmsStack] =
     useState(false);
 
-    useEffect(() => {
-      console.log("este es el global:"+global.id)
-    console.log("jwToken: "+global.jwToken)
-    const singOn = global.jwToken !== undefined
-    console.log(singOn)
-    },[global.jwToken])
-    
+    const {isLoading, userToken, userId, userInfo} = useContext(AuthContext)
 
-    
-    
+    global.idUser = userId;
+    global.jwToken = userInfo;
+
+  
+
+    if(isLoading){
+      return(
+
+          <Loading isVisible={true}/>
+        
+      )
+        
+    }
+    console.log("epa:"+userToken)
 
   return (
 
     
-    <AuthProvider>
+    
     <NavigationContainer
       ref={navigationRef}
       onReady={() => {
@@ -97,7 +106,7 @@ export function MyMenu() {
     >
       <Menu.Navigator
         drawerContent={(props) => (
-          global.jwToken !== undefined || global.jwToken !== "" ?
+          userToken !== null ?
           (<MenuItems
             statusOpenAccountStack={isOpenAccountStack}
             statusOpenHomeStacks={isOpenHomeStacks}
@@ -119,7 +128,8 @@ export function MyMenu() {
           headerShown: false,
         }}
       >
-        { global.jwToken === undefined || global.jwToken === "" ?
+        { userToken === null ?
+        
           
         (<> 
             <Menu.Screen name='Homee' component={MainStack} />
@@ -137,7 +147,6 @@ export function MyMenu() {
 }
       </Menu.Navigator>
       </NavigationContainer>
-      </AuthProvider>
   );
 }
 

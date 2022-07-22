@@ -17,11 +17,6 @@ import { Link, useNavigate } from "react-router-native";
 export const MenuItems = ({ navigation, statusOpenAccountStack, statusOpenHomeStacks, statusOpenEmployeeStack, statusOpenRequestsMyFarmsStack, statusOpenRequestsOtherFarmsStack }) => {
     let navigate = useNavigate();
     const {LogOut} = useContext(AuthContext);
-    const signOff = () =>{
-        global.jwToken = "";
-        navigate("/");
-        console.log(global.jwToken)
-    }
     return(
       <DrawerContentScrollView style={tw`pt-1 h-full `}>     
           
@@ -37,7 +32,7 @@ export const MenuItems = ({ navigation, statusOpenAccountStack, statusOpenHomeSt
           <View style={tw`h-50% items-center  mt-20
           pt-4 pb-40`}>
               <MenuButton title={"Contáctenos"} /*onPress={() => logOut()} isOpen={isOpenRequests}*/ image={ContactUs} styleImage={tw`h-16px w-17px`} activeOpacity={0.6} />
-              <MenuButton title={"Cerrar Sesión"} onPress={()=>{signOff(), navigation.closeDrawer()}}  image={SignOff} styleImage={tw`h-16px w-19px`} activeOpacity={0.6} /> 
+              <MenuButton title={"Cerrar Sesión"} onPress={()=>{LogOut(), navigation.closeDrawer()}}  image={SignOff} styleImage={tw`h-16px w-19px`} activeOpacity={0.6} /> 
           </View> 
       </DrawerContentScrollView>
     )
