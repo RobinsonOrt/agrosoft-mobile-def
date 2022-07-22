@@ -116,7 +116,7 @@ export default function Login({ navigation }) {
             </Text>
           </View>
           <ButtonForm onPress={handleSubmit(login)} title="Iniciar Sesión" color={"rgba(32, 84, 0, 1)"}/>
-          <ButtonForm onPress={() => {toggleOpenHome(); reset(); setError(false);setChecked(false)}} title="Regresar" color={"rgba(88, 155, 47, 1)"}/>
+          <ButtonForm onPress={() => {navigation.navigate("Home"); reset(); setError(false);setChecked(false)}} title="Regresar" color={"rgba(88, 155, 47, 1)"}/>
             
           <Link to={'/passwordRecovery'}>
             <Text style={tw`text-base text-white mt-7 text-center underline`}>

@@ -64,11 +64,11 @@ export default function ModalModifyLabor({ isModalOpenModifyLabor, setIsModalOpe
     <>
       <ModalModel isModalOpen={isModalOpenModifyLabor} setIsModalOpen={setIsModalOpenModifyLabor}>
         <Text style={tw`text-3xl font-bold text-black mt-5 mb-5`}>
-          Agregar Cargo
+          Editar cargo
         </Text>
         <ScrollView style={tw`mt-2 w-full mb-5 pb-3`}>
           <View style={tw`w-full px-7`}>
-            <Text style={tw`text-16px pb-2 pt-1`}>Nombre del cultivo</Text>
+            <Text style={tw`text-16px pb-2 pt-1`}>Nombre del cargo</Text>
             <InputForm
               control={control}
               name="nameSubRole"
@@ -88,7 +88,7 @@ export default function ModalModifyLabor({ isModalOpenModifyLabor, setIsModalOpe
               </Text>
             ) : null}
 
-            <Text style={tw`text-16px pb-2 pt-1`}>Descripción del cultivo</Text>
+            <Text style={tw`text-16px pb-2 pt-1`}>Descripción del cargo</Text>
             <InputForm
               control={control}
               name="descriptionSubRole"

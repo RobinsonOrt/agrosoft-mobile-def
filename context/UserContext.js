@@ -26,7 +26,6 @@ const MyUserProvider = ({ children }) => {
   const ComparePassword = async (data) => {
     const userResponse = await axios.post(`${REACT_APP_API_URL}/api/comparepassword`, data);
     global.tokenChange = userResponse.data.response;
-    setResponse({ status: userResponse.data.error, message: userResponse.data.response });
     return userResponse;
   }
 

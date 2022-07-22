@@ -7,30 +7,19 @@ import {
   TouchableOpacity,
   Picker,
   Modal
-} from "react-native";
+}from "react-native";
 import ModalModel from "./ModalModel";
 import ModalButton from "./ModalButton";
 import tw from "twrnc";
-import { useNavigate } from "react-router-native";
-import { useBackHandler } from "@react-native-community/hooks";
-import NetInfo from '@react-native-community/netinfo';
 import MyFarmsContext from "../context/FarmContext";
 import CountryContext from '../context/CoutryContext';
 import InputForm from './InputForm';
 import PickerModel from "./PickerModel";
-import { useForm, Controller } from "react-hook-form";
+import { useForm } from "react-hook-form";
 
 export default function ModalModifyFarmerInformation({ isModalOpenModifyFarmerInformation, setIsModalOpenModifyFarmerInformation }) {
-  let navigate = useNavigate();
-
   const [selectedCountry, setSelectedCountry] = useState(null);
   const [localError, setLocalError] = useState({ "error": false, "message": "" });
-
-  const unsubscribe = NetInfo.addEventListener(state => {
-    if (!state.isConnected) {
-      redirectConnection();
-    }
-  });
 
   const {
     control,
@@ -39,16 +28,9 @@ export default function ModalModifyFarmerInformation({ isModalOpenModifyFarmerIn
     formState: { errors },
   } = useForm();
 
-  const { farm, LoadFarms, UpdateFarm, error, message } = useContext(MyFarmsContext);
+  const { farm, LoadFarms, UpdateFarm} = useContext(MyFarmsContext);
   const { country, loadCountries } = useContext(CountryContext);
 
-  const [localErrorMsg, setLocalErrorMsg] = useState("");
-
-
-  useBackHandler(() => {
-    navigate("/");
-    return true;
-  });
 
   const saveFarm = async (data) => {
     if (selectedCountry == null || selectedCountry == "") {
@@ -57,17 +39,15 @@ export default function ModalModifyFarmerInformation({ isModalOpenModifyFarmerIn
       else {
         data.idCountry = selectedCountry
       }
-    
       
-    data.idFarm = global.idFarm  
-    const response = UpdateFarm(data);
-    console.log(response);
-    if(!response.error){
-      setIsModalOpenModifyFarmerInformation(false);
-      reset();
-      setSelectedCountry(null)
-      setLocalError({ "error": false, "message": "" });
+    data.idFarm = farm.idFarm
+    const response = await UpdateFarm(data);
+    if(response.data.error){
+      setLocalError({ "error": response.data.error, "message": response.data.response });
+      return;
     }
+    setLocalError({ "error": false, "message": "" });
+    setIsModalOpenModifyFarmerInformation(false);
   };
 
   useEffect(() => {

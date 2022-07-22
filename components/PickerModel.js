@@ -11,8 +11,7 @@ import dropDownOpen from '../assets/dropDownOpen.png';
 import { AntDesign } from '@expo/vector-icons';               
                     
                     
-const PickerModel = ({list, label, value, text, setSelected, selected})=>{   
-    console.log(list)
+const PickerModel = ({list, label, value, text, setSelected, selected})=>{
     return(
                <View style={tw`w-full`}>
                <RNPickerSelect

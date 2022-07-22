@@ -24,12 +24,6 @@ import { RadioButton } from "react-native-paper";
 export default function ModalAddRequest({ isModalOpenAddRequest, setIsModalOpenAddRequest }) {
     let navigate = useNavigate();
 
-    const unsubscribe = NetInfo.addEventListener(state => {
-        if (!state.isConnected) {
-            redirectConnection();
-        }
-    });
-
     const [email, setEmail] = useState();
     const [idFarm, setIdFarm] = useState("0");
     const [role, setRole] = useState("2");
@@ -47,6 +41,8 @@ export default function ModalAddRequest({ isModalOpenAddRequest, setIsModalOpenA
 
 
     const onSubmitAddRequest = async () => {
+        setError2(false);
+        setLocalError(false)
         if(idFarm === "0"){
             setLocalError(true);
             setLocalMessage("Porfavor seleccione una granja");
@@ -58,6 +54,9 @@ export default function ModalAddRequest({ isModalOpenAddRequest, setIsModalOpenA
         setMessage(responseCreateRequest.data.response);
         
         if(responseCreateRequest.data.error === false){
+            setLocalError(false);
+            setEmail("");
+            setIdFarm("0");
             setIsModalOpenAddRequest(false);
         }   
     };
@@ -94,7 +93,7 @@ export default function ModalAddRequest({ isModalOpenAddRequest, setIsModalOpenA
                                 Crear nueva solicitud
                             </Text>
                             <ScrollView style={tw`mt-2`}>
-                                <View style={tw`px-7 mb-10 flex items-center justify-center`}>
+                                <View style={tw`flex items-center justify-center`}>
                                     <Text style={tw` text-black mb-10 w-283px  text-center`}>
                                         Rellena los campos con la información correspondiente
                                     </Text>
@@ -151,7 +150,7 @@ export default function ModalAddRequest({ isModalOpenAddRequest, setIsModalOpenA
                                     </TouchableOpacity>
                                     <TouchableOpacity
                                         style={tw`bg-red-600 text-lg text-white px-5 py-3 w-215px rounded-lg mb-7 text-center`}
-                                        onPress={() => { setIsModalOpenAddRequest(!setIsModalOpenAddRequest) }}
+                                        onPress={() => {setLocalError(false), setError2(false), setEmail(""), setIdFarm("0"), setIsModalOpenAddRequest(!setIsModalOpenAddRequest) }}
                                     >
                                         <Text style={tw`text-lg text-white text-center`}>Cancelar </Text>
                                     </TouchableOpacity>
