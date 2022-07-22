@@ -17,11 +17,6 @@ import { Link, useNavigate } from "react-router-native";
 export const MenuItems = ({ navigation, statusOpenAccountStack, statusOpenHomeStacks, statusOpenEmployeeStack, statusOpenRequestsMyFarmsStack, statusOpenRequestsOtherFarmsStack }) => {
     let navigate = useNavigate();
     const {LogOut} = useContext(AuthContext);
-    const signOff = () =>{
-        global.jwToken = "";
-        navigate("/");
-        console.log(global.jwToken)
-    }
     return(
       <DrawerContentScrollView style={tw`pt-1 h-full `}>     
           

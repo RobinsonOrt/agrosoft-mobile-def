@@ -22,9 +22,8 @@ import Logo from "../assets/logo.png";
 
 export default function Login({ navigation }) {
 
-  const {LoginUser, result, logged} = useContext(AuthContext);
-
-  let navigate = useNavigate();
+  const {LoginUser, result, userToken, userInfo, logged} = useContext(AuthContext);
+ 
   const unsubscribe = NetInfo.addEventListener(state => {
     if (!state.isConnected) {
       redirectConnection();
@@ -32,7 +31,7 @@ export default function Login({ navigation }) {
   });
   const redirectConnection = () => {
     global.urlConnected = "/login";
-    navigate("/notConected");
+    //navigate("/notConected");
   }
 
   const [isChecked, setChecked] = useState(false);
@@ -50,7 +49,7 @@ export default function Login({ navigation }) {
     if(!loginresponse.data.error){
       global.jwToken = loginresponse.data.response;
       global.idUser = loginresponse.data.idUser;
-      navigate("/userLoged")
+      
       setError(false)
       setChecked(false)
     }else{
@@ -118,11 +117,11 @@ export default function Login({ navigation }) {
           <ButtonForm onPress={handleSubmit(login)} title="Iniciar Sesión" color={"rgba(32, 84, 0, 1)"}/>
           <ButtonForm onPress={() => {navigation.navigate("Home"); reset(); setError(false);setChecked(false)}} title="Regresar" color={"rgba(88, 155, 47, 1)"}/>
             
-          <Link to={'/passwordRecovery'}>
+          {/*<Link to={'/passwordRecovery'}>
             <Text style={tw`text-base text-white mt-7 text-center underline`}>
               Olvidé mi contraseña
             </Text>
-          </Link>
+          </Link>*/}
         </View>
       </ScrollView>
     </View>

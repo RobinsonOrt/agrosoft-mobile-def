@@ -13,7 +13,7 @@ export default function Home({navigation}) {
 
   
   
-  const navigate = useNavigate();
+  
   
   const unsubscribe = NetInfo.addEventListener(state => {
     
