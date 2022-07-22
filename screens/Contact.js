@@ -1,32 +1,13 @@
-import global from "../global";
-import React, { useState, useEffect, useContext } from "react";
 import {
   View,
   Text,
-  Image,
-  TouchableOpacity,
-  BackHandler,
   ScrollView,
-  TextInput,
 } from "react-native";
 
 import tw from "twrnc";
 import { SafeAreaProvider, SafeAreaView } from "react-native-safe-area-context";
 import SubHeader from "../components/SubHeader";
 import { styles } from "./Farms";
-import MyCoffeeBushContext from "../context/CoffeeBushContext";
-import { CardBush } from "../components/CardBush";
-import CardCoffeeButton from "../components/CardCoffeeButton";
-import Pagination from "../components/Pagination";
-import SorterComponent from "../components/SorterComponent";
-import SearchComponent from "../components/SearchComponent";
-import Enter from "../assets/Enter.png";
-import Actividades from "../assets/Actividades.png";
-import Delete from "../assets/delete.png";
-import AddButton from "../components/AddButton";
-import ScanButton from "../components/ScanButton";
-import ModalDelete from "../components/ModalDelete";
-import ModalAddCoffeeBush from "../components/ModalAddCoffeeBush";
 import { ContactCard } from "../components/ContactCard";
 
 const Contact = ()=>{
@@ -42,7 +23,7 @@ const Contact = ()=>{
                         <ContactCard name={"Robinson Zambrano Ortiz"} email={"ortix01y@gmail.com"} phoneNumber={"3144805679"} />
                         <ContactCard name={"Alexander Pastrana Serrato"} email={"email@gmail.com"} phoneNumber={"3177644289"} />
                         <ContactCard name={"Simon Jimenez Tamayo"} email={"email@gmail.com"} phoneNumber={"3144805679"} />
-                        <ContactCard name={"Alejandro Cabarcas"} email={"email@gmail.com"} phoneNumber={"3144805679"} />
+                        <ContactCard name={"Alejandro Cabarcas"} email={"alejocabarcas04@gmail.com"} phoneNumber={"3144805679"} />
                     </View>
                 </View>
             </ScrollView>

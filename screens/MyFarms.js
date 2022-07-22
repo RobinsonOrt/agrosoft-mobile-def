@@ -73,7 +73,6 @@ const MyFarms = ({ navigation }) => {
             isModalOpenModifyFarmerInformation={isModalOpenModifyFarmerInformation}
             setIsModalOpenModifyFarmerInformation={setIsModalOpenModifyFarmerInformation}
           />
-          <AddButton onPress={() => navigation.navigate("Contact")} />
             {
               farms.length > 0 ? (
                 farms.map((farm, index) => {
