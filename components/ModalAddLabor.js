@@ -60,7 +60,7 @@ export default function ModalAddLabor({ isModalOpenAddLabor, setIsModalOpenAddLa
         </Text>
         <ScrollView style={tw`mt-2 w-full mb-5 pb-3`}>
           <View style={tw`w-full px-7`}>
-            <Text style={tw`text-16px pb-2 pt-1`}>Nombre del cultivo</Text>
+            <Text style={tw`text-16px pb-2 pt-1`}>Nombre del cargo</Text>
             <InputForm
               control={control}
               name="nameSubRole"
@@ -80,7 +80,7 @@ export default function ModalAddLabor({ isModalOpenAddLabor, setIsModalOpenAddLa
               </Text>
             ) : null}
 
-            <Text style={tw`text-16px pb-2 pt-1`}>Descripción del cultivo</Text>
+            <Text style={tw`text-16px pb-2 pt-1`}>Descripción del cargo</Text>
             <InputForm
               control={control}
               name="descriptionSubRole"

@@ -6,7 +6,6 @@ import Checkbox from "expo-checkbox";
 import { useBackHandler } from "@react-native-community/hooks";
 import { Link, useNavigate } from "react-router-native";
 import { useForm } from "react-hook-form";
-import NetInfo from '@react-native-community/netinfo';
 import axios from "axios";
 import {
   View,
@@ -24,17 +23,19 @@ import Background from "../assets/background.png";
 import Logo from "../assets/logo.png";
 
 export default function Register({navigation}) {
-  let navigate = useNavigate();
+
+  const navigate = useNavigate();
  
   const [phoneNumber, setPhoneNumber] = useState(null)
   const phoneInput = useRef(null);
   const [selectedLanguage, setSelectedLanguage] = useState(null);
   const [selectedLanguagee, setSelectedLanguagee] = useState(null);
   const [identifiers, setIdentifiers] = useState([]);
-  const [resultt, setResult] = useState();
+  const [resultt, setResult] = useState({data: {error:false, response:""}});
   const [isChecked, setChecked] = useState(false);
   const [isChecked1, setChecked1] = useState(false);
   const [errorr, setErrorr] = useState(false);
+  const [localError, setLocalError] = useState({error:false, message:""});
  
   const loadIdentifiers = async () => {
     const urlIdentifiers = REACT_APP_API_URL + "/api/identifiers";
@@ -44,6 +45,10 @@ export default function Register({navigation}) {
   }
 
   useEffect(() => {
+    loadIdentifiers()
+  }, [])
+
+  /* useEffect(() => {
     loadIdentifiers()
     if (resultt?.data.error === true) {
       setErrorr(true);
@@ -55,18 +60,7 @@ export default function Register({navigation}) {
     if (resultt?.data.error === false) {
       navigate("/tokenValidation");
     }
-  }, [resultt]);
-
-  
-  const unsubscribe = NetInfo.addEventListener(state => {
-    if (!state.isConnected) {
-      redirectConnection();
-    }
-  });
-  const redirectConnection = () => {
-    global.urlConnected = "/register";
-    navigate("/notConected");
-  }
+  }, [resultt]); */
 
   const {
     control,
@@ -125,14 +119,33 @@ export default function Register({navigation}) {
 console.log(selectedLanguage)
 
   const onSubmit = async (data) =>{
+    loadIdentifiers()
+    setErrorr({error: false, message:""})
+    const dataToSend = {}
+    dataToSend.phoneNumber = phoneNumber
+    dataToSend.password = data.password
+    dataToSend.name = data.name
+    dataToSend.lastName = data.lastName
+    dataToSend.idIdentifier = selectedLanguage
+    dataToSend.email = data.email
+    
+    console.log(REACT_APP_API_URL)
     if(selectedLanguage !== null){
-      console.log("indicador: "+selectedLanguage)
-    data.phoneNumber = phoneNumber
-    data.idIdentifier = selectedLanguage
-    await axios
-      .post(REACT_APP_API_URL + "/api/register", data)
-      .then((res) => setResult(res));
-  }}
+      console.log(dataToSend)
+      await axios.post(REACT_APP_API_URL + "/api/register", dataToSend)
+      .then(response => {
+        if(!response.data.error){
+          setLocalError({error:false, message:""})
+          navigate("/tokenValidation");
+          return;
+        }
+        setLocalError({error:response.data.error, message:response.data.response})
+      })
+      .catch(error => {console.log(error)})
+      return;
+    }
+    setErrorr({error: true, message:"Porfavor seleccone un pais"})
+  }
 
   return (
     <ImageBackground source={Background} resizeMode="cover" style={tw`flex justify-center`}>
@@ -144,14 +157,9 @@ console.log(selectedLanguage)
         CREAR CUENTA
       </Text>
       <ScrollView style={tw`w-full`}>
-        {errorr ? (
-          <Text
-            style={tw`text-white bg-red-500 p-5 rounded-lg mb-10 font-bold text-center`}
-          >
-            {resultt.data.response}
-          </Text>
-        ) : null}
+        
         <View style={tw` py-8 rounded-xl`}>
+          {localError.error ? <Text style={tw`text-red-500 text-center`}>{localError.message}</Text> : null}
           
         <InputForm
             control={control}
@@ -208,6 +216,7 @@ console.log(selectedLanguage)
             countryPickerButtonStyle={[tw`border-r-2 h-30px`,{borderColor: '#205400'}]}
             codeTextStyle={tw`text-14px`}
           />
+          {errorr.error?(<Text style={tw`text-red-600 mb-2 text-center`}>{errorr.message}</Text>): null}
           {errors.phoneNumber?.type === "required" ? (
             <Text style={tw`text-red-600 mb-2 text-center`}>Campo requerido!</Text>
           ) : errors.phoneNumber?.type === "pattern" ? (

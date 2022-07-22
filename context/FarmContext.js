@@ -58,13 +58,11 @@ const MyFarmsProvider = ({ children }) => {
       });
   };
   const UpdateFarm = async (farm1) => {
-    await axios
-      .put(REACT_APP_API_URL + "/api/modifyfarm/", farm1)
-      .then((res) => {
-        setError(res.data.error);
-        setMessage(res.data.response);
-        LoadFarms();
-      });
+    const response = await axios.put(REACT_APP_API_URL + "/api/modifyfarm/", farm1)
+    setError(response.data.error);
+    setMessage(response.data.response);
+    LoadFarms();
+    return response;
   };
   const DeleteFarm = async (idFarm) => {
     await axios.put(`${REACT_APP_API_URL}/api/deletefarm`, { idFarm: idFarm });

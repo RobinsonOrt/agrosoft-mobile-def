@@ -30,7 +30,7 @@ const AuthProvider = ({ children }) => {
   };
 
   const LoginUser = async (data) => {
-    console.log(REACT_APP_API_URL)
+    console.log(REACT_APP_API_URL + "==================================")
     const user = { "email": data.email.toLowerCase(), "password": data.password }
     const loginResponse = await axios.post(REACT_APP_API_URL + "/api/login", user)
     if(!loginResponse.data.error){

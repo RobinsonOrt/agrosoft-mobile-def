@@ -24,7 +24,7 @@ export default function ModalModifyEmail({ isModalOpenModifyEmail, setIsModalOpe
     const [data, setData] = useState({ password: "", email: "" });
     const [error, setError] = useState({ status: false, message: "" });
 
-    const { response, ComparePassword, ModifyEmail } = useContext(MyUserContext);
+    const { ComparePassword, ModifyEmail } = useContext(MyUserContext);
     const { LogOut } = useContext(AuthContext);
 
     const toggleOpen = () => {
@@ -39,8 +39,10 @@ export default function ModalModifyEmail({ isModalOpenModifyEmail, setIsModalOpe
         const responseCompare = await ComparePassword(data)
 
         if (!responseCompare.data.error) {
+            setError({ status: false, message: "" });
             toggleOpen();
         }
+        setError({ status: true, message: responseCompare.data.response });
     }
 
     const submitEmail = async () => {
@@ -54,6 +56,7 @@ export default function ModalModifyEmail({ isModalOpenModifyEmail, setIsModalOpe
                 setIsModalOpenModifyEmail(false);
                 logOut();
             }
+            setError({ status: true, message: responseCompare.data.response });
         } else {
             setError({ status: true, message: "Email inválido" })
         }
@@ -66,6 +69,7 @@ export default function ModalModifyEmail({ isModalOpenModifyEmail, setIsModalOpe
     }
 
     const cancelEmailChange = () => {
+        setError({ status: false, message: "" });
         setIsOpen(true);
         setIsOpenn(false);
         setIsModalOpenModifyEmail(false);
@@ -110,7 +114,7 @@ export default function ModalModifyEmail({ isModalOpenModifyEmail, setIsModalOpe
                                     </Text>
                                     <View style={[styles.list, !isOpen ? [styles.hidden, tw`w-full items-center`] : undefined]}>
                                         <View style={tw`w-full justify-center items-center`}>
-                                            {response.status ? <Text style={tw`text-red-500 text-center `}>{response.message}</Text> : null}
+                                            {error.status ? <Text style={tw`text-red-500 text-center `}>{error.message}</Text> : null}
                                             <TextInput
                                                 id="password"
                                                 placeholder="Contraseña"
@@ -131,7 +135,7 @@ export default function ModalModifyEmail({ isModalOpenModifyEmail, setIsModalOpe
                                             </TouchableOpacity>
                                             <TouchableOpacity
                                                 style={tw`bg-red-600 text-lg text-white px-5 py-3 w-215px rounded-lg mb-7 text-center`}
-                                                onPress={() => setIsModalOpenModifyEmail(!setIsModalOpenModifyEmail)}
+                                                onPress={() => {setError({ status: false, message: "" }),setIsModalOpenModifyEmail(!setIsModalOpenModifyEmail)}}
                                             >
                                                 <Text style={tw`text-lg text-white text-center`}>Cancelar </Text>
                                             </TouchableOpacity>
@@ -140,7 +144,7 @@ export default function ModalModifyEmail({ isModalOpenModifyEmail, setIsModalOpe
 
                                     <View style={[styles.list, !isOpenn ? [styles.hidden, tw`w-full items-center`] : undefined]}>
                                         {error.status ? <Text style={tw`text-red-500 text-center`}>{error.message}</Text> : null}
-                                        {response.status ? <Text style={tw`text-red-500 text-center`}>{response.message}</Text> : null}
+                                        {error.status ? <Text style={tw`text-red-500 text-center`}>{error.message}</Text> : null}
                                         <TextInput
                                             id="newEmail"
                                             value={data.email}
