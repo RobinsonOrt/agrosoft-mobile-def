@@ -34,16 +34,13 @@ export default function UserInformation( {navigation} ) {
   const [isModalOpenModifyEmail, setIsModalOpenModifyEmail] = useState(false);
 
   const { LoadUser, user } = useContext(MyUserContext);
-  const { getIdentifier, identifier, setIdentifier, LoadIdentifiers, actualCountryCode, setActualCountryCode} = useContext(MyIdentifierContext);
+  const { getIdentifier, identifier, setIdentifier, LoadIdentifiers, actualCountryCode, setActualIdentifier} = useContext(MyIdentifierContext);
 
   const [phoneNumber, setPhoneNumber] = useState(user.phoneNumber)
   const phoneInput = useRef(null);
   const [selectedLanguage, setSelectedLanguage] = useState(null);
   const [selectedLanguagee, setSelectedLanguagee] = useState(null);
   const [country, setCountry] = useState(identifier.countryCode)
-
-  console.log(identifier)
-  console.log(identifier.countryCode)
 
   useBackHandler(() => {
     navigation.navigate("Mis fincas")
@@ -61,25 +58,23 @@ export default function UserInformation( {navigation} ) {
   } = useForm();
 
   useEffect(async() => {
-    LoadIdentifiers();
+    await LoadIdentifiers();
     const userResponse = await LoadUser(global.idUser);
     const identifierResponse = await getIdentifier(userResponse.data.response.idIdentifier)
-    console.log("=========================")
-    console.log(identifierResponse.data)
     setIdentifier(identifierResponse.data.response);
   }, []);
 
-  useEffect(() =>{
-    LoadIdentifiers()
+  useEffect( async ()  =>{
+    await LoadIdentifiers()
   },[identifier])
 
   useEffect(() => {
-    getIdentifier(user.idIdentifier)
     reset({
       name: user.name,
       lastName: user.lastName,
       email: user.email
     });
+    setActualIdentifier(user.idIdentifier)
       
   }, [user]);
 

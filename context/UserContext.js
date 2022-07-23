@@ -1,13 +1,11 @@
 import global from "../global";
-import React, { useState, createContext, useContext } from "react";
+import React, { useState, createContext } from "react";
 import { REACT_APP_API_URL, AGROSOFT_LINK } from "@env";
 import axios from "axios";
-
 
 const MyUserContext = createContext();
 
 const MyUserProvider = ({ children }) => {
-  
   const [user, setUser] = useState([]);
   const [error, setError] = useState({ status: false, message: "" });
   const [response, setResponse] = useState({ status: false, message: "" });
@@ -19,7 +17,6 @@ const MyUserProvider = ({ children }) => {
   };
 
   const ModifyUser = async (userParam) =>{
-    
     const userResponse = await axios.put(`${REACT_APP_API_URL}/api/modifyuser`, userParam);
     LoadUser(userParam.idUser);
     setError({ status: userResponse.data.error, message: userResponse.data.response });

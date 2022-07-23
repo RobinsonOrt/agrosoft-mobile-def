@@ -10,8 +10,6 @@ import {
     Picker,
     Modal
 } from "react-native";
-import ModalModel from "./ModalModel";
-import ModalButton from "./ModalButton"
 import tw from "twrnc";
 import { useNavigate } from "react-router-native";
 import { useBackHandler } from "@react-native-community/hooks";
@@ -23,8 +21,6 @@ import MyRequestsMyFarmsContext from "../context/RequestsMyFarmsContext";
 import { RadioButton } from "react-native-paper";
 import ModalModel from "./ModalModel";
 import ModalButton from "./ModalButton";
-import InputForm from "./InputForm";
-import PickerModel from "./PickerModel";
 
 
 export default function ModalAddRequest({ isModalOpenAddRequest, setIsModalOpenAddRequest }) {

@@ -24,7 +24,7 @@ import MyUserContext from '../context/UserContext';
 import MyIdentifierContext from '../context/IdentifierContext';
 import ModalModel from './ModalModel'
 
-export default function ModalModifyAccountInformation({ isModalOpen, setIsModalOpen, navigation }) {
+export default function ModalModifyAccountInformation({ isModalOpen, setIsModalOpen }) {
   let navigate = useNavigate();
 
   const unsubscribe = NetInfo.addEventListener(state => {
@@ -34,10 +34,10 @@ export default function ModalModifyAccountInformation({ isModalOpen, setIsModalO
   });
 
   const { user, ModifyUser, error } = useContext(MyUserContext);
-  const { identifiers, actualIdentifier, setActualCountryCode, setActualIdentifier, getIdentifier, setIdentifier, identifier } = useContext(MyIdentifierContext);
-  const [localError, setLocalError] = useState({status: false, message: ""});
+  const { identifiers, actualIdentifier, setActualIdentifier, getIdentifier, setIdentifier, identifier } = useContext(MyIdentifierContext);
+  const [localError, setLocalError] = useState({ status: false, message: "" });
 
-  const [phoneNumber, setPhoneNumber] = useState(null)
+  const [phoneNumber, setPhoneNumber] = useState(user.phoneNumber)
   const phoneInput = useRef(null);
   const [selectedLanguage, setSelectedLanguage] = useState(null);
   const [selectedLanguagee, setSelectedLanguagee] = useState(null);
@@ -58,11 +58,6 @@ export default function ModalModifyAccountInformation({ isModalOpen, setIsModalO
     return true;
   });
 
-  useEffect(async() => {
-    const identifierResponse = await getIdentifier(user.idIdentifier)
-    setIdentifier(identifierResponse.data.response);
-  }, []);
-
   useEffect(() => {
     reset({
       name: user.name,
@@ -71,146 +66,129 @@ export default function ModalModifyAccountInformation({ isModalOpen, setIsModalO
     setPhoneNumber(user.phoneNumber)
   }, [user]);
 
-  
-
-
   const onSubmit = async (data) => {
-    if(selectedLanguage !== null){
-      const dataToSend = {}
-      dataToSend.phoneNumber = phoneNumber
-      dataToSend.name = data.name
-      dataToSend.lastName = data.lastName
-      dataToSend.idIdentifier = selectedLanguage
-      dataToSend.idUser = global.idUser
+    const dataToSend = {}
+    dataToSend.phoneNumber = user.phoneNumber
+    dataToSend.name = data.name
+    dataToSend.lastName = data.lastName
+    dataToSend.idIdentifier = actualIdentifier
+    dataToSend.idUser = global.idUser
     const userResponse = await ModifyUser(dataToSend);
-    if(!userResponse.data.error){
-      const identifierResponse = await getIdentifier(selectedLanguage)
-      setActualCountryCode(identifierResponse.data.response.countryCode)
+    if (!userResponse.data.error) {
       setIsModalOpen(false);
-      reset()
+      const identifierResponse = await getIdentifier(actualIdentifier)
       setIdentifier(identifierResponse.data.response);
-    }}
-  };
+    }
+  }
+
+  /*   useEffect(() => {
+      const checkValid = phoneInput.current?.isValidNumber(phoneNumber)
+      console.log("numero: " + phoneNumber)
   
-  useEffect(() => {
-    const checkValid = phoneInput.current?.isValidNumber(phoneNumber)
-    console.log("numero: "+phoneNumber)
-    if(isSubmitted){
       console.log(phoneNumber)
-      if(phoneNumber === undefined || phoneNumber === null || phoneNumber === ""){
-        console.log("error "+phoneNumber)
-        setError('phoneNumber', { type: 'required', message: ''})
-      }else if(!checkValid){
-        setError('phoneNumber', { type: 'pattern', message: ''})
+      if (phoneNumber === undefined || phoneNumber === null || phoneNumber === "") {
+        console.log("error " + phoneNumber)
+        setError('phoneNumber', { type: 'required', message: '' })
       }
-      else{
+      else {
         clearErrors('phoneNumber')
       }
-    }  
-  },[phoneNumber, country, isSubmitted]);
-
-  const country = phoneInput.current?.getCallingCode()
-
-  useEffect(() => {
-
-    identifiers.map((identifier)=>{
-      if(identifier.identifier == country){
-        const identifierCountry = identifier.idIdentifier
-        console.log(identifierCountry)
-        setSelectedLanguage(identifierCountry)
-      }
-    }) 
-    console.log(selectedLanguagee)
-  },[country]); 
+  
+    }, [phoneNumber, country]);
+  
+    const country = phoneInput.current?.getCallingCode()
+  
+    useEffect(() => {
+  
+      identifiers.map((identifier) => {
+        if (identifier.identifier == country) {
+          const identifierCountry = identifier.idIdentifier
+          console.log(identifierCountry)
+          setSelectedLanguage(identifierCountry)
+        }
+      })
+      console.log(selectedLanguagee)
+    }, [country]); */
 
 
   return (
     <>
       <ModalModel isModalOpen={isModalOpen} setIsModalOpen={setIsModalOpen}>
-            <View style={tw`flex items-center justify-center`}>
-              <Text style={tw`text-3xl font-bold text-black mt-8 mb-5`}>
-                Administrar perfil
+        <View style={tw`flex items-center justify-center`}>
+          <Text style={tw`text-3xl font-bold text-black mt-8 mb-5`}>
+            Administrar perfil
+          </Text>
+          <ScrollView style={tw`mt-2`}>
+            <View style={tw` flex items-center justify-center`}>
+              <Text style={tw` text-black mb-10 w-283px  text-center`}>
+                Rellena los campos con la información correspondiente
               </Text>
-              <ScrollView style={tw`mt-2`}>
-                <View style={tw` flex items-center justify-center`}>
-                  <Text style={tw` text-black mb-10 w-283px  text-center`}>
-                    Rellena los campos con la información correspondiente
-                  </Text>
-                  {localError.status ? <Text style={tw`text-white bg-red-500 p-5 rounded-lg mb-10 font-bold text-center`}>{localError.message}</Text> : null}
-                  {error.status ? <Text style={tw`text-white bg-red-500 p-5 rounded-lg mb-10 font-bold text-center`}>{error.message}</Text> : null}
-                  <InputForm
-                        control={control}
-                        name="name"
-                        placeholder="Nombres"
-                        autoCapitalize="words"
-                        autoFocus={true}
-                        minLength={1}
-                        maxLength={50}
-                        height={40}
-                        pattern={/^[a-zA-Z ]+$/}
-                      />
-                      {errors.name?.type === "required" ? (
-                        <Text style={tw`text-red-600 mb-2 text-center`}>Campo requerido!</Text>
-                      ) : errors.name?.type === "pattern" ? (
-                        <Text style={tw`text-red-600 mb-2 text-center`}>
-                          El nombre no debe contener caracteres especiales
-                        </Text>
-                      ) : null}
+              {localError.status ? <Text style={tw`text-white bg-red-500 p-5 rounded-lg mb-10 font-bold text-center`}>{localError.message}</Text> : null}
+              {error.status ? <Text style={tw`text-white bg-red-500 p-5 rounded-lg mb-10 font-bold text-center`}>{error.message}</Text> : null}
+              <InputForm
+                control={control}
+                name="name"
+                placeholder="Nombres"
+                autoCapitalize="words"
+                autoFocus={true}
+                minLength={1}
+                maxLength={50}
+                height={40}
+                pattern={/^[a-zA-Z ]+$/}
+              />
+              {errors.name?.type === "required" ? (
+                <Text style={tw`text-red-600 mb-2 text-center`}>Campo requerido!</Text>
+              ) : errors.name?.type === "pattern" ? (
+                <Text style={tw`text-red-600 mb-2 text-center`}>
+                  El nombre no debe contener caracteres especiales
+                </Text>
+              ) : null}
 
-                    <InputForm
-                        control={control}
-                        name="lastName"
-                        placeholder="Apellidos"
-                        autoCapitalize="words"
-                        minLength={1}
-                        maxLength={50}
-                        height={40}
-                        pattern={/^[a-zA-Z ]+$/}
-                        
-                      />
-                      {errors.lastName?.type === "required" ? (
-                        <Text style={tw`text-red-600 mb-2 text-center`}>Campo requerido!</Text>
-                      ) : errors.lastName?.type === "pattern" ? (
-                        <Text style={tw`text-red-600 mb-2 text-center`}>
-                          Los apellidos no debe contener caracteres especiales
-                        </Text>
-                      ) : null}
+              <InputForm
+                control={control}
+                name="lastName"
+                placeholder="Apellidos"
+                autoCapitalize="words"
+                minLength={1}
+                maxLength={50}
+                height={40}
+                pattern={/^[a-zA-Z ]+$/}
 
+              />
+              {errors.lastName?.type === "required" ? (
+                <Text style={tw`text-red-600 mb-2 text-center`}>Campo requerido!</Text>
+              ) : errors.lastName?.type === "pattern" ? (
+                <Text style={tw`text-red-600 mb-2 text-center`}>
+                  Los apellidos no debe contener caracteres especiales
+                </Text>
+              ) : null}
 
-                  <PhoneInput
-                      placeholder="Número telefonico"
-                      ref={phoneInput}
-                      defaultValue={phoneNumber}
-                      value={phoneNumber}
-                      defaultCode={identifier.countryCode}
-                      onChangeCountry={(text) => {
-                        setSelectedLanguagee(text)
-                        
-                      }}
-                      onChangeText={(text) => {
-                        setPhoneNumber(text);
-                      }} 
-            
-                      containerStyle={[tw`h-40px w-full rounded-lg items-center mb-5 border bg-white`, {borderColor: '#205400'}]}
-                      textContainerStyle={tw`bg-white px-2 py-0 rounded-lg`}
-                      countryPickerButtonStyle={[tw`border-r-2 h-30px`,{borderColor: '#205400'}]}
-                      codeTextStyle={tw`text-14px`}
-                    />
-                    {errorr.error?(<Text style={tw`text-red-600 mb-2 text-center`}>{errorr.message}</Text>): null}
-                    {errors.phoneNumber?.type === "required" ? (
-                      <Text style={tw`text-red-600 mb-2 text-center`}>Campo requerido!</Text>
-                    ) : errors.phoneNumber?.type === "pattern" ? (
-                      <Text style={tw`text-red-600 mb-2 text-center`}>
-                        El numero de telefono no es valido para tu pais
-                      </Text>
-                    ) : null}
+              <Picker
+                style={tw`bg-slate-50 px-5 py-3 rounded-lg w-321px mb-5 border-b-2 border-yellow-500`}
+                itemStyle={{ backgroundColor: "grey", color: "blue", fontFamily: "Ebrima", fontSize: 17 }}
+                selectedValue={actualIdentifier}
+                onValueChange={(itemValue) =>
+                  setActualIdentifier(itemValue)
+                }>
+                {identifiers.map((item, index) => (
+                  <Picker.Item label={"+" + item.identifier + " - " + item.countryName} value={item.idIdentifier} key={index} />
+                ))
+                }
+              </Picker>
+              <TextInput
+                style={[tw`bg-white px-3 py-3 rounded-7px w-full mb-5 border`, {borderColor: 'rgba(120, 212, 63, 1)'}]}
+                placeholder="celular"
+                defaultValue={user.phoneNumber}
+                onChangeText={text => user.phoneNumber = text}
+                keyboardType='numeric'
+              />
 
-                  <ButtonForm onPress={handleSubmit(onSubmit)} title="Guardar cambios" color={"rgba(34, 197, 94, 1)"}/>
-                  <ButtonForm onPress={() => {setIsModalOpen(!setIsModalOpen); reset(); setError(false);}} title="Cancelar" color={"rgba(220, 38, 38, 0.86)"}/>  
-                </View>
-              </ScrollView>
+              <ButtonForm onPress={handleSubmit(onSubmit)} title="Guardar cambios" color={"rgba(34, 197, 94, 1)"} />
+              <ButtonForm onPress={() => { setIsModalOpen(!setIsModalOpen); reset(); setError(false); }} title="Cancelar" color={"rgba(220, 38, 38, 0.86)"} />
             </View>
-            </ModalModel>
+          </ScrollView>
+        </View>
+      </ModalModel>
     </>
   )
 }
