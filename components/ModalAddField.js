@@ -142,7 +142,7 @@ const customPickerStyles = StyleSheet.create({
         borderRadius: 8,
         color: 'black',
         paddingRight: 30,
-        width: 321,// to ensure the text is never behind the icon
+        width: "100%",// to ensure the text is never behind the icon
         marginBottom: 20
     },
     inputAndroid: {
@@ -155,7 +155,7 @@ const customPickerStyles = StyleSheet.create({
         color: 'black',
         backgroundColor: 'white',
         paddingRight: 30,
-        width: 321,
+        width: "100%",
         marginBottom: 20
         // to ensure the text is never behind the icon
     },

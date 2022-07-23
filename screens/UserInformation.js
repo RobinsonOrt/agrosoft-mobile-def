@@ -104,6 +104,7 @@ export default function UserInformation( {navigation} ) {
         <InputForm
             control={control}
             name="lastName"
+
             placeholder="Apellidos"
             autoCapitalize="words"
             minLength={1}
@@ -137,6 +138,7 @@ export default function UserInformation( {navigation} ) {
 
           
           <ModalModifyEmail isModalOpenModifyEmail={isModalOpenModifyEmail} setIsModalOpenModifyEmail={setIsModalOpenModifyEmail}/>  
+
 
 
          <ModalPasswordRecovery isModalOpenPasswordRecovery={isModalOpenPasswordRecovery} setIsModalOpenPasswordRecovery={setIsModalOpenPasswordRecovery}/>

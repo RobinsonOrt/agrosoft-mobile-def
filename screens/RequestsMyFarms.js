@@ -3,7 +3,8 @@ import {
   View,
   Text,
   StyleSheet,
-  TouchableOpacity
+  TouchableOpacity,
+  ScrollView
 } from "react-native";
 import tw from "twrnc";
 import { RequestTable } from "../components/RequestTable";
@@ -13,9 +14,9 @@ import MyRequestsMyFarmsContext from "../context/RequestsMyFarmsContext";
 import MyFarmsContext from "../context/FarmContext";
 import SubHeader from "../components/SubHeader"
 import SubHeader3 from "../components/SubHeader3";
-import { AntDesign } from '@expo/vector-icons';
 import { MaterialIcons } from '@expo/vector-icons';
 import { Feather } from '@expo/vector-icons';
+import Pagination from "../components/Pagination";
 
 
 export default function RequestsMyFarms({ navigation }) {
@@ -31,7 +32,7 @@ export default function RequestsMyFarms({ navigation }) {
 
 
   const [isModalOpenAddRequest, setIsModalOpenAddRequest] = useState(false);
-  const { myRequests, LoadMyRequests, CancelRequest } = useContext(MyRequestsMyFarmsContext);
+  const { myRequests, LoadMyRequests, CancelRequest, sorters, maxPage } = useContext(MyRequestsMyFarmsContext);
   const { LoadAllFarms } = useContext(MyFarmsContext);
 
   const DropDown = ({ options, CancelRequest, idRequest, name }) => {
@@ -95,88 +96,102 @@ export default function RequestsMyFarms({ navigation }) {
     )
   }
 
-const outgoing = (
-  myRequests.length > 0 ? (
-    myRequests.map((request, index) => {
-      return (
-
-        <DropDown key={index} options={
-          <View style={tw`w-full `}>
-
-            <View style={[tw`w-full rounded-b items-center h-60px flex-row  pt-2 border-t`, { borderColor: "rgba(81, 212, 0, 0.2)", backgroundColor: "rgba(32, 84, 0, 0.15)" }]} key={index}>
-
-              <View style={tw`w-1/2 items-center`}>
-                <Text style={tw`text-center font-bold`}>Tipo: {request.typeRequest}</Text>
-
-                <View style={tw`items-center`}>
-                  <Text>{request.createdDate.split("T")[0]}</Text>
-                </View>
-              </View>
-              <View style={tw`w-1/2 items-center`}>
-                <Text style={tw`font-bold uppercase`}>{request.nameFarm}</Text>
-
-              </View>
-            </View>
-          </View>} CancelRequest={CancelRequest} idRequest={request.idRequest}
-          name={request.name} />
-
-      )
-    })) : (<Text style={tw`text-center text-gray-500`}>No hay solicitudes enviadas</Text>)
-)
-
-  const registers = (
-    myRequests.length > 0 ? (
+  const outgoing = (
+    <View>
+    {myRequests.length > 0 ? (
       myRequests.map((request, index) => {
         return (
-          <DropDown2 key={index} name={request.name} state={request.stateRequest} options={
+
+          <DropDown key={index} options={
             <View style={tw`w-full `}>
 
-              <View style={[tw`w-full items-center h-60px flex-row  pt-2 border-t`, { borderColor: "rgba(81, 212, 0, 0.2)" }]} key={index}>
+              <View style={[tw`w-full rounded-b items-center h-60px flex-row  pt-2 border-t`, { borderColor: "rgba(81, 212, 0, 0.2)", backgroundColor: "rgba(32, 84, 0, 0.15)" }]} key={index}>
 
                 <View style={tw`w-1/2 items-center`}>
-                  <Text style={tw`text-center font-bold mb-2`}>Tipo: {request.typeRequest}</Text>
+                  <Text style={tw`text-center font-bold`}>Tipo: {request.typeRequest}</Text>
 
                   <View style={tw`items-center`}>
-                    <Text>Enviada: {request.createdDate.split("T")[0]}</Text>
+                    <Text>{request.createdDate.split("T")[0]}</Text>
                   </View>
                 </View>
                 <View style={tw`w-1/2 items-center`}>
-                  <Text style={tw`font-semibold uppercase text-13px text-center`}>Finca:{"\n"}{request.nameFarm}</Text>
+                  <Text style={tw`font-bold uppercase`}>{request.nameFarm}</Text>
 
                 </View>
               </View>
-            </View>}
-          />
-
-
-
+            </View>} CancelRequest={CancelRequest} idRequest={request.idRequest}
+            name={request.name} />
 
         )
-      })) : (<Text style={tw`text-center text-gray-500`}>No hay solicitudes enviadas</Text>)
+      })) : (<Text style={tw`text-center text-gray-500`}>No hay solicitudes enviadas</Text>)}
+      <Pagination
+        maxPage={maxPage}
+        sorters={sorters}
+        GetElements={LoadMyRequests}
+        firstParameter={"1"}
+      />
+      </View>
+  )
+
+  const registers = (
+    <View>
+      {myRequests.length > 0 ? (
+        myRequests.map((request, index) => {
+          return (
+            <DropDown2 key={index} name={request.name} state={request.stateRequest} options={
+              <View style={tw`w-full `}>
+
+                <View style={[tw`w-full items-center h-60px flex-row  pt-2 border-t`, { borderColor: "rgba(81, 212, 0, 0.2)" }]} key={index}>
+
+                  <View style={tw`w-1/2 items-center`}>
+                    <Text style={tw`text-center font-bold mb-2`}>Tipo: {request.typeRequest}</Text>
+
+                    <View style={tw`items-center`}>
+                      <Text>Enviada: {request.createdDate.split("T")[0]}</Text>
+                    </View>
+                  </View>
+                  <View style={tw`w-1/2 items-center`}>
+                    <Text style={tw`font-semibold uppercase text-13px text-center`}>Finca:{"\n"}{request.nameFarm}</Text>
+
+                  </View>
+                </View>
+              </View>}
+            />
+          )
+        })) : (<Text style={tw`text-center text-gray-500`}>No hay solicitudes enviadas</Text>)}
+      <Pagination
+        maxPage={maxPage}
+        sorters={sorters}
+        GetElements={LoadMyRequests}
+        firstParameter={"2"}
+      />
+    </View>
   )
   const toggleOpen = async () => {
-    await LoadMyRequests("1", 0)
+    sorters.page = 0;
+    await LoadMyRequests("1")
     if (isOpen == false) {
-      
+
       setIsOpen(true)
       setIsOpenn(false)
-      
+
     }
 
   }
   const toggleOpenn = async () => {
-    await LoadMyRequests("2", 0)
+    sorters.page = 0;
+    await LoadMyRequests("2")
     if (isOpenn == false) {
-      
+
       setIsOpenn(true)
       setIsOpen(false)
-      
+
     }
   }
 
 
   useEffect(() => {
-    LoadMyRequests("1", 0);
+    LoadMyRequests("1");
   }, []);
   return (
 
@@ -191,36 +206,38 @@ const outgoing = (
       />
       <View style={styles.safeArea}>
         <View style={styles.container}>
+          <ScrollView>
 
-          <TouchableOpacity
-            onPress={() => {
-              LoadAllFarms();
-              setIsModalOpenAddRequest(!isModalOpenAddRequest)
-            }}
-            style={tw`bg-green-500 text-lg text-white px-5 py-3 w-215px rounded-lg mb-7 mt-7 text-center`}
-          >
+            <TouchableOpacity
+              onPress={() => {
+                LoadAllFarms();
+                setIsModalOpenAddRequest(!isModalOpenAddRequest)
+              }}
+              style={tw`bg-green-500 text-lg text-white px-5 py-3 w-215px rounded-lg mb-7 mt-7 text-center`}
+            >
 
-            <Text style={tw`text-lg text-white text-center`}>
-              Crear Solicitud
-            </Text>
-          </TouchableOpacity>
+              <Text style={tw`text-lg text-white text-center`}>
+                Crear Solicitud
+              </Text>
+            </TouchableOpacity>
 
-          <View style={[tw`w-full items-center rounded-lg pb-2`, { backgroundColor: "rgba(32, 84, 0, 0.1)" }]}>
-            <View style={tw`w-full h-45px flex-row items-center mb-2 rounded-t-lg`}>
-              <View style={tw`w-1/2 `}>
-                <TouchableOpacity style={!isOpen ? [tw`h-45px p-3 rounded-tl-lg w-full`, styles.colorButtonDisabled] : [tw`h-45px p-3 rounded-tl-lg w-full`, styles.colorButtonEnable]} onPress={toggleOpen} activeOpacity={0.6}>
-                  <Text style={isOpen ? tw`text-center uppercase font-bold` : tw`text-center uppercase`}>salientes</Text>
-                </TouchableOpacity>
+            <View style={[tw`w-full items-center rounded-lg pb-2`, { backgroundColor: "rgba(32, 84, 0, 0.1)" }]}>
+              <View style={tw`w-full h-45px flex-row items-center mb-2 rounded-t-lg`}>
+                <View style={tw`w-1/2 `}>
+                  <TouchableOpacity style={!isOpen ? [tw`h-45px p-3 rounded-tl-lg w-full`, styles.colorButtonDisabled] : [tw`h-45px p-3 rounded-tl-lg w-full`, styles.colorButtonEnable]} onPress={toggleOpen} activeOpacity={0.6}>
+                    <Text style={isOpen ? tw`text-center uppercase font-bold` : tw`text-center uppercase`}>salientes</Text>
+                  </TouchableOpacity>
+                </View>
+                <View style={tw`w-1/2`}>
+                  <TouchableOpacity style={!isOpenn ? [tw`h-45px p-3 rounded-tr-lg w-full`, styles.colorButtonDisabled] : [tw`h-45px p-3 rounded-tr-lg w-full`, styles.colorButtonEnable]} onPress={toggleOpenn} activeOpacity={0.6}>
+                    <Text style={isOpenn ? tw`text-center uppercase font-bold` : tw`text-center uppercase`}>registros</Text>
+                  </TouchableOpacity>
+                </View>
               </View>
-              <View style={tw`w-1/2`}>
-                <TouchableOpacity style={!isOpenn ? [tw`h-45px p-3 rounded-tr-lg w-full`, styles.colorButtonDisabled] : [tw`h-45px p-3 rounded-tr-lg w-full`, styles.colorButtonEnable]} onPress={toggleOpenn} activeOpacity={0.6}>
-                  <Text style={isOpenn ? tw`text-center uppercase font-bold` : tw`text-center uppercase`}>registros</Text>
-                </TouchableOpacity>
-              </View>
+              <RequestTable children={outgoing} children1={registers} isOpen={isOpen} isOpenn={isOpenn} />
+
             </View>
-            <RequestTable children={outgoing} children1={registers} isOpen={isOpen} isOpenn={isOpenn} />
-
-          </View>
+          </ScrollView>
         </View>
       </View>
 

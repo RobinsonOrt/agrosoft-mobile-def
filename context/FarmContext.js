@@ -86,18 +86,18 @@ const MyFarmsProvider = ({ children }) => {
       });
   };
 
-  const LoadEmployeedFarms = async (sorter, order, page) => {
+  const LoadEmployeedFarms = async () => {
     await axios
       .get(
         REACT_APP_API_URL +
           "/api/userfarms/" +
           global.idUser +
           "/employee/" +
-          sorter +
+          sorters.sorter +
           "/" +
-          order +
+          sorters.order +
           "/" +
-          page
+          sorters.page
       )
       .then((res) => {
         setEmployeedFarms(res.data.response);
@@ -109,6 +109,23 @@ const MyFarmsProvider = ({ children }) => {
       .get(REACT_APP_API_URL + "/api/listfarms/" + global.idUser)
       .then((res) => {
         setAllFarms(res.data.response);
+      });
+  };
+
+  const FindFarmsEmployeed = async (search) => {
+    await axios
+      .get(
+        REACT_APP_API_URL +
+          "/api/findfarms/" +
+          global.idUser +
+          "/employee/" +
+          search +
+          "/0"
+      )
+      .then((res) => {
+        setMaxPage(0);
+        setEmployeedFarms(res.data.response);
+        console.log(res.data);
       });
   };
 
@@ -141,6 +158,7 @@ const MyFarmsProvider = ({ children }) => {
     setModalVisible,
     idFarm,
     setIdFarm,
+    FindFarmsEmployeed
   };
 
   return (

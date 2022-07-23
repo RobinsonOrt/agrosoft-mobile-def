@@ -20,7 +20,6 @@ const MyCropUserProvider = ({children}) => {
 
     const GetCropsToSet = async (idEmployee) => {
         const response = await axios.get(`${REACT_APP_API_URL}/api/cropstoset/${idEmployee}/${global.idFarm}`);
-        console.log(response.data)
         setCropsToSet(response.data.response);
     }
 

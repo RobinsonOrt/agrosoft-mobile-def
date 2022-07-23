@@ -27,6 +27,8 @@ import CropsRecords from "../screens/CropsRecords";
 import AdminBushActivitys from "../screens/AdminBushActivitys";
 import ScannScreen from "../screens/ScannScreen";
 import Contact from "../screens/Contact";
+import AssignedLabors from "../screens/AssignedLabors";
+
 
 
 import { MyFarmsProvider } from "../context/FarmContext";
@@ -37,6 +39,7 @@ import { MyCoffeeBushProvider } from "../context/CoffeeBushContext";
 import { MyActivitiesProvider } from "../context/ActivityContext";
 import { MyFieldsProvider } from "../context/FieldsContext";
 import { MyCropUserProvider } from "../context/CropUserContext";
+import { MySubRoleActivityProvider } from "../context/SubRoleActivityContext";
 //import { MyCoffeeBushProvider } from ".../context/CoffeeBushContext";
 import Farms from "../screens/Farms";
 import Hamburger from "../assets/hamburger.png";
@@ -45,7 +48,7 @@ import { SimpleLineIcons } from "@expo/vector-icons";
 import { HeaderTitle, HeaderRight, styles } from "../components/Header";
 
 import ClassModalAddCropUser from "../components/ClassModalAddCropUser";
-
+import ClassModalAddSubRoleActivity from "../components/ClassModalAddSubRoleActivity";
 const HomeStacks = ({ navigation }) => {
   const HomeStack = createNativeStackNavigator();
   return (
@@ -57,62 +60,70 @@ const HomeStacks = ({ navigation }) => {
               <MyEmployeesProvider>
                 <MyLaborsProvider>
                   <MyCropUserProvider>
-                    <HomeStack.Navigator
-                      screenOptions={{
-                        title: "",
-                        headerStyle: styles.headerStyle,
-                        headerRight: () => (
-                          <HeaderRight navigation={navigation} />
-                        ),
-                        headerTitle: () => (
-                          <HeaderTitle navigation={navigation} />
-                        ),
-                        headerTitleAlign: "center",
-                      }}
-                    >
-                      <HomeStack.Screen name="MyFarms" component={MyFarms} />
-                      <HomeStack.Screen
-                        name="EnterFarm"
-                        component={EnterFarm}
-                      />
-                      <HomeStack.Screen name="Labor" component={Labor} />
-                      <HomeStack.Screen name="Employee" component={Employee} />
-                      <HomeStack.Screen
-                        name="CoffeeBush"
-                        component={CoffeeBush}
-                      />
-                      <HomeStack.Screen
-                        name="ActivitiesMyFarms"
-                        component={ActivitiesMyFarms}
-                      />
-                      <HomeStack.Screen
-                        name="EnterCoffeeBush"
-                        component={EnterCoffeeBush}
-                      />
-                      <HomeStack.Screen name="Fields" component={Fields} />
-                      <HomeStack.Screen
-                        name="AssignedCrops"
-                        component={AssignedCrops}
-                      />
-                      <HomeStack.Screen
-                        name="AddCropUser"
-                        component={ClassModalAddCropUser}
-                      />
-                      <HomeStack.Screen
-                        name="CropsActivitys"
-                        component={AdminCropsActivitys}
-                      />
-                      <HomeStack.Screen
-                        name="CropsRecords"
-                        component={CropsRecords}
-                      />
-                      <HomeStack.Screen
-                        name="BushActivitys"
-                        component={AdminBushActivitys}
-                      />
-                      <HomeStack.Screen name="ScannScreen" component={ScannScreen} />
-                      <HomeStack.Screen name="Contact" component={Contact} />
-                    </HomeStack.Navigator>
+                    <MySubRoleActivityProvider>
+                      <HomeStack.Navigator
+                        screenOptions={{
+                          title: "",
+                          headerStyle: styles.headerStyle,
+                          headerRight: () => (
+                            <HeaderRight navigation={navigation} />
+                          ),
+                          headerTitle: () => (
+                            <HeaderTitle navigation={navigation} />
+                          ),
+                          headerTitleAlign: "center",
+                        }}
+                      >
+                        <HomeStack.Screen name="MyFarms" component={MyFarms} />
+                        <HomeStack.Screen
+                          name="EnterFarm"
+                          component={EnterFarm}
+                        />
+                        <HomeStack.Screen name="Labor" component={Labor} />
+                        <HomeStack.Screen name="Employee" component={Employee} />
+                        <HomeStack.Screen
+                          name="CoffeeBush"
+                          component={CoffeeBush}
+                        />
+                        <HomeStack.Screen
+                          name="ActivitiesMyFarms"
+                          component={ActivitiesMyFarms}
+                        />
+                        <HomeStack.Screen
+                          name="EnterCoffeeBush"
+                          component={EnterCoffeeBush}
+                        />
+                        <HomeStack.Screen name="Fields" component={Fields} />
+                        <HomeStack.Screen
+                          name="AssignedCrops"
+                          component={AssignedCrops}
+                        />
+                        <HomeStack.Screen
+                          name="AddCropUser"
+                          component={ClassModalAddCropUser}
+                        />
+                        <HomeStack.Screen
+                          name="AddSubRoleActivity"
+                          component={ClassModalAddSubRoleActivity}
+                        />
+
+                        <HomeStack.Screen
+                          name="CropsActivitys"
+                          component={AdminCropsActivitys}
+                        />
+                        <HomeStack.Screen
+                          name="CropsRecords"
+                          component={CropsRecords}
+                        />
+                        <HomeStack.Screen
+                          name="BushActivitys"
+                          component={AdminBushActivitys}
+                        />
+                        <HomeStack.Screen name="ScannScreen" component={ScannScreen} />
+                        <HomeStack.Screen name="Contact" component={Contact} />
+                        <HomeStack.Screen name="AssignedLabors" component={AssignedLabors} />
+                      </HomeStack.Navigator>
+                    </MySubRoleActivityProvider>
                   </MyCropUserProvider>
                 </MyLaborsProvider>
               </MyEmployeesProvider>

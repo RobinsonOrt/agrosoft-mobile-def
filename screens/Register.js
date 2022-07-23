@@ -148,7 +148,7 @@ console.log(errors.Object)
       .then(response => {
         if(!response.data.error){
           setLocalError({error:false, message:""})
-          navigate("/tokenValidation");
+          navigation.navigate("TokenValidation");
           return;
         }
         setLocalError({error:response.data.error, message:response.data.response})

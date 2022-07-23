@@ -49,9 +49,9 @@ const MyEmployeesProvider = ({children}) => {
             })
     }
 
-    const LeaveFarm = async (idUser, idFarm) => {
+    const LeaveFarm = async (idFarm) => {
         const data = {};
-        data.idUser = idUser;
+        data.idUser = global.idUser;
         data.idFarm = idFarm;
         console.log("data", data);
         await axios.put(`${REACT_APP_API_URL}/api/deleteemployee`, data)

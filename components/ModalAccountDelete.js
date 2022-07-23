@@ -1,15 +1,10 @@
 import global from "../global";
 import React, { useContext } from "react";
 import {
-  View,
   Text,
-  TextInput,
-  ScrollView,
-  TouchableOpacity,
-  Picker,
-  Modal
 } from "react-native";
 import ModalModel from "./ModalModel";
+import ModalButton from "./ModalButton";
 import tw from "twrnc";
 import MyUserContext from '../context/UserContext';
 import AuthContext from "../context/AuthContext";
@@ -48,19 +43,8 @@ export default function ModalAccountDelete({ isModalOpenAccountDelete, setIsModa
                     {response.message}
                   </Text>
                 ) : null}
-                <TouchableOpacity
-                  style={tw`bg-yellow-500 text-lg text-white px-5 py-3 w-215px rounded-lg mb-7 text-center`}
-                  onPress={onSubmit}
-                >
-                  <Text style={tw`text-lg text-white text-center`}>Aceptar</Text>
-                </TouchableOpacity>
-                <TouchableOpacity
-                  style={tw`bg-red-600 text-lg text-white px-5 py-3 w-215px rounded-lg mb-7 text-center`}
-                  onPress={() => setIsModalOpenAccountDelete(!setIsModalOpenAccountDelete)}
-                >
-                  <Text style={tw`text-lg text-white text-center`}>Cancelar </Text>
-
-                </TouchableOpacity>
+                <ModalButton text={"Confirmar"} onPress={() => {onSubmit()}} color={"#22C55E"} />
+                <ModalButton text={"Cancelar"} onPress={() => { setIsModalOpenAccountDelete(!isModalOpenAccountDelete) }} color={"rgba(220, 38, 38, 0.86)"} />
                 </ModalModel>
   )
 }

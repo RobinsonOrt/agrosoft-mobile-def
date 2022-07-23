@@ -7,8 +7,8 @@ import {
   TextInput,
   ScrollView,
   TouchableOpacity,
-  Modal, 
-  StyleSheet, 
+  Modal,
+  StyleSheet,
   Picker,
   Image,
 } from "react-native";
@@ -26,6 +26,7 @@ import RNPickerSelect from "react-native-picker-select";
 import dropDownOpen from '../assets/dropDownOpen.png';
 import InputForm from './InputForm';
 import PickerModel from "./PickerModel";
+import ColorPickerButton from './ColorPickerButton';
 //import {Picker} from '@react-native-picker/picker';
 
 export default function ModalAddFarm({ isModalOpenAddFarm, setIsModalOpenAddFarm }) {
@@ -38,20 +39,14 @@ export default function ModalAddFarm({ isModalOpenAddFarm, setIsModalOpenAddFarm
   });
 
   const [result, setResult] = useState();
-  
+
   const [selectedCountry, setSelectedCountry] = useState(null);
-  
+  const [selectedColor, setSelectedColor] = useState(null);
+
   const { message, error, setError, setMessage, AddFarm } = useContext(MyFarmsContext);
-  const {country, loadCountries} = useContext(CountryProvider);
+  const { country, loadCountries } = useContext(CountryProvider);
 
   const [localError, setLocalError] = useState({ "error": false, "message": "" });
- 
-  
-
-  useBackHandler(() => {
-    navigate("/");
-    return true;
-  });
 
   const {
     control,
@@ -63,13 +58,19 @@ export default function ModalAddFarm({ isModalOpenAddFarm, setIsModalOpenAddFarm
   const onSubmitAddFarm = (data) => {
     if (selectedCountry == null || selectedCountry == "") {
       setLocalError({ "error": true, "message": "No ha seleccionado el pais" })
-      return} 
-      else {
-        data.idCountry = selectedCountry
-      }
+      return
+    }else {
+      data.idCountry = selectedCountry
+    }
+    if (selectedColor == null || selectedColor == "") {
+      setLocalError({ "error": true, "message": "No ha seleccionado el color" })
+      return
+    }
+    data.colorFarm = selectedColor
     const response = AddFarm(data);
     console.log(response);
-    if(!response.error){
+    if (!response.error) {
+      setSelectedColor(null);
       setIsModalOpenAddFarm(false);
       reset();
       setSelectedCountry(null)
@@ -87,93 +88,100 @@ export default function ModalAddFarm({ isModalOpenAddFarm, setIsModalOpenAddFarm
 
 
   return (
-    
+
     <ModalModel isModalOpen={isModalOpenAddFarm} setIsModalOpen={setIsModalOpenAddFarm}>
-              <Text style={tw`text-3xl font-bold text-black mt-5 mb-5`}>
-                Agregar nueva finca
-              </Text>
-              <ScrollView style={tw`mt-2 w-full h-120 pb-3`}>
-                <View style={tw`w-full px-7`}>
+      <Text style={tw`text-3xl font-bold text-black mt-5 mb-5`}>
+        Agregar nueva finca
+      </Text>
+      <ScrollView style={tw`mt-2 w-full h-120 pb-3`}>
+        <View style={tw`w-full px-7`}>
 
-                  <Text style={tw` text-black mb-10 w-full  text-center`}>
-                    Rellena los campos con la información correspondiente
-                  </Text>
-                  {localError.status ? (
-                    <Text
-                      style={tw`text-white bg-red-500 p-5 rounded-lg mb-10 font-bold text-center`}
-                    >
-                      {localError.msg}
-                    </Text>
-                  ) : null}
-                
-                      <InputForm
-                      control={control}
-                      name="nameFarm"
-                      placeholder="Nombre finca"
-                      autoCapitalize="words"
-                      maxLength={50}
-                      minLength={5}
-                      autoFocus={true}
-                      height={40}
-                      pattern={/^[a-zA-ZÁ-ÿ0-9., ]+$/}
-                    />
-                    {errors.nameFarm?.type === "required" ? (
-                      <Text style={tw`text-red-600 mb-2 text-center`}>Campo requerido!</Text>
-                    ) : errors.nameFarm?.type === "pattern" ? (
-                      <Text style={tw`text-red-600 mb-2 text-center`}>
-                        No se aceptan caracteres especiales
-                      </Text>
-                    ) : errors.nameFarm?.type === "minLength" ? (
-                      <Text style={tw`text-red-600 mb-2 text-center`}>
-                        Minimo 5 caracteres!
-                      </Text>
-                    ) : null}
+          <Text style={tw` text-black mb-10 w-full  text-center`}>
+            Rellena los campos con la información correspondiente
+          </Text>
+          {localError.status ? (
+            <Text
+              style={tw`text-white bg-red-500 p-5 rounded-lg mb-10 font-bold text-center`}
+            >
+              {localError.msg}
+            </Text>
+          ) : null}
 
-                    
-                    <InputForm
-                      control={control}
-                      name="descriptionFarm"
-                      placeholder="Descripcion"
-                      autoCapitalize="sentences"
-                      height={80}
-                      maxLength={100}
-                      minLength={15}
-                      multiline={true}
-                      pattern={/^[a-zA-ZÁ-ÿ0-9., ]+$/}
-                    />
-                    {errors.descriptionFarm?.type === "required" ? (
-                      <Text style={tw`text-red-600 mb-2 text-center`}>Campo requerido!</Text>
-                    ) : errors.descriptionFarm?.type === "pattern" ? (
-                      <Text style={tw`text-red-600 mb-2 text-center`}>
-                        No se permiten caracteres especiales!
-                      </Text>
-                    ) : errors.descriptionFarm?.type === "minLength" ? (
-                      <Text style={tw`text-red-600 mb-2 text-center`}>
-                        Minimo 15 caracteres!
-                      </Text>
-                    ) : null}
-
-                    <PickerModel list={country}
-                      label="nameCountry"
-                      value="idCountry"
-                      text="Pais"
-                      setSelected={setSelectedCountry} />
-                    {localError.error ? (
-                      <Text style={tw`text-red-600 mb-2 text-center`}>
-                        {localError.message}
-                      </Text>
-                    ) : null}
+          <InputForm
+            control={control}
+            name="nameFarm"
+            placeholder="Nombre finca"
+            autoCapitalize="words"
+            maxLength={50}
+            minLength={5}
+            autoFocus={true}
+            height={40}
+            pattern={/^[a-zA-ZÁ-ÿ0-9., ]+$/}
+          />
+          {errors.nameFarm?.type === "required" ? (
+            <Text style={tw`text-red-600 mb-2 text-center`}>Campo requerido!</Text>
+          ) : errors.nameFarm?.type === "pattern" ? (
+            <Text style={tw`text-red-600 mb-2 text-center`}>
+              No se aceptan caracteres especiales
+            </Text>
+          ) : errors.nameFarm?.type === "minLength" ? (
+            <Text style={tw`text-red-600 mb-2 text-center`}>
+              Minimo 5 caracteres!
+            </Text>
+          ) : null}
 
 
-                  <ModalButton text={"Confirmar"} onPress={handleSubmit(onSubmitAddFarm)} color={"#22C55E"}/>
-                  <ModalButton text={"Cancelar"} onPress={() => {setIsModalOpenAddFarm(!setIsModalOpenAddFarm), setError(false), reset()}} color={"rgba(220, 38, 38, 0.86)"}/>
-                </View>
-              </ScrollView>
-        </ModalModel>
+          <InputForm
+            control={control}
+            name="descriptionFarm"
+            placeholder="Descripcion"
+            autoCapitalize="sentences"
+            height={80}
+            maxLength={100}
+            minLength={15}
+            multiline={true}
+            pattern={/^[a-zA-ZÁ-ÿ0-9., ]+$/}
+          />
+          {errors.descriptionFarm?.type === "required" ? (
+            <Text style={tw`text-red-600 mb-2 text-center`}>Campo requerido!</Text>
+          ) : errors.descriptionFarm?.type === "pattern" ? (
+            <Text style={tw`text-red-600 mb-2 text-center`}>
+              No se permiten caracteres especiales!
+            </Text>
+          ) : errors.descriptionFarm?.type === "minLength" ? (
+            <Text style={tw`text-red-600 mb-2 text-center`}>
+              Minimo 15 caracteres!
+            </Text>
+          ) : null}
+
+          <PickerModel list={country}
+            label="nameCountry"
+            value="idCountry"
+            text="Pais"
+            setSelected={setSelectedCountry} />
+          {localError.error ? (
+            <Text style={tw`text-red-600 mb-2 text-center`}>
+              {localError.message}
+            </Text>
+          ) : null}
+          <View style={[tw`p-2 rounded-2xl flex-row justify-between mb-4`, {backgroundColor : (selectedColor == null)? "white":selectedColor}]}>
+            <ColorPickerButton onPress={()=>setSelectedColor("rgba(120, 113, 108, 0.5)")} color={"rgba(120, 113, 108, 0.5)"} />
+            <ColorPickerButton onPress={()=>setSelectedColor("rgba(252, 165, 165, 1)")} color={"rgba(252, 165, 165, 1)"} />
+            <ColorPickerButton onPress={()=>setSelectedColor("rgba(125, 211, 252, 1)")} color={"rgba(125, 211, 252, 1)"} />
+            <ColorPickerButton onPress={()=>setSelectedColor("rgba(253, 186, 116, 1)")} color={"rgba(253, 186, 116, 1)"} />
+            <ColorPickerButton onPress={()=>setSelectedColor("rgba(190, 242, 100, 1)")} color={"rgba(190, 242, 100, 1)"} />
+            <ColorPickerButton onPress={()=>setSelectedColor("rgba(239, 242, 100, 1)")} color={"rgba(239, 242, 100, 1)"} />
+          </View>
+          <ModalButton text={"Confirmar"} onPress={handleSubmit(onSubmitAddFarm)} color={"#22C55E"} />
+          <ModalButton text={"Cancelar"} onPress={() => { setIsModalOpenAddFarm(!setIsModalOpenAddFarm), setError(false), reset(), setSelectedColor(null) }} color={"rgba(220, 38, 38, 0.86)"} />
+        
+        </View>
+      </ScrollView>
+    </ModalModel>
 
 
   )
-} 
+}
 
 const customPickerStyles = StyleSheet.create({
   inputIOS: {
@@ -184,7 +192,7 @@ const customPickerStyles = StyleSheet.create({
     borderColor: 'green',
     borderRadius: 8,
     color: 'black',
-    paddingRight: 30, 
+    paddingRight: 30,
     width: 321,// to ensure the text is never behind the icon
     marginBottom: 20
   },
@@ -200,9 +208,9 @@ const customPickerStyles = StyleSheet.create({
     paddingRight: 30,
     width: 321,
     marginBottom: 20
-   // to ensure the text is never behind the icon
+    // to ensure the text is never behind the icon
   },
-  inputWeb:{
+  inputWeb: {
     fontSize: 14,
     paddingHorizontal: 10,
     paddingVertical: 8,
