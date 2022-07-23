@@ -7,7 +7,7 @@ const InputForm = ({control, name, placeholder, secureTextEntry, keyboardType, p
   
   const styles = StyleSheet.create({
     button: {
-      borderColor: '#205400',
+      borderColor: 'rgba(120, 212, 63, 1)',
       height: height,
     }})
   

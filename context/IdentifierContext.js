@@ -9,18 +9,23 @@ const MyIdentifierProvider = ({ children }) => {
   const [identifiers, setIdentifiers] = useState([]);
   const [identifier, setIdentifier] = useState({idIdentifier : "0", countryName:"", identifier:"0"});
   const [actualIdentifier, setActualIdentifier] = useState();
+  const [actualCountryCode, setActualCountryCode] = useState();
+  
 
   const LoadIdentifiers = async () => {
     await axios.get(`${REACT_APP_API_URL}/api/identifiers`)
         .then((res) => {
         setIdentifiers(res.data);
+        
     });
+  
   };
 
   const getIdentifier = async (idIdentifier) => {
       const identifierResponse = await axios .get(`${REACT_APP_API_URL}/api/identifier/${idIdentifier}`)
       setIdentifier(identifierResponse.data.response);
       setActualIdentifier(identifierResponse.data.response.idIdentifier);
+      setActualCountryCode(identifierResponse.data.response.countryCode)
       //console.log(identifierResponse.data.response);
       return identifierResponse;
     }
@@ -32,7 +37,10 @@ const MyIdentifierProvider = ({ children }) => {
         identifier,
         setIdentifier,
         actualIdentifier,
-        setActualIdentifier
+        setActualIdentifier,
+        setActualCountryCode,
+        actualCountryCode
+       
     }}>
       {children}
     </MyIdentifierContext.Provider>

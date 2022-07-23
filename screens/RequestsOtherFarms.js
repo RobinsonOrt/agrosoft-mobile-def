@@ -201,7 +201,7 @@ export default function RequestsOtherFarms({ navigation }) {
         <View style={tw`w-full h-45px flex-row items-center mb-2 rounded-t-lg`}>
         <View style={tw`w-1/2 `}>      
         <TouchableOpacity style={!isOpen ? [tw`h-45px p-3 rounded-tl-lg w-full`, styles.colorButtonDisabled] : [tw`h-45px p-3 rounded-tl-lg w-full`, styles.colorButtonEnable]} onPress={toggleOpen}  activeOpacity={0.6}>
-          <Text style={isOpen ? tw`text-center uppercase font-bold` : tw`text-center uppercase`}>salientes</Text>
+          <Text style={isOpen ? tw`text-center uppercase font-bold` : tw`text-center uppercase`}>Entrantes</Text>
         </TouchableOpacity>
         </View>
         <View style={tw`w-1/2`}> 

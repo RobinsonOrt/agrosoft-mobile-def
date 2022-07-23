@@ -37,6 +37,8 @@ export default function Register({navigation}) {
   const [errorr, setErrorr] = useState(false);
   const [localError, setLocalError] = useState({error:false, message:""});
  
+  
+
   const loadIdentifiers = async () => {
     const urlIdentifiers = REACT_APP_API_URL + "/api/identifiers";
     await axios.get(urlIdentifiers).then(response => {
@@ -71,6 +73,8 @@ export default function Register({navigation}) {
     clearErrors,
     formState: { errors, isSubmitted },
   } = useForm();
+
+  console.log(errors)
  
   const valuePassword1 = watch("password1")
   const password = watch("password")
@@ -90,8 +94,9 @@ export default function Register({navigation}) {
 
   useEffect(() => {
     const checkValid = phoneInput.current?.isValidNumber(phoneNumber)
-    console.log(phoneNumber)
+    console.log("numero: "+phoneNumber)
     if(isSubmitted){
+      console.log(phoneNumber)
       if(phoneNumber === undefined || phoneNumber === null || phoneNumber === ""){
         console.log("error "+phoneNumber)
         setError('phoneNumber', { type: 'required', message: ''})
@@ -102,10 +107,12 @@ export default function Register({navigation}) {
         clearErrors('phoneNumber')
       }
     }  
-  },[phoneNumber, selectedLanguagee, errors]);
+  },[phoneNumber, country, isSubmitted]);
+
+  const country = phoneInput.current?.getCallingCode()
 
   useEffect(() => {
-    const country = phoneInput.current?.getCallingCode()
+    
     
     identifiers.map((identifier)=>{
       if(identifier.identifier == country){
@@ -114,11 +121,16 @@ export default function Register({navigation}) {
         setSelectedLanguage(identifierCountry)
       }
     }) 
-  },[selectedLanguagee]);  
+    console.log(selectedLanguagee)
+  },[country]);  
   
-console.log(selectedLanguage)
+console.log("lenguage: "+selectedLanguage)
+console.log(errors.Object)
 
   const onSubmit = async (data) =>{
+    console.log(errors)
+    if(errors.Object === undefined){
+    console.log("dentro")
     loadIdentifiers()
     setErrorr({error: false, message:""})
     const dataToSend = {}
@@ -145,6 +157,8 @@ console.log(selectedLanguage)
       return;
     }
     setErrorr({error: true, message:"Porfavor seleccone un pais"})
+    }
+    
   }
 
   return (
