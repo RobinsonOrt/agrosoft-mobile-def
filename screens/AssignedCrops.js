@@ -41,7 +41,7 @@ const AssignedCrops = ({ navigation }) => {
                             </View>
                             <View style={tw`items-end`}>
                                 <SearchComponent GetElements={FindCropUsers} GetOriginalElements={GetCropUsers} secondParameter={global.idEmployee} />
-                                <AddButton onPress={() => {GetCropsToSet(global.idEmployee), navigation.navigate("AddCropUser")}} />
+                                <AddButton onPress={async () => {await GetCropsToSet(global.idEmployee), navigation.navigate("AddCropUser")}} />
                             </View>
                         </View>
                         <ModalDeleteCropUser

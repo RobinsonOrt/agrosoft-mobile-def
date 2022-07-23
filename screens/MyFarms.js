@@ -5,7 +5,6 @@ import { View, Text, Image, TouchableOpacity, BackHandler, ScrollView, TextInput
 
 import tw from "twrnc";
 import ModalAddFarm from "../components/ModalAddFarm";
-import ModalFarmDelete from "../components/ModalFarmDelete";
 import { SafeAreaProvider, SafeAreaView } from "react-native-safe-area-context";
 import Enter from "../assets/Enter.png";
 import Edit from "../assets/edit.png";
@@ -77,7 +76,7 @@ const MyFarms = ({ navigation }) => {
               farms.length > 0 ? (
                 farms.map((farm, index) => {
                   return (
-                    <Cart name={farm.nameFarm} description={farm.descriptionFarm} id={farm.idFarm} key={index}>
+                    <Cart name={farm.nameFarm} description={farm.descriptionFarm} id={farm.idFarm} color={farm.colorFarm} key={index}>
                       <CartButton text={"Ingresar"} onPress={() => { global.idFarm = farm.idFarm; setFarm(farm); navigation.navigate("EnterFarm") }} color={"#22C55E"} image={Enter} />
                       <CartButton text={"Editar"} onPress={() => {
                         setFarm(farm);

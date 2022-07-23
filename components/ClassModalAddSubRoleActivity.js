@@ -8,43 +8,36 @@ import {
     ScrollView,
     TouchableOpacity,
 } from "react-native";
+
 import { styles } from "../screens/Farms";
 import { SafeAreaProvider, SafeAreaView } from "react-native-safe-area-context";
 
 import tw from "twrnc";
-import MyCropUserContext from "../context/CropUserContext";
+import MySubRoleActivityContext from "../context/SubRoleActivityContext";
 import SubHeader from "../components/SubHeader";
 import ButtonCard from "./ButtonCard";
 import { MaterialIcons, Ionicons } from '@expo/vector-icons';
 
-export default class ClassModalAddCropUser extends Component{
-    static contextType = MyCropUserContext;
+export default class ClassModalAddSubRoleActivity extends Component {
+    static contextType = MySubRoleActivityContext;
     constructor(props) {
         super(props);
-        
+
         this.state = {
             noFormatData: [],
             data: [],
-            selectedCrops: [],
+            selectedSubRoleActivities: [],
             nav: props.navigation,
         }
-        /* const comeBack = () => {
-            this.props.navigation.goBack();
-        }
-
-        if(this.state.ready){
-            comeBack()
-        } */
-        
     }
 
     componentDidMount() {
-        this.setState({noFormatData: this.context.cropsToSet})
-        let Temp = this.context.cropsToSet
+        this.setState({noFormatData: this.context.subRoleActivitiesToSet})
+        let Temp = this.context.subRoleActivitiesToSet
         let FormData = []
         for (let i = 0; i < Temp.length; i++) {
             FormData.push({
-                id: Temp[i].idCrop,
+                id: Temp[i].idActivity,
                 key: Temp[i],
                 checked: false
             })
@@ -52,8 +45,8 @@ export default class ClassModalAddCropUser extends Component{
         this.setState({ data: FormData })
     }
 
-    onSubmitCrops = async () => {
-        var keys = this.state.data.map(t => t.key.idCrop)
+    onSubmitSubRoleActivities = async () => {
+        var keys = this.state.data.map(t => t.key.idActivity)
         var checks = this.state.data.map(t => t.checked)
         let Selected = []
         for (let i = 0; i < checks.length; i++) {
@@ -61,43 +54,41 @@ export default class ClassModalAddCropUser extends Component{
                 Selected.push(keys[i])
             }
         }
-        const { AddCropUser } = this.context;
+        const { AddSubRoleActivity } = this.context;
         const dataToSend = {}
-        dataToSend.idUser = global.idEmployee
-        dataToSend.idFarm = global.idFarm
-        dataToSend.idCrops = Selected.toString()
-        const response = await AddCropUser(dataToSend);
-        if(response.data.error){
-            alert("Debe seleccionar al menos un cultivo")
-        }
-        else{
+        dataToSend.idSubRole = global.idSubRole
+        dataToSend.idActivities = Selected.toString()
+        const response = await AddSubRoleActivity(dataToSend)
+        if (response.data.error) {
+            alert("Debe seleccionar al menos una actividad")
+        }else{
             const navigation = this.state.nav
             navigation.goBack()
         }
     }
+
     onCancel(){
         const navigation = this.state.nav
         navigation.goBack()
     }
 
-    onChecked(idCrop){
-        
+    onChecked(idActivity) {
         const data = this.state.data
-        const index = data.findIndex(x => x.id === idCrop)
+        const index = data.findIndex(x => x.id === idActivity)
         data[index].checked = !data[index].checked
         this.setState(data)
     }
 
-    renderCropsToSet(){
+    renderActivitiesToSet() {
         return (this.state.data.length > 0) ? ( this.state.data.map((item, key) => {
             return(
-                <TouchableOpacity style={tw`flex-row m-2 items-center`} key={key} onPress={()=>this.onChecked(item.key.idCrop)}>
+                <TouchableOpacity style={tw`flex-row m-2 items-center`} key={key} onPress={()=>this.onChecked(item.key.idActivity)}>
                     <Checkbox
                     style={tw`m-1 w-5 h-5`}
                     value={item.checked}
-                    onValueChange={() => this.onChecked(item.key.idCrop)}
+                    onValueChange={() => this.onChecked(item.key.idActivity)}
                     />
-                    <Text style={tw`content-center w-full uppercase`}>{item.key.nameCrop}</Text>
+                    <Text style={tw`content-center w-full uppercase`}>{item.key.nameActivity}</Text>
                 </TouchableOpacity>
             )
         })) : (<Text style={tw`text-center text-gray-500 my-5`}>
@@ -105,24 +96,23 @@ export default class ClassModalAddCropUser extends Component{
       </Text>)
     }
 
-    render(){
+    render() {
         return(
             <SafeAreaProvider>
                 <SafeAreaView style={tw`flex-1`}>
-                    <SubHeader title={"Seleccione los cultivos a asignar"} />
+                    <SubHeader title={"Seleccione actividades a asignar"} />
                     <View style={tw`m-3 w-full flex-row justify-around`}>
-                    <ButtonCard text={"Asignar"} onPress={()=>this.onSubmitCrops()} color={"rgba(34, 197, 94, 1)"} icon={<MaterialIcons name="assignment-ind" size={20} color="white" />} />
+                    <ButtonCard text={"Asignar"} onPress={()=>this.onSubmitSubRoleActivities()} color={"rgba(34, 197, 94, 1)"} icon={<MaterialIcons name="assignment-ind" size={20} color="white" />} />
                     <ButtonCard text={"Cancelar"} onPress={()=>this.onCancel()} color={"rgba(239, 68, 68, 1)"} icon={<Ionicons name="ios-arrow-back-circle-outline" size={20} color="white" />} />
                     </View>
                     
                     <ScrollView style={tw`h-95%`} >
                         <View style={styles.container}>
-                        {this.renderCropsToSet()}
+                        {this.renderActivitiesToSet()}
                         </View>
                     </ScrollView>
                 </SafeAreaView>
             </SafeAreaProvider>
         )
     }
-    
 }

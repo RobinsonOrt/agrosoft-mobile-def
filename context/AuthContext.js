@@ -72,7 +72,6 @@ const AuthProvider = ({ children }) => {
       let userInfo =  await AsyncStorage.getItem('userInfo')
       let userToken = await AsyncStorage.getItem('userToken') 
       let userId = await AsyncStorage.getItem('userId')
-      console.log("vea: "+userInfo)
       setUserInfo(userInfo) 
       setUserToken(userToken);
       setUserId(userId)

@@ -4,28 +4,8 @@ import tw from "twrnc";
 import { View, Text, Image, ImageBackground, StyleSheet, TouchableOpacity} from "react-native";
 import Logo from "../assets/logo.png";
 import Background from "../assets/background.png";
-import { BlurView } from "expo-blur";
-import { Link } from "react-router-native";
-import NetInfo from '@react-native-community/netinfo';
-import { useNavigate } from "react-router-native";
 
 export default function Home({navigation}) {
-
-  
-  
-  
-  
-  const unsubscribe = NetInfo.addEventListener(state => {
-    
-    if(!state.isConnected){
-      redirectConnection();
-    }
-  });
-
-  const redirectConnection = () => {
-    global.urlConnected = "/";
-    navigate("/notConected");
-  }
 
   const styles = StyleSheet.create({
     colorView: {     

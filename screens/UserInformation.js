@@ -57,6 +57,7 @@ export default function UserInformation( {navigation} ) {
               placeholder="Nombres"
               editable={false}
         />
+        <ModalModifyEmail isModalOpenModifyEmail={isModalOpenModifyEmail} setIsModalOpenModifyEmail={setIsModalOpenModifyEmail}/>  
         <TextInput
             style={tw`bg-slate-50 px-5 py-3 rounded-lg w-321px mb-5 border-b-2 border-yellow-500`}
             value={user.lastName}
@@ -92,7 +93,7 @@ export default function UserInformation( {navigation} ) {
               Cambiar correo
             </Text>
           </TouchableOpacity>
-          <ModalModifyEmail isModalOpenModifyEmail={isModalOpenModifyEmail} setIsModalOpenModifyEmail={setIsModalOpenModifyEmail}/>  
+          
 
           <TouchableOpacity onPress={() => setIsModalOpenPasswordRecovery(!isModalOpenPasswordRecovery)} underlayColor="#ddddd" activeOpacity={0.6}>
             <Text

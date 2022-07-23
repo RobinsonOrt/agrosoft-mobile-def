@@ -167,14 +167,16 @@ export default function RequestsOtherFarms({ navigation }) {
         )
       })): (<Text style={tw`text-center text-gray-500`}>No hay solicitudes enviadas</Text>)
     )
-  const toggleOpen = ()=>{
+  const toggleOpen = async ()=>{
+    await LoadOtherRequests("1", 0)
     if(isOpen == false){  
         setIsOpen(true) 
         setIsOpenn(false)
     }
    
   }
-  const toggleOpenn = ()=> {
+  const toggleOpenn = async ()=> {
+    await LoadOtherRequests("2", 0)
     if(isOpenn == false){
         
         setIsOpenn(true)

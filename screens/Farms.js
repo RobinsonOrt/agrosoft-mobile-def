@@ -3,36 +3,28 @@ import React, { useState, useEffect, useContext } from "react";
 import {
   View,
   Text,
-  LayoutAnimation,
   StyleSheet,
-  UIManager,
-  Platform,
-  Image,
-  TouchableOpacity,
   ScrollView,
 } from "react-native";
-import { Link } from "react-router-native";
 import tw from "twrnc";
 import { SafeAreaProvider, SafeAreaView } from "react-native-safe-area-context";
-
-import Info from "../assets/info.png";
 import Leave from "../assets/leave.png";
 import Enter from "../assets/Enter.png";
 import MyFarmsContext from "../context/FarmContext";
 import MyEmployeesContext from "../context/EmployeeContext";
 import { useBackHandler } from "@react-native-community/hooks";
-import { Accordion } from "../components/Accordion";
 import { Cart } from "../components/Cart";
 import CartButton from "../components/CartButton";
-import PickerSorter from "../components/PickerSorter";
-import CleanButton from "../components/CleanButton";
-import SearchByName from "../components/SearchByName";
 import SubHeader from "../components/SubHeader";
+import ModalDelete from "../components/ModalDelete";
+import Pagination from "../components/Pagination";
+import SorterComponent from "../components/SorterComponent";
+import SearchComponent from "../components/SearchComponent";
 
 export default function Farms({ navigation }) {
-  const { LoadEmployeedFarms, employeedFarms, setIdFarm } =
-    useContext(MyFarmsContext);
+  const { LoadEmployeedFarms, employeedFarms, setIdFarm, FindFarmsEmployeed, sorters, maxPage } = useContext(MyFarmsContext);
   const { LeaveFarm, error, message } = useContext(MyEmployeesContext);
+  const [isModalOpenDelete, setIsModalOpenDelete] = useState(false);
 
   useBackHandler(() => {
     console.log("back");
@@ -41,7 +33,7 @@ export default function Farms({ navigation }) {
   });
 
   useEffect(async () => {
-    await LoadEmployeedFarms("name_farm", "asc", 0);
+    await LoadEmployeedFarms();
   }, []);
 
   return (
@@ -50,20 +42,20 @@ export default function Farms({ navigation }) {
         <SubHeader title={"Fincas"} />
         {error ? <Text>{message}</Text> : null}
         <ScrollView style={styles.container}>
-          <View style={tw`flex my-5 flex-row justify-between`}>
-            <View>
-              <SearchByName
-              //data={farms} key="nameFarm" setData={setFilter}
-              />
-              <CleanButton />
+          <View style={tw`flex-row justify-between`}>
+            <View style={tw``}>
+              <SorterComponent sorters={sorters} sorter={"name_farm"} GetElements={LoadEmployeedFarms} />
             </View>
-            <PickerSorter
-            //list={data}
-            //key1="nameFarm"
-            //key2="createdDate"
-            //newList={setFilter}
-            />
+            <View style={tw`items-end`}>
+              <SearchComponent GetElements={FindFarmsEmployeed} GetOriginalElements={LoadEmployeedFarms} />
+            </View>
           </View>
+          <ModalDelete
+            isModalOpenDelete={isModalOpenDelete}
+            setIsModalOpenDelete={setIsModalOpenDelete}
+            DeleteFunction={LeaveFarm}
+            text={"¿Estás seguro que deseas abandonar la finca?"}
+          />
           {employeedFarms.length > 0 ? (
             employeedFarms.map((farm, index) => {
               return (
@@ -71,25 +63,26 @@ export default function Farms({ navigation }) {
                   name={farm.nameFarm}
                   description={farm.nameAdmin}
                   id={farm.idFarm}
+                  color={farm.colorFarm}
                   key={index}
                 >
-                  
-                    <CartButton
-                      text={"Ingresar"}
-                      onPress={() => {
-                        setIdFarm(farm.idFarm);
-                        navigation.navigate("EmployeeCrops");
-                      }}
-                      color={"#22C55E"}
-                      image={Enter}
-                    />
-                  
+
+                  <CartButton
+                    text={"Ingresar"}
+                    onPress={() => {
+                      setIdFarm(farm.idFarm);
+                      navigation.navigate("EmployeeCrops");
+                    }}
+                    color={"#22C55E"}
+                    image={Enter}
+                  />
+
                   <CartButton
                     text={"Abandonar"}
-                    // onPress={() => {
-                    //   global.idFarm = farm.idFarm;
-                    //   setIsModalOpenFarmDelete(!isModalOpenFarmDelete);
-                    // }}
+                    onPress={() => {
+                      global.idToDelete = farm.idFarm;
+                      setIsModalOpenDelete(!isModalOpenDelete)
+                    }}
                     color={"#EF4444"}
                     image={Leave}
                   />
@@ -103,6 +96,7 @@ export default function Farms({ navigation }) {
               </Text>
             </View>
           )}
+          <Pagination maxPage={maxPage} sorters={sorters} GetElements={LoadEmployeedFarms} />
         </ScrollView>
 
       </SafeAreaView>

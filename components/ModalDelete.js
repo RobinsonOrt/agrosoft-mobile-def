@@ -7,12 +7,12 @@ import {
     Text,
   } from "react-native";
 
-export default function ModalDelete({ isModalOpenDelete, setIsModalOpenDelete, DeleteFunction}) {
+export default function ModalDelete({ isModalOpenDelete, setIsModalOpenDelete, DeleteFunction, text}) {
     return (
 
         <ModalModel isModalOpen={isModalOpenDelete} setIsModalOpen={setIsModalOpenDelete}>
             <Text style={tw` text-black mb-10 w-283px  text-center`}>
-                ¿Está seguro que quiere eliminar el registro?
+                {(text == null)? "¿Está seguro que quiere eliminar el registro?":text}
             </Text>
             <View style={tw`w-full px-6`}>
                 <ModalButton text={"Confirmar"} onPress={() => { DeleteFunction(global.idToDelete), setIsModalOpenDelete(false) }} color={"#22C55E"} />

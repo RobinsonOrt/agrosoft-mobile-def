@@ -81,7 +81,7 @@ const Labor = ({ navigation }) => {
                   <View style={[tw`w-full flex flex-row justify-between`]}>
                     <ButtonCard text={"Editar"} onPress={() => {setLabor(labor), setIsModalOpenModifyLabor(!isModalOpenModifyLabor)}} color={"rgba(234, 179, 8, 1)"} icon={<Feather name="edit-3" size={18} color="white" />} />
                     <ButtonCard text={"Eliminar"} onPress={() => {global.idToDelete = labor.idSubRole, setIsModalOpenDelete(!isModalOpenDelete)}} color={"rgba(239, 68, 68, 1)"} icon={<AntDesign name="delete" size={18} color="white" />} />
-                    <ButtonCard text={"Actividades"} onPress={() => {console.log("hdhd")}} color={"rgba(32, 84, 0, 0.81)"} icon={<MaterialIcons name="notes" size={18} color="white" />} />
+                    <ButtonCard text={"Actividades"} onPress={() => {global.idSubRole = labor.idSubRole, navigation.navigate("AssignedLabors")}} color={"rgba(32, 84, 0, 0.81)"} icon={<MaterialIcons name="notes" size={18} color="white" />} />
                   </View>
                 </AccordionEmployees>
                 

@@ -50,7 +50,6 @@ export default function ContactUs({navigation}) {
             <View style={tw`justify-center items-center p-2.5 gap-4 absolute top-32 rounded-lg`}>
                 <Text style={tw`text-center `}>Desarrolladores</Text>
                 <View style={tw``}>
-
                 </View>
             </View>
             
