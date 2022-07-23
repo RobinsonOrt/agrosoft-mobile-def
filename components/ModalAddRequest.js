@@ -21,6 +21,10 @@ import NetInfo from '@react-native-community/netinfo';
 import MyFarmsContext from "../context/FarmContext";
 import MyRequestsMyFarmsContext from "../context/RequestsMyFarmsContext";
 import { RadioButton } from "react-native-paper";
+import ModalModel from "./ModalModel";
+import ModalButton from "./ModalButton";
+import InputForm from "./InputForm";
+import PickerModel from "./PickerModel";
 
 
 export default function ModalAddRequest({ isModalOpenAddRequest, setIsModalOpenAddRequest }) {
@@ -41,6 +45,13 @@ export default function ModalAddRequest({ isModalOpenAddRequest, setIsModalOpenA
         return true;
     });
 
+
+    const {
+        control,
+        handleSubmit,
+        reset,
+        formState: { errors },
+      } = useForm();
 
     const onSubmitAddRequest = async () => {
         setError2(false);
@@ -87,6 +98,7 @@ export default function ModalAddRequest({ isModalOpenAddRequest, setIsModalOpenA
     };
     return (
         <>
+
             <ModalModel isModalOpen={isModalOpenAddRequest} setIsModalOpen={setIsModalOpenAddRequest}>
 
                 <View style={tw`flex items-center justify-center`}>
@@ -143,6 +155,7 @@ export default function ModalAddRequest({ isModalOpenAddRequest, setIsModalOpenA
                         <View style={tw`items-center w-80`}>
                             <ModalButton text={"Enviar"} onPress={() => { onSubmitAddRequest() }} color={"#22C55E"} />
                             <ModalButton text={"Cancelar"} onPress={() => { setLocalError(false), setError2(false), setEmail(""), setIdFarm("0"), setIsModalOpenAddRequest(!setIsModalOpenAddRequest) }} color={"rgba(220, 38, 38, 0.86)"} />
+
                         </View>
                     </View>
                 </View>
