@@ -139,7 +139,7 @@ export default function UserInformation( {navigation} ) {
          <ModalPasswordRecovery isModalOpenPasswordRecovery={isModalOpenPasswordRecovery} setIsModalOpenPasswordRecovery={setIsModalOpenPasswordRecovery}/>
           
          
-          <ModalAccountDelete isModalOpenAccountDelete={isModalOpenAccountDelete} setIsModalOpenAccountDelete={setIsModalOpenAccountDelete}/>
+          <ModalAccountDelete navigation={navigation} isModalOpenAccountDelete={isModalOpenAccountDelete} setIsModalOpenAccountDelete={setIsModalOpenAccountDelete}/>
           </View>
           <View style={[tw`w-full pt-10 px-10 border-t`,{borderColor:'rgba(156, 163, 175, 1)'}]}>
           <ModalButton text={"Editar información"} onPress={()=>setIsModalOpen(!isModalOpen)} color={"rgba(248, 189, 35, 0.85)"} />

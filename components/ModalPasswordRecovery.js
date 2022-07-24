@@ -129,7 +129,7 @@ export default function ModalPasswordRecovery({ isModalOpenPasswordRecovery, set
           </View>
 
           {errorLocal ? <Text style={tw`text-red-500 text-15px mb-3`}>{errorLocal}</Text> : null}
-          <ModalButton text={"Confirmar"} onPress={() => { onSubmit() }} color={"#22C55E"} />
+          <ModalButton text={"Confirmar"} onPress={() => { onSubmit() }} color={"rgba(34, 197, 94, 1)"} />
           <ModalButton text={"Cancelar"} onPress={() => { setIsModalOpenPasswordRecovery(!setIsModalOpenPasswordRecovery),
             setErrorLocal(""),
             setErrorPass1(""),
@@ -139,7 +139,7 @@ export default function ModalPasswordRecovery({ isModalOpenPasswordRecovery, set
             setChecked0(false),
             setChecked1(false),
             setChecked2(false)}}
-            color={"rgba(220, 38, 38, 0.86)"} />
+            color={"rgba(255, 0, 0, 1)"} />
         </View>
       </ModalModel>
     </>

@@ -5,11 +5,6 @@ import axios from "axios";
 import AsyncStorage from '@react-native-async-storage/async-storage'
 
 const AuthContext = createContext();
-
-
-
-
-
 const AuthProvider = ({ children }) => {
 
 
@@ -50,7 +45,7 @@ const AuthProvider = ({ children }) => {
     return loginResponse
   };
 
-  const LogOut = async () => {
+  const LogOut = () => {
     global.tokenChange = "";
     global.idUser = "";
     global.jwToken = "";
@@ -62,7 +57,7 @@ const AuthProvider = ({ children }) => {
     AsyncStorage.removeItem('userToken')
     AsyncStorage.removeItem('userId')
     setIsLoading(false);
-    await setResult({ data: { error: true, message: "Logout" } });
+    setResult({ data: { error: true, message: "Logout" } });
     setLogged(null);
   }
 
@@ -95,6 +90,7 @@ const AuthProvider = ({ children }) => {
         LogOut,
         logged,
         isLoading,
+        setUserToken,
         userToken,
         userInfo,
         userId,

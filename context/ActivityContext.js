@@ -12,6 +12,7 @@ const MyActivitiesProvider = ({ children }) => {
     const [maxPage, setMaxPage] = useState(0);
 
     const GetActivities = async (idActivityType, idFarm) => {
+        console.log(idActivityType, idFarm)
         const response = await axios.get(`${REACT_APP_API_URL}/api/getactivities/${idActivityType}/${idFarm}/${sorters.sorter}/${sorters.order}/${sorters.page}`);
         setActivities(response.data.response);
         setMaxPage(response.data.maxPage);

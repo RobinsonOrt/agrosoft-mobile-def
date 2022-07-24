@@ -64,6 +64,7 @@ const HomeStacks = ({ navigation }) => {
                       <HomeStack.Navigator
                         screenOptions={{
                           title: "",
+                          headerTintColor: "#fff",
                           headerStyle: styles.headerStyle,
                           headerRight: () => (
                             <HeaderRight navigation={navigation} />

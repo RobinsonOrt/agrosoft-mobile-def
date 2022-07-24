@@ -27,9 +27,7 @@ const ModalAddCropUser = ({ isModalOpenAddCropUser, setIsModalOpenAddCropUser })
         setStateA(cropsToSet);
     }, [cropsToSet])
 
-    useEffect(() => {
-        console.log("stateA");
-    }, [stateA])
+
     
 
     /* const handleOnChange = (e) => {
@@ -39,7 +37,6 @@ const ModalAddCropUser = ({ isModalOpenAddCropUser, setIsModalOpenAddCropUser })
     } else {
         setIdCropsList(idCropsList.filter((ev) => ev !== value));
     }
-    console.log(idCropsList);
     }; */
 
     /* const handleChange = (id) => {
@@ -60,7 +57,6 @@ const ModalAddCropUser = ({ isModalOpenAddCropUser, setIsModalOpenAddCropUser })
         const data = stateA
         const index = data.findIndex(x => x.idCrop === idCrop)
         data[index].checked = !data[index].checked
-        console.log(data[index])
         setStateA(data)
     }
 

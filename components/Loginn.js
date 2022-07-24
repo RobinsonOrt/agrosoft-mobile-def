@@ -48,13 +48,10 @@ export default function Loginn({ toggleOpenHome }) {
     reset,
     formState: { errors },
   } = useForm();
- 
-  console.log(errors)
 
   useEffect(() => {
     if(logged !== null){
       global.idUser = logged;
-      console.log(logged)
       navigate("/userLoged");
     }
   }, []);

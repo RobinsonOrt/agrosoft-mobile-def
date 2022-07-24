@@ -1,3 +1,4 @@
+import global from "../global";
 import React, { useState, useContext } from "react";
 import {
   View,
@@ -13,25 +14,27 @@ import { TouchableOpacity } from "react-native-gesture-handler";
 import SubHeader from "./SubHeader";
 
 
-export const TableActivitiesMyFarms = ({ title1, title2, subHeaderTable, children, children1, setActivityType }) => {
+export const TableActivitiesMyFarms = ({ title1, title2, subHeaderTable, children, children1, setActivityType, Function }) => {
     const [isOpen, setIsOpen] = useState(true);
     const [isOpenn, setIsOpenn] = useState(false);
   
-    const toggleOpen = () => {
+    const toggleOpen = async () => {
+      await Function("1", global.idFarm);
       if(isOpen == false){
           setIsOpen(true) 
           setIsOpenn(false)
-          setActivityType("1")
+          /* setActivityType("1") */
       }
     
       //setIsOpen(value => !value);
       
     }
-    const toggleOpenn = ()=>{
+    const toggleOpenn = async ()=>{
+      await Function("2", global.idFarm);
       if(isOpenn == false){
           setIsOpenn(true)
           setIsOpen(false)
-          setActivityType("2")
+          /* setActivityType("2") */
       }
         
       //setIsOpenn(value => !value);

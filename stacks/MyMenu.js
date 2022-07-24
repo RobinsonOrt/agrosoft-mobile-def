@@ -9,6 +9,7 @@ import AccountStack from "./AccountStack";
 import EmployeeStack from "./EmployeeStack";
 import RequestsMyFarmsStack from "./RequestsMyFarmsStack";
 import RequestsOtherFarmsStack from "./RequestsOtherFarmsStack";
+import UserInformation from "../screens/UserInformation";
 import { MenuItems } from "../components/MenuItems";
 import MainStack from "./MainStack";
 import AuthContext, { AuthProvider } from "../context/AuthContext";

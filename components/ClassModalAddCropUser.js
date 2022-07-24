@@ -17,11 +17,11 @@ import SubHeader from "../components/SubHeader";
 import ButtonCard from "./ButtonCard";
 import { MaterialIcons, Ionicons } from '@expo/vector-icons';
 
-export default class ClassModalAddCropUser extends Component{
+export default class ClassModalAddCropUser extends Component {
     static contextType = MyCropUserContext;
     constructor(props) {
         super(props);
-        
+
         this.state = {
             noFormatData: [],
             data: [],
@@ -35,11 +35,11 @@ export default class ClassModalAddCropUser extends Component{
         if(this.state.ready){
             comeBack()
         } */
-        
+
     }
 
     componentDidMount() {
-        this.setState({noFormatData: this.context.cropsToSet})
+        this.setState({ noFormatData: this.context.cropsToSet })
         let Temp = this.context.cropsToSet
         let FormData = []
         for (let i = 0; i < Temp.length; i++) {
@@ -67,62 +67,71 @@ export default class ClassModalAddCropUser extends Component{
         dataToSend.idFarm = global.idFarm
         dataToSend.idCrops = Selected.toString()
         const response = await AddCropUser(dataToSend);
-        if(response.data.error){
+        if (response.data.error) {
             alert("Debe seleccionar al menos un cultivo")
         }
-        else{
+        else {
             const navigation = this.state.nav
             navigation.goBack()
         }
     }
-    onCancel(){
+    onCancel() {
         const navigation = this.state.nav
         navigation.goBack()
     }
 
-    onChecked(idCrop){
-        
+    onChecked(idCrop) {
+
         const data = this.state.data
         const index = data.findIndex(x => x.id === idCrop)
         data[index].checked = !data[index].checked
         this.setState(data)
     }
 
-    renderCropsToSet(){
-        return (this.state.data.length > 0) ? ( this.state.data.map((item, key) => {
-            return(
-                <TouchableOpacity style={tw`flex-row m-2 items-center`} key={key} onPress={()=>this.onChecked(item.key.idCrop)}>
+    renderCropsToSet() {
+        return (this.state.data.length > 0) ? (this.state.data.map((item, key) => {
+            return (
+                <TouchableOpacity style={tw`flex-row border-b border-gray-400 p-2 items-center`} key={key} onPress={() => this.onChecked(item.key.idCrop)}>
+
+                    <Text style={tw`content-center text-gray-600 w-90% uppercase`}>{item.key.nameCrop}</Text>
                     <Checkbox
-                    style={tw`m-1 w-5 h-5`}
-                    value={item.checked}
-                    onValueChange={() => this.onChecked(item.key.idCrop)}
+                        style={tw`m-1 w-5 h-5`}
+                        value={item.checked}
+                        onValueChange={() => this.onChecked(item.key.idCrop)}
                     />
-                    <Text style={tw`content-center w-full uppercase`}>{item.key.nameCrop}</Text>
                 </TouchableOpacity>
             )
         })) : (<Text style={tw`text-center text-gray-500 my-5`}>
-        No se encontraron registros
-      </Text>)
+            No se encontraron registros
+        </Text>)
     }
 
-    render(){
-        return(
+    render() {
+        return (
             <SafeAreaProvider>
-                <SafeAreaView style={tw`flex-1`}>
+                <SafeAreaView style={tw`flex-1 items-center`}>
                     <SubHeader title={"Seleccione los cultivos a asignar"} />
-                    <View style={tw`m-3 w-full flex-row justify-around`}>
-                    <ButtonCard text={"Asignar"} onPress={()=>this.onSubmitCrops()} color={"rgba(34, 197, 94, 1)"} icon={<MaterialIcons name="assignment-ind" size={20} color="white" />} />
-                    <ButtonCard text={"Cancelar"} onPress={()=>this.onCancel()} color={"rgba(239, 68, 68, 1)"} icon={<Ionicons name="ios-arrow-back-circle-outline" size={20} color="white" />} />
-                    </View>
-                    
-                    <ScrollView style={tw`h-95%`} >
-                        <View style={styles.container}>
-                        {this.renderCropsToSet()}
+                    <View style={[tw`h-full w-full items-center pt-2`, { backgroundColor: "rgba(32, 84, 0, 0.1)" }]}>
+                        <Text style={tw`text-center font-bold uppercase text-2xl`}>Cultivos</Text>
+                        {/* <View style={tw`m-3 w-full flex-row justify-around`}>
+                            <ButtonCard text={"Asignar"} onPress={() => this.onSubmitCrops()} color={"rgba(34, 197, 94, 1)"} icon={<MaterialIcons name="assignment-ind" size={20} color="white" />} />
+                            <ButtonCard text={"Cancelar"} onPress={() => this.onCancel()} color={"rgba(239, 68, 68, 1)"} icon={<Ionicons name="ios-arrow-back-circle-outline" size={20} color="white" />} />
+                        </View> */}
+                        <View style={[tw`h-68% w-90% mt-2 rounded-2xl`, styles.container, { backgroundColor: "rgba(32, 84, 0, 0.12)" }]}>
+                            <ScrollView>
+                                {this.renderCropsToSet()}
+                            </ScrollView>
                         </View>
-                    </ScrollView>
+                        <View style={tw`m-3 w-83%`}>
+                            <View style={tw`mb-3 w-full`}>
+                                <ButtonCard text={"Asignar"} onPress={() => this.onSubmitCrops()} color={"rgba(34, 197, 94, 1)"} icon={<MaterialIcons name="assignment-ind" size={20} color="white" />} />
+                            </View>
+                                <ButtonCard text={"Cancelar"} onPress={() => this.onCancel()} color={"rgba(239, 68, 68, 1)"} icon={<Ionicons name="ios-arrow-back-circle-outline" size={20} color="white" />} />
+                        </View>
+                    </View>
                 </SafeAreaView>
             </SafeAreaProvider>
         )
     }
-    
+
 }

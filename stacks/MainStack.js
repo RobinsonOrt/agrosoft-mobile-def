@@ -21,6 +21,7 @@ const MainStack = ({ navigation }) => {
               <MainStack.Navigator 
                 initialRouteName="Home" 
                 screenOptions={{
+                  headerTintColor: "#fff",
                   title:"",
                   headerShown: false,
                 }}>

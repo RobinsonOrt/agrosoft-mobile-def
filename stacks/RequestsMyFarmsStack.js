@@ -11,6 +11,7 @@ const RequestMyFarmsStack = ({ navigation }) => {
         <MyRequestsMyFarmsProvider>
             <MyFarmsProvider>
                 <HomeStack.Navigator screenOptions={{
+                    headerTintColor: "#fff",
                     title:"",
                     headerStyle:styles.headerStyle,
                     headerRight:() => ( <HeaderRight navigation={navigation} />),

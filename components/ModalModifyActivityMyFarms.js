@@ -73,7 +73,6 @@ const ModalModifyActivityMyFarms = ({isModalOpenModifyActivityMyFarms, setIsModa
         setActivityType(activity.idActivityType)
       }, [activity]);
   
-    console.log(errors)
     return(
 
       <ModalModel isModalOpen={isModalOpenModifyActivityMyFarms} setIsModalOpen={setIsModalOpenModifyActivityMyFarms} >
