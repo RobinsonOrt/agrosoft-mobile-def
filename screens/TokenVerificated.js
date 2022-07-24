@@ -1,42 +1,36 @@
 import global from "../global";
 import React from 'react';
-import { View, Text, TextInput, TouchableOpacity } from "react-native";
+import { View, Text, TextInput, TouchableOpacity, StyleSheet, ImageBackground } from "react-native";
 import { useNavigate } from "react-router-native";
 import tw from 'twrnc'
 import NetInfo from '@react-native-community/netinfo';
+import Background from "../assets/background.png";
+import ButtonForm from "../components/ButtonForm";
+import { useBackHandler } from "@react-native-community/hooks";
 
 
-
-export default function TokenVerificated() {
-
-    let navigate = useNavigate()
-    const unsubscribe = NetInfo.addEventListener(state => {
-        console.log('Connection type', state.type);
-        console.log('Is connected?', state.isConnected);
-        if(!state.isConnected){
-          redirectConnection();
-        }
-      });
-      const redirectConnection = () => {
-        global.urlConnected = "/accountActivated";
-        navigate("/notConected");
-      }
-    
-    const redirect = () => {
-        navigate('/login');
-    }
+export default function TokenVerificated({navigation}) {
+    useBackHandler(() => {
+        navigation.navigate("Login");
+        return true;
+    });
     return (
-        <View style={tw`h-full flex items-center justify-center px-5`}>
-            <Text style={tw`text-3xl font-bold text-black mb-20`}>
-                Cuenta Activada con exito
-            </Text>
-            <View style={tw`bg-yellow-600 p-5 rounded-xl`}>
-                <Text style={tw`text-lg text-black leading-tight`}>
-                    Su cuenta se ha activado exitosamente, puede iniciar sesión.
-                    {"\n"}{"\n"}
+        <ImageBackground source={Background} resizeMode="cover" style={tw`h-full items-center justify-center`}>
+            <View style={[tw`w-85% flex items-center justify-center rounded-20px py-30px px-10px`, styles.backgroundContainer]}>
+                <Text style={tw`text-25px font-bold text-white mb-4`}>
+                    Cuenta Activada con exito
                 </Text>
-                <TouchableOpacity style={tw`bg-yellow-700 p-5 mt-5 rounded-xl`}><Text style={tw`text-white text-center font-bold`} onPress={redirect} >Iniciar Sesion</Text></TouchableOpacity>
+                <Text style={tw`text-lg text-white leading-tight mb-5`}>
+                    Su cuenta se ha activado exitosamente.
+                </Text>
+                <ButtonForm onPress={()=>navigation.navigate("Login")} title="iniciar sesion" color={"rgba(32, 84, 0, 1)"} />
+
             </View>
-        </View>
+        </ImageBackground>
     )
 }
+const styles = StyleSheet.create({
+    backgroundContainer: {
+        backgroundColor: "rgba(14, 24, 7, 1)"
+    },
+});

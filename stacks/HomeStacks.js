@@ -1,54 +1,139 @@
 import global from "../global";
-import React from "react";
-import { View, Text, TouchableHighlight, TouchableOpacity, Image } from "react-native";
+import React, { useEffect } from "react";
+import {
+  View,
+  Text,
+  TouchableHighlight,
+  TouchableOpacity,
+  Image,
+} from "react-native";
+import { CommonActions, StackActions } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { DrawerToggleButton } from "@react-navigation/drawer";
 import Profile from "../assets/profile.png";
+import Agrosoft from "../assets/agrosoft.png";
 import tw from "twrnc";
 import EnterFarm from "../screens/EnterFarm";
 import MyFarms from "../screens/MyFarms";
 import Labor from "../screens/Labor";
 import Employee from "../screens/Employee";
+import CoffeeBush from "../screens/CoffeeBush";
+import ActivitiesMyFarms from "../screens/ActivitiesMyFarms";
+import EnterCoffeeBush from "../screens/EnterCoffeeBush";
+import Fields from "../screens/Fields";
+import AssignedCrops from "../screens/AssignedCrops";
+import AdminCropsActivitys from "../screens/AdminCropsActivitys";
+import CropsRecords from "../screens/CropsRecords";
+import AdminBushActivitys from "../screens/AdminBushActivitys";
+import ScannScreen from "../screens/ScannScreen";
+import Contact from "../screens/Contact";
+import AssignedLabors from "../screens/AssignedLabors";
+
+
+
 import { MyFarmsProvider } from "../context/FarmContext";
 import { MyEmployeesProvider } from "../context/EmployeeContext";
 import { MyLaborsProvider } from "../context/LaborsContext";
+import { MyCropsProvider } from "../context/CropContext";
+import { MyCoffeeBushProvider } from "../context/CoffeeBushContext";
+import { MyActivitiesProvider } from "../context/ActivityContext";
+import { MyFieldsProvider } from "../context/FieldsContext";
+import { MyCropUserProvider } from "../context/CropUserContext";
+import { MySubRoleActivityProvider } from "../context/SubRoleActivityContext";
+//import { MyCoffeeBushProvider } from ".../context/CoffeeBushContext";
 import Farms from "../screens/Farms";
+import Hamburger from "../assets/hamburger.png";
+import Header from "../components/Header";
+import { SimpleLineIcons } from "@expo/vector-icons";
+import { HeaderTitle, HeaderRight, styles } from "../components/Header";
 
-
-// ...
-
-
-
-
+import ClassModalAddCropUser from "../components/ClassModalAddCropUser";
+import ClassModalAddSubRoleActivity from "../components/ClassModalAddSubRoleActivity";
 const HomeStacks = ({ navigation }) => {
+  const HomeStack = createNativeStackNavigator();
+  return (
+    <MyFarmsProvider>
+      <MyCropsProvider>
+        <MyCoffeeBushProvider>
+          <MyActivitiesProvider>
+            <MyFieldsProvider>
+              <MyEmployeesProvider>
+                <MyLaborsProvider>
+                  <MyCropUserProvider>
+                    <MySubRoleActivityProvider>
+                      <HomeStack.Navigator
+                        screenOptions={{
+                          title: "",
+                          headerTintColor: "#fff",
+                          headerStyle: styles.headerStyle,
+                          headerRight: () => (
+                            <HeaderRight navigation={navigation} />
+                          ),
+                          headerTitle: () => (
+                            <HeaderTitle navigation={navigation} />
+                          ),
+                          headerTitleAlign: "center",
+                        }}
+                      >
+                        <HomeStack.Screen name="MyFarms" component={MyFarms} />
+                        <HomeStack.Screen
+                          name="EnterFarm"
+                          component={EnterFarm}
+                        />
+                        <HomeStack.Screen name="Labor" component={Labor} />
+                        <HomeStack.Screen name="Employee" component={Employee} />
+                        <HomeStack.Screen
+                          name="CoffeeBush"
+                          component={CoffeeBush}
+                        />
+                        <HomeStack.Screen
+                          name="ActivitiesMyFarms"
+                          component={ActivitiesMyFarms}
+                        />
+                        <HomeStack.Screen
+                          name="EnterCoffeeBush"
+                          component={EnterCoffeeBush}
+                        />
+                        <HomeStack.Screen name="Fields" component={Fields} />
+                        <HomeStack.Screen
+                          name="AssignedCrops"
+                          component={AssignedCrops}
+                        />
+                        <HomeStack.Screen
+                          name="AddCropUser"
+                          component={ClassModalAddCropUser}
+                        />
+                        <HomeStack.Screen
+                          name="AddSubRoleActivity"
+                          component={ClassModalAddSubRoleActivity}
+                        />
 
-    
-    const HomeStack = createNativeStackNavigator();
-    return (
-        <MyFarmsProvider>
-        <MyEmployeesProvider>
-        <MyLaborsProvider>
-        <HomeStack.Navigator screenOptions={{headerStyle: {
-            backgroundColor: '#EAB308',
-            paddingLeft: 10,
-            paddingRight: 10
-        },title: '',
-        headerTintColor: 'white',
-        headerRight:() => ( <View style={tw`items-center flex-row`}>
-            <TouchableOpacity style={tw`mr-1`} onPress={() => navigation.navigate('Administrar perfil')}><Image source={Profile} style={tw`h-35px w-35px`}/></TouchableOpacity><DrawerToggleButton tintColor="white" onPress={() => navigation.toggleDrawer()}/>
-            </View>),}}>
-        
-            <HomeStack.Screen name="MyFarms" component={MyFarms}/>
-            <HomeStack.Screen name="EnterFarm" component={EnterFarm}/>
-            <HomeStack.Screen name="Labor" component={Labor} />
-            <HomeStack.Screen name="Employee" component={Employee} />
-            <HomeStack.Screen name="Farms" component={Farms} />
-        </HomeStack.Navigator>
-        </MyLaborsProvider>
-        </MyEmployeesProvider>
-        </MyFarmsProvider>
-
-    );     
+                        <HomeStack.Screen
+                          name="CropsActivitys"
+                          component={AdminCropsActivitys}
+                        />
+                        <HomeStack.Screen
+                          name="CropsRecords"
+                          component={CropsRecords}
+                        />
+                        <HomeStack.Screen
+                          name="BushActivitys"
+                          component={AdminBushActivitys}
+                        />
+                        <HomeStack.Screen name="ScannScreen" component={ScannScreen} />
+                        <HomeStack.Screen name="Contact" component={Contact} />
+                        <HomeStack.Screen name="AssignedLabors" component={AssignedLabors} />
+                      </HomeStack.Navigator>
+                    </MySubRoleActivityProvider>
+                  </MyCropUserProvider>
+                </MyLaborsProvider>
+              </MyEmployeesProvider>
+            </MyFieldsProvider>
+          </MyActivitiesProvider>
+        </MyCoffeeBushProvider>
+      </MyCropsProvider>
+    </MyFarmsProvider>
+  );
 };
 
 export default HomeStacks;

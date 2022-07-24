@@ -1,61 +1,59 @@
 import global from "../global";
-import React from "react";
+import React, {useState, useEffect} from "react";
 import tw from "twrnc";
-import { View, Text, Image, ImageBackground} from "react-native";
+import { View, Text, Image, ImageBackground, StyleSheet, TouchableOpacity, BackHandler} from "react-native";
 import Logo from "../assets/logo.png";
-import Background from "../assets/background.jpg";
-import { BlurView } from "expo-blur";
-import { Link } from "react-router-native";
-import NetInfo from '@react-native-community/netinfo';
-import { useNavigate } from "react-router-native";
+import Background from "../assets/background.png";
+import { useBackHandler } from "@react-native-community/hooks";
 
-export default function Home() {
 
-  
-  
-  const navigate = useNavigate();
-  
-  const unsubscribe = NetInfo.addEventListener(state => {
-    
-    if(!state.isConnected){
-      redirectConnection();
-    }
+export default function Home({navigation}) {
+
+  const styles = StyleSheet.create({
+    colorView: {     
+      backgroundColor: "rgba(14, 24, 7, 1)"      
+    },
+    colorButton: {
+      backgroundColor: "rgba(33, 75, 7, 0.58)"      
+    },
+    hidden: {
+      height: 0,
+    },
+    list: {
+      overflow: 'hidden'
+    },
   });
-  const redirectConnection = () => {
-    global.urlConnected = "/";
-    navigate("/notConected");
-  }
+
 
   return (
-    <ImageBackground
-      source={Background}
-      resizeMode="cover"
-      style={tw`flex justify-center`}
-    >
-      <View style={tw`h-full flex items-center justify-center`}>
-        <Text style={tw`text-4xl font-bold text-white`}>AgroSoft</Text>
-        <Image source={Logo} style={tw`h-48 w-48 my-26`} />
-        <BlurView
-          tint="dark"
-          intensity={100}
-          style={tw`bg-gray-500 p-7 rounded-2xl w-80`}
-        >
-          <Link to={'/login'}  underlayColor="#ddddd" >
-            <Text
-              style={tw`bg-yellow-600 text-lg text-white px-5 py-3 rounded-lg mb-7 text-center `}
-            >
-              Ingresar
-            </Text>
-          </Link>
-          <Link to={'/register'}  underlayColor="#ddddd">
-            <Text
-              style={tw`bg-yellow-900 text-lg text-white px-5 py-2 rounded-lg text-center`}
-            >
-              Registrarse
-            </Text>
-          </Link>
-        </BlurView>
+    <ImageBackground source={Background} resizeMode="cover" style={tw`flex justify-center`}>
+      <View style={tw`h-full w-full flex items-center justify-center px-42 pt-10`}>
+        
+        <Image source={Logo} style={tw`h-30px w-263px mb-10`} />
+
+      
+          <View style={[tw`py-15px px-10px rounded-2xl w-80 mt-30`, styles.colorView ]}>
+            <TouchableOpacity onPress={() => navigation.navigate("Login")}>
+              <Text style={[tw`h-45px text-lg text-white py-9px rounded-2xl mb-7 font-bold uppercase text-center`, styles.colorButton]}>
+                Ingresar
+              </Text>
+            </TouchableOpacity>
+
+            <View style={tw`flex-row content-between items-center mb-7`}>
+              <View style={tw`w-1/2 h-0`}><View style={tw`h-1px opacity-50 bg-white ml-2 mr-5`}/></View>
+              <View style={tw`w-1/2 h-0`}><View style={tw`h-1px opacity-50 bg-white mr-2 ml-5`}/></View>
+            </View>
+
+            <TouchableOpacity onPress={() => navigation.navigate("Register")}>
+              <Text style={[tw`h-45px text-lg text-white py-9px rounded-2xl font-bold uppercase text-center`, styles.colorButton]}>
+                Registrarse
+              </Text>
+            </TouchableOpacity>
+
+          </View>
+
       </View>
     </ImageBackground>
   );
 }
+

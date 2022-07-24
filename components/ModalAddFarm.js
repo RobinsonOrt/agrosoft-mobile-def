@@ -7,9 +7,13 @@ import {
   TextInput,
   ScrollView,
   TouchableOpacity,
+  Modal,
+  StyleSheet,
   Picker,
-  Modal
+  Image,
 } from "react-native";
+import ModalModel from "./ModalModel";
+import ModalButton from "./ModalButton"
 import tw from "twrnc";
 import { useNavigate } from "react-router-native";
 import { useBackHandler } from "@react-native-community/hooks";
@@ -18,6 +22,13 @@ import axios from "axios";
 import NetInfo from '@react-native-community/netinfo';
 import MyFarmsContext from "../context/FarmContext";
 import CountryProvider from '../context/CoutryContext';
+import RNPickerSelect from "react-native-picker-select";
+import dropDownOpen from '../assets/dropDownOpen.png';
+import InputForm from './InputForm';
+import PickerModel from "./PickerModel";
+import ColorPickerButton from './ColorPickerButton';
+//import {Picker} from '@react-native-picker/picker';
+
 export default function ModalAddFarm({ isModalOpenAddFarm, setIsModalOpenAddFarm }) {
   let navigate = useNavigate();
 
@@ -28,81 +39,41 @@ export default function ModalAddFarm({ isModalOpenAddFarm, setIsModalOpenAddFarm
   });
 
   const [result, setResult] = useState();
-  const [localError, setLocalError] = useState({
-    msg: "",
-    status: false
-  });
 
-  const [selectedCountry, setSelectedCountry] = useState();
-  
+  const [selectedCountry, setSelectedCountry] = useState(null);
+  const [selectedColor, setSelectedColor] = useState(null);
+
   const { message, error, setError, setMessage, AddFarm } = useContext(MyFarmsContext);
-  const {country, loadCountries} = useContext(CountryProvider);
-  
+  const { country, loadCountries } = useContext(CountryProvider);
 
-  useBackHandler(() => {
-    navigate("/");
-    return true;
-  });
+  const [localError, setLocalError] = useState({ "error": false, "message": "" });
 
   const {
     control,
+    reset,
     handleSubmit,
     formState: { errors },
   } = useForm();
 
-  const Input = ({
-    style,
-    fieldValue,
-    placeholder,
-    keyboardType,
-    secureTextEntry,
-    pattern,
-    autoCapitalize,
-    minLength,
-    maxLength,
-    multiline,
-  }) => {
-    return (
-      <Controller
-        control={control}
-        rules={{
-          required: true,
-          pattern: pattern,
-          minLength: minLength,
-          maxLength: maxLength,
-        }}
-        render={({ field: { onChange, onBlur, value } }) => (
-          <TextInput
-            style={style}
-            onChangeText={onChange}
-            onBlur={onBlur}
-            value={value}
-            placeholder={placeholder}
-            keyboardType={keyboardType}
-            secureTextEntry={secureTextEntry}
-            autoCapitalize={autoCapitalize}
-            multiline={multiline}
-          />
-        )}
-        name={fieldValue}
-      />
-    );
-  };
-
   const onSubmitAddFarm = (data) => {
-    
-    if(data.nameFarm.trim().length > 150 || data.descriptionFarm.trim().length < 15 || data.descriptionFarm.trim().length > 150 || data.descriptionFarm.trim().length < 15){
-      setLocalError({
-        msg: "Los campos no pueden quedar vacios o con solo espacios",
-        status: true
-      });
-      return;
+    if (selectedCountry == null || selectedCountry == "") {
+      setLocalError({ "error": true, "message": "No ha seleccionado el pais" })
+      return
+    }else {
+      data.idCountry = selectedCountry
     }
-    data.idCountry = selectedCountry;
+    if (selectedColor == null || selectedColor == "") {
+      setLocalError({ "error": true, "message": "No ha seleccionado el color" })
+      return
+    }
+    data.colorFarm = selectedColor
     const response = AddFarm(data);
-    console.log(response);
-    if(!response.error){
+    if (!response.error) {
+      setSelectedColor(null);
       setIsModalOpenAddFarm(false);
+      reset();
+      setSelectedCountry(null)
+      setLocalError({ "error": false, "message": "" });
     }
   };
 
@@ -115,109 +86,139 @@ export default function ModalAddFarm({ isModalOpenAddFarm, setIsModalOpenAddFarm
   }, []);
 
 
-  const modalContainerStyle = {
-    flex: 1,
-    justifyContent: 'center',
-    backgroundColor: 'rgba(52, 52, 52, 0.6)',
-  }
-
-  const modalStyle = {
-    backgroundColor: 'white',
-    alignItems: 'center',
-    margin: 20,
-    borderRadius: 16,
-    paddingHorizontal: 30,
-    paddingVertical: 20,
-    shadowColor: '#000',
-    shadowOffset: {
-      width: 0,
-      height: 2,
-    },
-    shadowOpacity: 0.25,
-    shadowRadius: 4,
-    elevation: 5,
-  };
   return (
-    <>
-      <Modal visible={isModalOpenAddFarm} transparent={true} animationType={'fade'} onRequestClose={() => setIsModalOpenAddFarm(false)}>
-        <View style={modalContainerStyle}>
-          <View style={modalStyle}>
-            <View style={tw`h-full flex items-center justify-center`}>
-              <Text style={tw`text-3xl font-bold text-black mt-20 mb-5`}>
-                Agregar nueva finca
-              </Text>
-              <ScrollView style={tw`mt-2`}>
-                <View style={tw`px-7 mb-10 flex items-center justify-center`}>
-                  <Text style={tw` text-black mb-10 w-283px  text-center`}>
-                    Rellena los campos con la información correspondiente
-                  </Text>
-                  {localError.status ? (
-                    <Text
-                      style={tw`text-white bg-red-500 p-5 rounded-lg mb-10 font-bold text-center`}
-                    >
-                      {localError.msg}
-                    </Text>
-                  ) : null}
-                  <Input
-                    style={tw`bg-slate-50 px-5 py-3 rounded-lg w-321px mb-5 border-b border-yellow-700`}
-                    fieldValue="nameFarm"
-                    placeholder="Nombre"
-                    autoCapitalize="words"
-                    
-                  />
-                  {errors.nameFarm && (
-                    <Text style={tw`text-red-600 mb-5`}>Campo requerido, maximo 50 caracteres!</Text>
-                  )}
-                  <Input
-                    style={tw`bg-slate-50 px-5 py-3 rounded-lg h-83px w-321px mb-5 border-b border-yellow-700`}
-                    fieldValue="descriptionFarm"
-                    placeholder="Descripción"
-                    autoCapitalize="words"
-                    multiline={true}
-                  />
 
-                
-                  {errors.descriptionFarm && (
-                    <Text style={tw`text-red-600 mb-5 w-65`}>Campo requerido , minimo 15 caracteres y maximo 50 caracteres</Text>
-                  )}
+    <ModalModel isModalOpen={isModalOpenAddFarm} setIsModalOpen={setIsModalOpenAddFarm}>
+      <Text style={tw`text-3xl font-bold text-black mt-5 mb-5`}>
+        Agregar nueva finca
+      </Text>
+      <ScrollView style={tw`mt-2 w-full h-120 pb-3`}>
+        <View style={tw`w-full px-7`}>
 
-                  <Picker
-                    style={tw`bg-slate-50 text-base px-5 py-3 rounded-lg w-80 mb-5 pl-0 pr-0 border-b border-yellow-700`}
-                    itemStyle={{ backgroundColor: "yellow", color: "blue", fontFamily: "Ebrima", fontSize: 17 }}
-                    selectedValue={selectedCountry}
-                    onValueChange={(itemValue) =>
-                      setSelectedCountry(itemValue)
-                    }>
+          <Text style={tw` text-black mb-10 w-full  text-center`}>
+            Rellena los campos con la información correspondiente
+          </Text>
+          {localError.status ? (
+            <Text
+              style={tw`text-white bg-red-500 p-5 rounded-lg mb-10 font-bold text-center`}
+            >
+              {localError.msg}
+            </Text>
+          ) : null}
 
-                    {
-                      Array.isArray(country)?
+          <InputForm
+            control={control}
+            name="nameFarm"
+            placeholder="Nombre finca"
+            autoCapitalize="words"
+            maxLength={50}
+            minLength={5}
+            autoFocus={true}
+            height={40}
+            pattern={/^[a-zA-ZÁ-ÿ0-9., ]+$/}
+          />
+          {errors.nameFarm?.type === "required" ? (
+            <Text style={tw`text-red-600 mb-2 text-center`}>Campo requerido!</Text>
+          ) : errors.nameFarm?.type === "pattern" ? (
+            <Text style={tw`text-red-600 mb-2 text-center`}>
+              No se aceptan caracteres especiales
+            </Text>
+          ) : errors.nameFarm?.type === "minLength" ? (
+            <Text style={tw`text-red-600 mb-2 text-center`}>
+              Minimo 5 caracteres!
+            </Text>
+          ) : null}
 
-                      country.map((item, index) => {
 
-                        return <Picker.Item label={item.nameCountry} value={item.idCountry} key={index} />
+          <InputForm
+            control={control}
+            name="descriptionFarm"
+            placeholder="Descripcion"
+            autoCapitalize="sentences"
+            height={80}
+            maxLength={100}
+            minLength={15}
+            multiline={true}
+            pattern={/^[a-zA-ZÁ-ÿ0-9., ]+$/}
+          />
+          {errors.descriptionFarm?.type === "required" ? (
+            <Text style={tw`text-red-600 mb-2 text-center`}>Campo requerido!</Text>
+          ) : errors.descriptionFarm?.type === "pattern" ? (
+            <Text style={tw`text-red-600 mb-2 text-center`}>
+              No se permiten caracteres especiales!
+            </Text>
+          ) : errors.descriptionFarm?.type === "minLength" ? (
+            <Text style={tw`text-red-600 mb-2 text-center`}>
+              Minimo 15 caracteres!
+            </Text>
+          ) : null}
 
-                      }) : <Picker.Item label="" value="" key="" />
-                    }
-                  </Picker>
-
-                  <TouchableOpacity
-                    style={tw`bg-yellow-500 text-lg text-white px-5 py-3 w-215px rounded-lg mb-7 text-center`}
-                    onPress={handleSubmit(onSubmitAddFarm)}
-                  >
-                    <Text style={tw`text-lg text-white text-center`}>Guardar</Text>
-                  </TouchableOpacity>
-                  <TouchableOpacity
-                    style={tw`bg-red-600 text-lg text-white px-5 py-3 w-215px rounded-lg mb-7 text-center`}
-                    onPress={() => {setIsModalOpenAddFarm(!setIsModalOpenAddFarm), setError(false)}}
-                  >
-                    <Text style={tw`text-lg text-white text-center`}>Cancelar </Text>
-                  </TouchableOpacity>
-                </View>
-              </ScrollView>
-            </View>
+          <PickerModel list={country}
+            label="nameCountry"
+            value="idCountry"
+            text="Pais"
+            setSelected={setSelectedCountry} />
+          {localError.error ? (
+            <Text style={tw`text-red-600 mb-2 text-center`}>
+              {localError.message}
+            </Text>
+          ) : null}
+          <View style={[tw`p-2 rounded-2xl flex-row justify-between mb-4`, {backgroundColor : (selectedColor == null)? "white":selectedColor}]}>
+            <ColorPickerButton onPress={()=>setSelectedColor("rgba(120, 113, 108, 0.5)")} color={"rgba(120, 113, 108, 0.5)"} />
+            <ColorPickerButton onPress={()=>setSelectedColor("rgba(252, 165, 165, 1)")} color={"rgba(252, 165, 165, 1)"} />
+            <ColorPickerButton onPress={()=>setSelectedColor("rgba(125, 211, 252, 1)")} color={"rgba(125, 211, 252, 1)"} />
+            <ColorPickerButton onPress={()=>setSelectedColor("rgba(253, 186, 116, 1)")} color={"rgba(253, 186, 116, 1)"} />
+            <ColorPickerButton onPress={()=>setSelectedColor("rgba(190, 242, 100, 1)")} color={"rgba(190, 242, 100, 1)"} />
+            <ColorPickerButton onPress={()=>setSelectedColor("rgba(239, 242, 100, 1)")} color={"rgba(239, 242, 100, 1)"} />
           </View>
+          <ModalButton text={"Confirmar"} onPress={handleSubmit(onSubmitAddFarm)} color={"#22C55E"} />
+          <ModalButton text={"Cancelar"} onPress={() => { setIsModalOpenAddFarm(!setIsModalOpenAddFarm), setError(false), reset(), setSelectedColor(null) }} color={"rgba(220, 38, 38, 0.86)"} />
+        
         </View>
-      </Modal>
-    </>
+      </ScrollView>
+    </ModalModel>
+
+
   )
-} 
+}
+
+const customPickerStyles = StyleSheet.create({
+  inputIOS: {
+    fontSize: 14,
+    paddingVertical: 10,
+    paddingHorizontal: 12,
+    borderWidth: 1,
+    borderColor: 'green',
+    borderRadius: 8,
+    color: 'black',
+    paddingRight: 30,
+    width: 321,// to ensure the text is never behind the icon
+    marginBottom: 20
+  },
+  inputAndroid: {
+    fontSize: 14,
+    paddingHorizontal: 10,
+    paddingVertical: 8,
+    borderWidth: 1,
+    borderColor: '#78D43F',
+    borderRadius: 8,
+    color: 'black',
+    backgroundColor: 'white',
+    paddingRight: 30,
+    width: 321,
+    marginBottom: 20
+    // to ensure the text is never behind the icon
+  },
+  inputWeb: {
+    fontSize: 14,
+    paddingHorizontal: 10,
+    paddingVertical: 8,
+    borderWidth: 1,
+    borderColor: '#78D43F',
+    borderRadius: 8,
+    color: 'black',
+    backgroundColor: 'white',
+    paddingRight: 30,
+    marginBottom: 20
+  }
+});

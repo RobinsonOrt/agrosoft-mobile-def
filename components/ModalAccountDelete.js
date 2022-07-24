@@ -1,21 +1,17 @@
 import global from "../global";
 import React, { useContext } from "react";
 import {
-  View,
   Text,
-  TextInput,
-  ScrollView,
-  TouchableOpacity,
-  Picker,
-  Modal
 } from "react-native";
+import ModalModel from "./ModalModel";
+import ModalButton from "./ModalButton";
 import tw from "twrnc";
 import MyUserContext from '../context/UserContext';
 import AuthContext from "../context/AuthContext";
 import { useNavigate } from "react-router-native";
 
 
-export default function ModalAccountDelete({ isModalOpenAccountDelete, setIsModalOpenAccountDelete }) {
+export default function ModalAccountDelete({ isModalOpenAccountDelete, setIsModalOpenAccountDelete, navigation }) {
   let navigate = useNavigate();
   const { ChangeState, response } = useContext(MyUserContext);
   const { LogOut } = useContext(AuthContext);
@@ -26,44 +22,14 @@ export default function ModalAccountDelete({ isModalOpenAccountDelete, setIsModa
     if (!changestateResponse.data.error) {
       LogOut();
       setIsModalOpenAccountDelete(false);
-      navigate("/login");
       return false;
     }
   }
 
-  const modalContainerStyle = {
-    flex: 1,
-    justifyContent: 'center',
-    backgroundColor: 'rgba(52, 52, 52, 0.6)',
-
-  }
-
-  const modalStyle = {
-    backgroundColor: 'white',
-    alignItems: 'center',
-    margin: 20,
-    borderRadius: 16,
-    paddingHorizontal: 30,
-    paddingVertical: 20,
-    shadowColor: '#000',
-    shadowOffset: {
-      width: 0,
-      height: 2,
-    },
-    shadowOpacity: 0.25,
-    shadowRadius: 4,
-    elevation: 5,
-  };
-
-
   return (
-    <>
-      <Modal visible={isModalOpenAccountDelete} transparent={true} animationType={'fade'} onRequestClose={() => setIsModalOpenAccountDelete(false)}>
-        <View style={modalContainerStyle}>
-          <View style={modalStyle}>
-            <View style={tw`h-full flex items-center mt-5 justify-center`}>
+    
+    <ModalModel isModalOpen={isModalOpenAccountDelete} setIsModalOpen={setIsModalOpenAccountDelete}>
 
-              <View style={tw`px-7 mb-10 flex items-center justify-center`}>
                 <Text style={tw` text-black mb-10 w-283px  text-center`}>
                   Recuerde que tiene la posibilidad de transferir la administración de sus fincas a otro usuario. ¿Está seguro que quiere eliminar su cuenta?
                 </Text>
@@ -76,26 +42,8 @@ export default function ModalAccountDelete({ isModalOpenAccountDelete, setIsModa
                     {response.message}
                   </Text>
                 ) : null}
-                <TouchableOpacity
-                  style={tw`bg-yellow-500 text-lg text-white px-5 py-3 w-215px rounded-lg mb-7 text-center`}
-                  onPress={onSubmit}
-                >
-                  <Text style={tw`text-lg text-white text-center`}>Aceptar</Text>
-                </TouchableOpacity>
-                <TouchableOpacity
-                  style={tw`bg-red-600 text-lg text-white px-5 py-3 w-215px rounded-lg mb-7 text-center`}
-                  onPress={() => setIsModalOpenAccountDelete(!setIsModalOpenAccountDelete)}
-                >
-                  <Text style={tw`text-lg text-white text-center`}>Cancelar </Text>
-
-                </TouchableOpacity>
-              </View>
-            </View>
-
-
-          </View>
-        </View>
-      </Modal>
-    </>
+                <ModalButton text={"Confirmar"} onPress={() => {onSubmit()}} color={"rgba(34, 197, 94, 1)"} />
+                <ModalButton text={"Cancelar"} onPress={() => { setIsModalOpenAccountDelete(!isModalOpenAccountDelete) }} color={"rgba(255, 0, 0, 1)"} />
+                </ModalModel>
   )
 }

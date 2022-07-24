@@ -9,10 +9,13 @@ const MyRequestsOtherFarmsProvider = ({children}) => {
     const [otherRequests, setOtherRequests] = useState([]);
     const [error, setError] = useState(false);
     const [message, setMessage] = useState("");
+    const [sorters, setSorters] = useState({page: 0});
+    const [maxPage, setMaxPage] = useState(0);
 
-    const LoadOtherRequests = async (stateReq, page) => {
-        await axios.get(REACT_APP_API_URL + "/api/getinrequests/"+ stateReq + "/" + global.idUser + "/" + page)
+    const LoadOtherRequests = async (stateReq) => {
+        await axios.get(REACT_APP_API_URL + "/api/getinrequests/"+ stateReq + "/" + global.idUser + "/" + sorters.page)
           .then(res => {
+            setMaxPage(res.data.maxPage)
             setOtherRequests(res.data.response);
         })
     }
@@ -45,7 +48,11 @@ const MyRequestsOtherFarmsProvider = ({children}) => {
                 setMessage,
                 setOtherRequests,
                 AcceptRequest,
-                RejectRequest
+                RejectRequest,
+                maxPage,
+                setSorters,
+                sorters,
+                setMaxPage
             }}
         >
             {children}
