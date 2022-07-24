@@ -18,8 +18,7 @@ const PickerModel = ({list, label, value, text, setSelected, selected})=>{
                       value={selected}
                       placeholder={{ label: text, value: "" }}
                       onValueChange={(itemValue) =>
-                        {setSelected(itemValue)
-                        console.log(itemValue)}}
+                        {setSelected(itemValue)}}
                       style={customPickerStyles}
                       useNativeAndroidPickerStyle={false}
                       Icon={() => {

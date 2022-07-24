@@ -83,11 +83,8 @@ export default function ModalModifyAccountInformation({ isModalOpen, setIsModalO
 
   /*   useEffect(() => {
       const checkValid = phoneInput.current?.isValidNumber(phoneNumber)
-      console.log("numero: " + phoneNumber)
   
-      console.log(phoneNumber)
       if (phoneNumber === undefined || phoneNumber === null || phoneNumber === "") {
-        console.log("error " + phoneNumber)
         setError('phoneNumber', { type: 'required', message: '' })
       }
       else {
@@ -103,11 +100,9 @@ export default function ModalModifyAccountInformation({ isModalOpen, setIsModalO
       identifiers.map((identifier) => {
         if (identifier.identifier == country) {
           const identifierCountry = identifier.idIdentifier
-          console.log(identifierCountry)
           setSelectedLanguage(identifierCountry)
         }
       })
-      console.log(selectedLanguagee)
     }, [country]); */
 
 
@@ -115,10 +110,10 @@ export default function ModalModifyAccountInformation({ isModalOpen, setIsModalO
     <>
       <ModalModel isModalOpen={isModalOpen} setIsModalOpen={setIsModalOpen}>
         <View style={tw`flex items-center justify-center`}>
-          <Text style={tw`text-3xl font-bold text-black mt-8 mb-5`}>
+          <Text style={tw`text-3xl font-bold text-black mt-3 mb-5`}>
             Administrar perfil
           </Text>
-          <ScrollView style={tw`mt-2`}>
+          <View style={tw`mt-2`}>
             <View style={tw` flex items-center justify-center`}>
               <Text style={tw` text-black mb-10 w-283px  text-center`}>
                 Rellena los campos con la información correspondiente
@@ -184,9 +179,9 @@ export default function ModalModifyAccountInformation({ isModalOpen, setIsModalO
               />
 
               <ButtonForm onPress={handleSubmit(onSubmit)} title="Guardar cambios" color={"rgba(34, 197, 94, 1)"} />
-              <ButtonForm onPress={() => { setIsModalOpen(!setIsModalOpen); reset(); setError(false); }} title="Cancelar" color={"rgba(220, 38, 38, 0.86)"} />
+              <ButtonForm onPress={() => { setIsModalOpen(!setIsModalOpen); reset(); setError(false); }} title="Cancelar" color={"rgba(255, 0, 0, 1)"} />
             </View>
-          </ScrollView>
+          </View>
         </View>
       </ModalModel>
     </>

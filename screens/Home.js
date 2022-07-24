@@ -1,9 +1,11 @@
 import global from "../global";
-import React, {useState} from "react";
+import React, {useState, useEffect} from "react";
 import tw from "twrnc";
-import { View, Text, Image, ImageBackground, StyleSheet, TouchableOpacity} from "react-native";
+import { View, Text, Image, ImageBackground, StyleSheet, TouchableOpacity, BackHandler} from "react-native";
 import Logo from "../assets/logo.png";
 import Background from "../assets/background.png";
+import { useBackHandler } from "@react-native-community/hooks";
+
 
 export default function Home({navigation}) {
 
@@ -21,6 +23,7 @@ export default function Home({navigation}) {
       overflow: 'hidden'
     },
   });
+
 
   return (
     <ImageBackground source={Background} resizeMode="cover" style={tw`flex justify-center`}>

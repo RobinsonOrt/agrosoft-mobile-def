@@ -13,6 +13,7 @@ const RequestsOtherFarmsStack = ({ navigation }) => {
         <MyRequestsOtherFarmsProvider>
             <HomeStack.Navigator screenOptions={{
                 title:"",
+                headerTintColor: "#fff",
                 headerStyle:styles.headerStyle,
                 headerRight:() => ( <HeaderRight navigation={navigation} />),
                 headerTitle:() => ( <HeaderTitle navigation={navigation}/>),

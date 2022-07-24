@@ -5,6 +5,7 @@ import { MyUserProvider } from "../context/UserContext";
 import { MyIdentifierProvider } from "../context/IdentifierContext";
 import { AuthProvider } from "../context/AuthContext";
 import { HeaderTitle, HeaderRight, styles } from "../components/Header";
+import Home from "../screens/Home";
 
 const AccountStack = ({ navigation }) => {
     
@@ -13,11 +14,11 @@ const AccountStack = ({ navigation }) => {
     return (
         <MyUserProvider>
           <MyIdentifierProvider>
-            <AuthProvider>
               <HomeStack.Navigator 
                 initialRouteName="UserInformation" 
                 screenOptions={{
                   title:"",
+                  headerTintColor: "#fff",
                 headerStyle:styles.headerStyle,
                 headerRight:() => ( <HeaderRight navigation={navigation} />),
                 headerTitle:() => ( <HeaderTitle navigation={navigation}/>),
@@ -25,7 +26,6 @@ const AccountStack = ({ navigation }) => {
                 }}>
                   <HomeStack.Screen name="UserInformation" component={UserInformation}/>
               </HomeStack.Navigator>
-            </AuthProvider>
           </MyIdentifierProvider>
         </MyUserProvider>
     );     

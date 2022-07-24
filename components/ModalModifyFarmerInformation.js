@@ -48,7 +48,6 @@ export default function ModalModifyFarmerInformation({ isModalOpenModifyFarmerIn
     }
     data.colorFarm = selectedColor
     data.idFarm = farm.idFarm
-    console.log(data)
     const response = await UpdateFarm(data);
     if (response.data.error) {
       setLocalError({ "error": response.data.error, "message": response.data.response });

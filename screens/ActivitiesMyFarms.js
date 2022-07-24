@@ -51,12 +51,10 @@ const ActivitiesMyFarms = ({ navigation }) => {
     GetActivity,
   } = useContext(MyActivitiesContext);
 
-  useEffect(() => {
-    GetActivities(activityType, global.idFarm);
-  }, [activityType]);
+  useEffect(async () => {
+    await GetActivities("1", global.idFarm);
+  }, []);
 
-  console.log("estas son las actividades" + activities);
-  console.log("Tipo de actividad" + activityType);
   const subHeaderTable = (
     <View
       style={[
@@ -198,11 +196,12 @@ const ActivitiesMyFarms = ({ navigation }) => {
             </View>
 
             <TableActivitiesMyFarms
-              setActivityType={setActivityType}
+              /* setActivityType={setActivityType} */
               title1="Arbustos"
               title2="Cultivos"
               children={incoming}
               subHeaderTable={subHeaderTable}
+              Function={GetActivities}
             />
             <Pagination
               maxPage={maxPage}

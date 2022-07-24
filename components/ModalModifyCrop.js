@@ -37,7 +37,6 @@ const ModalModifyCrop = ({isModalOpenModifyCrop, setIsModalOpenModifyCrop}) => {
     } = useForm();
 
     const onSubmitModifyCrop = async (data) =>{
-      console.log(data);
       data.idCrop = crop.idCrop;
       data.idFarm = global.idFarm
       const updateCropResponse = await UpdateCrop(data);
@@ -58,8 +57,6 @@ const ModalModifyCrop = ({isModalOpenModifyCrop, setIsModalOpenModifyCrop}) => {
         ageCrop: crop.ageCrop,
       });
     }, [crop]);
-  
-    console.log(errors)
     return(
 
       <ModalModel isModalOpen={isModalOpenModifyCrop} setIsModalOpen={setIsModalOpenModifyCrop}>

@@ -68,7 +68,6 @@ export default function ModalAddFarm({ isModalOpenAddFarm, setIsModalOpenAddFarm
     }
     data.colorFarm = selectedColor
     const response = AddFarm(data);
-    console.log(response);
     if (!response.error) {
       setSelectedColor(null);
       setIsModalOpenAddFarm(false);

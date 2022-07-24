@@ -60,8 +60,6 @@ const ModalAddActivityMyFarms = ({ isModalOpenAddActivityMyFarms, setIsModalOpen
     reset();
     setIsModalOpenAddActivityMyFarms(false);
   }
-
-  console.log(errors)
   return (
 
     <ModalModel isModalOpen={isModalOpenAddActivityMyFarms} setIsModalOpen={setIsModalOpenAddActivityMyFarms} >

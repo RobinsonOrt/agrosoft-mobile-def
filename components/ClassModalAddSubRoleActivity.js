@@ -32,7 +32,7 @@ export default class ClassModalAddSubRoleActivity extends Component {
     }
 
     componentDidMount() {
-        this.setState({noFormatData: this.context.subRoleActivitiesToSet})
+        this.setState({ noFormatData: this.context.subRoleActivitiesToSet })
         let Temp = this.context.subRoleActivitiesToSet
         let FormData = []
         for (let i = 0; i < Temp.length; i++) {
@@ -61,13 +61,13 @@ export default class ClassModalAddSubRoleActivity extends Component {
         const response = await AddSubRoleActivity(dataToSend)
         if (response.data.error) {
             alert("Debe seleccionar al menos una actividad")
-        }else{
+        } else {
             const navigation = this.state.nav
             navigation.goBack()
         }
     }
 
-    onCancel(){
+    onCancel() {
         const navigation = this.state.nav
         navigation.goBack()
     }
@@ -80,37 +80,43 @@ export default class ClassModalAddSubRoleActivity extends Component {
     }
 
     renderActivitiesToSet() {
-        return (this.state.data.length > 0) ? ( this.state.data.map((item, key) => {
-            return(
-                <TouchableOpacity style={tw`flex-row m-2 items-center`} key={key} onPress={()=>this.onChecked(item.key.idActivity)}>
+        return (this.state.data.length > 0) ? (this.state.data.map((item, key) => {
+            return (
+                <TouchableOpacity style={[tw`flex-row border-b border-gray-400 p-2 items-center`]} key={key} onPress={() => this.onChecked(item.key.idActivity)}>
+                    
+                    <Text style={tw`content-center text-gray-600 w-90% uppercase`}>{item.key.nameActivity}</Text>
                     <Checkbox
-                    style={tw`m-1 w-5 h-5`}
-                    value={item.checked}
-                    onValueChange={() => this.onChecked(item.key.idActivity)}
+                        style={tw`m-1 w-5 h-5`}
+                        value={item.checked}
+                        onValueChange={() => this.onChecked(item.key.idActivity)}
                     />
-                    <Text style={tw`content-center w-full uppercase`}>{item.key.nameActivity}</Text>
                 </TouchableOpacity>
             )
         })) : (<Text style={tw`text-center text-gray-500 my-5`}>
-        No se encontraron registros
-      </Text>)
+            No se encontraron registros
+        </Text>)
     }
 
     render() {
-        return(
+        return (
             <SafeAreaProvider>
-                <SafeAreaView style={tw`flex-1`}>
+                <SafeAreaView style={[tw`flex-1 items-center`]}>
                     <SubHeader title={"Seleccione actividades a asignar"} />
-                    <View style={tw`m-3 w-full flex-row justify-around`}>
-                    <ButtonCard text={"Asignar"} onPress={()=>this.onSubmitSubRoleActivities()} color={"rgba(34, 197, 94, 1)"} icon={<MaterialIcons name="assignment-ind" size={20} color="white" />} />
-                    <ButtonCard text={"Cancelar"} onPress={()=>this.onCancel()} color={"rgba(239, 68, 68, 1)"} icon={<Ionicons name="ios-arrow-back-circle-outline" size={20} color="white" />} />
-                    </View>
-                    
-                    <ScrollView style={tw`h-95%`} >
-                        <View style={styles.container}>
-                        {this.renderActivitiesToSet()}
+                    <View style={[tw`h-full w-full items-center pt-2`, { backgroundColor: "rgba(32, 84, 0, 0.1)" }]}>
+                        <Text style={tw`text-center font-bold uppercase text-2xl`}>Actividades</Text>
+                        <View style={[tw`h-68% w-90% mt-2 rounded-2xl`, styles.container, { backgroundColor: "rgba(32, 84, 0, 0.12)" }]}>
+                            <ScrollView>
+                                {this.renderActivitiesToSet()}
+                            </ScrollView>
                         </View>
-                    </ScrollView>
+                        <View style={tw`m-3 w-83%`}>
+                            <View style={tw`mb-3 w-full`}>
+                                <ButtonCard text={"Asignar"} onPress={() => this.onSubmitSubRoleActivities()} color={"rgba(34, 197, 94, 1)"} icon={<MaterialIcons name="assignment-ind" size={20} color="white" />} />
+                            </View>
+                            <ButtonCard text={"Cancelar"} onPress={() => this.onCancel()} color={"rgba(239, 68, 68, 1)"} icon={<Ionicons name="ios-arrow-back-circle-outline" size={20} color="white" />} />
+                        </View>
+                    </View>
+
                 </SafeAreaView>
             </SafeAreaProvider>
         )

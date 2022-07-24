@@ -52,7 +52,7 @@ const AssignedLabors = ({ navigation }) => {
                         {subRoleActivities.length > 0 ? (
                             subRoleActivities.map((subRoleActivity, index) => {
                                 return (
-                                    <CardSubRoleActivity name={subRoleActivity.nameActivity} description={subRoleActivity.descriptionActivity} >
+                                    <CardSubRoleActivity name={subRoleActivity.nameActivity} description={subRoleActivity.descriptionActivity} key={index}>
                                         <ButtonDeleteActivitySubRole onPress={() => { global.idToDelete = subRoleActivity.idActivity, setIsModalOpenDelete(!isModalOpenDelete) }} color={"rgba(239, 68, 68, 1)"} icon={<AntDesign name="delete" size={30} color={"#fff"} />} />
                                     </CardSubRoleActivity>
                                 );

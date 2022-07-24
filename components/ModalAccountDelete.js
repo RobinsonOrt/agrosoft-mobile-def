@@ -11,7 +11,7 @@ import AuthContext from "../context/AuthContext";
 import { useNavigate } from "react-router-native";
 
 
-export default function ModalAccountDelete({ isModalOpenAccountDelete, setIsModalOpenAccountDelete }) {
+export default function ModalAccountDelete({ isModalOpenAccountDelete, setIsModalOpenAccountDelete, navigation }) {
   let navigate = useNavigate();
   const { ChangeState, response } = useContext(MyUserContext);
   const { LogOut } = useContext(AuthContext);
@@ -22,7 +22,6 @@ export default function ModalAccountDelete({ isModalOpenAccountDelete, setIsModa
     if (!changestateResponse.data.error) {
       LogOut();
       setIsModalOpenAccountDelete(false);
-      navigate("/login");
       return false;
     }
   }
@@ -43,8 +42,8 @@ export default function ModalAccountDelete({ isModalOpenAccountDelete, setIsModa
                     {response.message}
                   </Text>
                 ) : null}
-                <ModalButton text={"Confirmar"} onPress={() => {onSubmit()}} color={"#22C55E"} />
-                <ModalButton text={"Cancelar"} onPress={() => { setIsModalOpenAccountDelete(!isModalOpenAccountDelete) }} color={"rgba(220, 38, 38, 0.86)"} />
+                <ModalButton text={"Confirmar"} onPress={() => {onSubmit()}} color={"rgba(34, 197, 94, 1)"} />
+                <ModalButton text={"Cancelar"} onPress={() => { setIsModalOpenAccountDelete(!isModalOpenAccountDelete) }} color={"rgba(255, 0, 0, 1)"} />
                 </ModalModel>
   )
 }
